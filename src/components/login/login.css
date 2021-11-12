@@ -1,36 +1,44 @@
-.log{
+.log {
+    width: 25%;
     margin-top: 30px;
-height: 580%;
-background-color: blueviolet;
--webkit-box-shadow: 5px 7px 10px 1px #000000; 
-box-shadow: 5px 7px 10px 1px #000000;
+    margin-left: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    text-align: center;
+    background-color: blueviolet;
+    -webkit-box-shadow: 5px 7px 10px 1px #000000;
+    box-shadow: 5px 7px 10px 1px #000000;
 }
-.loginForm{
-    padding:25px;
-    width: 272px;
+
+.loginForm {
+    padding: 25px;
 }
-.loginFormItem{
+
+.loginFormItem {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
     text-align: centers;
 }
-.loginFormItem>label{
+
+.loginFormItem>label {
     margin-bottom: 10px;
     font-size: 14px;
     font-weight: 600;
     color: gray;
     text-align: center;
 }
-.loginFormItem>input{
-    position:relative;
+
+.loginFormItem>input {
+    position: relative;
     height: 20px;
     padding: 10px;
     border: 1px solid gray;
     border-radius: 5px;
     text-align: center;
 }
-.loginFormItem>button{
+
+.loginFormItem>button {
     margin: 30px 30px 30px;
     font-size: 15px;
     font-weight: 700;
