@@ -3,14 +3,17 @@ import './login.css';
 const Login = () => {
     return (
         <div className='log'>
-            <h3>Login Page setup</h3>
+            <h2>AI-BasedSocial
+                Distancing
+                Monitoring
+                System</h2>
             <form className="loginForm">
                 <div className="loginFormItem">
-                   <label>Email</label>
+                    <label>Email</label>
                     <input type="text" placeholder="example@gmail.com" />
                 </div>
                 <div className="loginFormItem">
-                   <label>Password</label>
+                    <label>Password</label>
                     <input type="password" placeholder="*************" />
                 </div>
                 <div className="loginFormItem">
