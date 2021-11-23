@@ -7,24 +7,25 @@ import TextFieldWithLabel from './components/label/TextFieldWithLabel';
 import { useState } from 'react';
 
 function App() {
-  const [name, setName] = useState(0)
-  // setName("modified")
-  function change(e) {
-    console.log(e)
-  }
-  function clickName (){
-    setName(name+1)
-  }
+  // const [name, setName] = useState(0)
+  // // setName("modified")
+  // function change(e) {
+  //   console.log(e)
+  // }
+  // function clickName() {
+  //   setName(name + 1)
+  // }
   return (
-    <div className="App">
+    <div className="bg-blue-400 h-screen">
       <header className="App-header">
-        <span>{name}</span>
-        <button onClick={clickName}>Submit</button>
-        {/* <TopNav /> */}
-        {/*<SideNav />
-        <Home /> */}
+        {/* <span>{name}</span> */}
+        {/* <button onClick={clickName}>Submit</button> */}
+        <TopNav/>
+        {/* <SideNav /> */}
+        <Home />
+        {/* <Login /> */}
       </header>
-      {/* <Login />
+      {/*
       <TextFieldWithLabel labelName="Hello Jorge" onChange={change} /> */}
     </div>
   );
