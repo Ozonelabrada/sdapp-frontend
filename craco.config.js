@@ -7,11 +7,4 @@
           ],
         },
       },
-        theme: {
-        extend: {
-          backgroundImage: {
-           'homeImage': "url('/images/OIP.JFIF')",
-          }
-        }
-      }
   }

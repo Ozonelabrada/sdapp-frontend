@@ -14,9 +14,7 @@ const Home = () => {
                     MONITORING
                     SYSTEM</h1>
             </div>
-            <div 
-            className="w-full h-full bg-no-repeat bg-cover bg-right"
-            style ="background-image: url('images/IOP.JFIF')">
+            <div>
             </div>
         </div>
     )
