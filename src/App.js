@@ -16,7 +16,7 @@ function App() {
   //   setName(name + 1)
   // }
   return (
-    <div className="bg-blue-400 h-screen">
+    <div className=" h-screen">
       <header className="App-header">
         {/* <span>{name}</span> */}
         {/* <button onClick={clickName}>Submit</button> */}
