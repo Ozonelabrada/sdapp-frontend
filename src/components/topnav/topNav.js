@@ -1,20 +1,21 @@
 import React from 'react'
 import './topNav.css'
+import { Link } from "react-router-dom";
 const TopNav = () => {
     return (
-        <div className="topbar">
+        <nav className="topbar">
             <div className="topbarWrapper">
-                <div className="top-left">KITA</div>
+                <Link to="/" className="top-left">KITA</Link>
                 <div className="top-right">
-                    <div className="tab">Home</div>
-                    <div className="tab">About</div>
-                    <div className="tab">Gallery</div>
+                    <Link to="/" className="tab">Home</Link>
+                    <Link to="/about" className="tab">About</Link>
+                    <Link to="/gallery" className="tab">Gallery</Link>
                     <div className="dropdown">
-                    
+
                     </div>
                 </div>
             </div>
-        </div>
+        </nav>
     )
 }
 

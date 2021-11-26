@@ -1,32 +1,20 @@
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import Login from './components/login/login'
-import Home from './components/dashboard/Home';
-import SideNav from './components/sideNav/sideNav';
 import TopNav from './components/topnav/topNav';
-import TextFieldWithLabel from './components/label/TextFieldWithLabel';
-import { useState } from 'react';
-
-function App() {
-  // const [name, setName] = useState(0)
-  // // setName("modified")
-  // function change(e) {
-  //   console.log(e)
-  // }
-  // function clickName() {
-  //   setName(name + 1)
-  // }
+import About from './Routes/About';
+import Gallery from './Routes/Gallery';
+import LandingPage from './Routes/Gallery'
+const App = () => {
   return (
-    <div className=" h-screen">
-      <header className="App-header">
-        {/* <span>{name}</span> */}
-        {/* <button onClick={clickName}>Submit</button> */}
-        <TopNav/>
-        {/* <SideNav /> */}
-        <Home />
-        {/* <Login /> */}
-      </header>
-      {/*
-      <TextFieldWithLabel labelName="Hello Jorge" onChange={change} /> */}
+    <div>
+      <TopNav />
+      <Routes>
+        <Route element={<LandingPage />} path="/" />
+        <Route element={<LandingPage />} path="/home" />
+        <Route element={<About />} path="/about" />
+        <Route element={<Gallery />} path="/gallery" />
+      </Routes>
     </div>
   );
 }
