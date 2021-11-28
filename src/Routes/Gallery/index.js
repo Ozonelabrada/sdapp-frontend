@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import axios from 'axios'
 
 
@@ -7,13 +7,14 @@ class Gallery extends Component {
         super(props)
 
         this.state = {
-            posts: []
+            comments: []
         }
     }
+
     componentDidMount() {
         axios.get('https://jsonplaceholder.typicode.com/posts/1/comments')
             .then(response => {
-                this.setState({ posts: response.data })
+                this.setState({ comments: response.data })
                 console.log(response)
             })
             .catch(error => {
@@ -22,13 +23,18 @@ class Gallery extends Component {
 
     }
     render() {
-        const { posts } = this.state
+        const { comments } = this.state
         return (
             <div className="bg-gray-800">
                 {
-                    posts.length ? 
-                    posts.map(post => <div key={post.id}>{post.title}</div>) :
-                    null
+                    comments.length ?
+                        comments.map(post =>
+                            <div className="p-5" key={post.id}>
+                                <span className="inset-y-2/4">NAME: {post.name}</span><br />
+                                <span>EMAIL: {post.email}</span><br />
+                                <span className="text-gray-100">BODY: {post.body}</span>
+                            </div>)
+                        : null
                 }
             </div>
         )
