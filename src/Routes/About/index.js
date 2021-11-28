@@ -5,7 +5,7 @@ const About = props => {
     console.log(props.name);
     return (
         <div className="h-screen w-screen signIn-page justify row-span-full grid grid-flow-col gap-2">
-            <br />  
+            <br />
             <div className="bg-gray-900 w-3/3 sm:w-1/1 col-span-1">
                 <h1 className="text-center text-6xl l lg:text-8xl md:text-8xl  pt-40 sm:text-8xl  leading-9 font-extrabold text-white w-full mt-1" >KITA:</h1>
                 <div className="w-full mt-5">
@@ -56,7 +56,7 @@ const About = props => {
 }
 
 About.propTypes = {
-name:PropTypes.bool,
+    name: PropTypes.bool,
 
 }
 
