@@ -2,7 +2,6 @@ import React from 'react'
 import './topNav.css'
 import { Link } from "react-router-dom";
 import '@mdi/font/css/materialdesignicons.min.css';
-// import { createPopper } from "@popperjs/core";
 
 
 const TopNav = () => {
@@ -33,7 +32,7 @@ const TopNav = () => {
                             <Link to="/gallery" className="px-7 py-2 flex items-center text-4x1 uppercase font-bold leading-snug text-gray-400 hover:opacity-75">Gallery</Link>
                         </li>
                         <li className="nav-item inline-block">
-                            <div className="relative mb-32">
+                            {/* <div className="relative mb-32">
                                 <button className="inline-flex items-center h-10 px-5 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
                                     <span>Dropdown</span>
                                     <svg className="w-4 h-4 ml-3 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd" /></svg>
@@ -43,7 +42,7 @@ const TopNav = () => {
                                     <a className="px-3 py-1 hover:text-gray-800 focus:bg-indigo-700 focus:text-white" href="#">Another longer item</a>
                                     <a className="px-3 py-1 hover:text-gray-800 focus:bg-indigo-700 focus:text-white" href="#">A medium item</a>
                                 </div>
-                            </div>
+                            </div> */}
                         </li>
                     </ul>
                 </div>
