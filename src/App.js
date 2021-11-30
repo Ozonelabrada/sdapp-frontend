@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Home from './components/dashboard/Home';
 import Login from './components/login/login';
@@ -16,31 +16,24 @@ function getToken() {
   const tokenString = sessionStorage.getItem('token');
   const userToken = JSON.parse(tokenString);
   return userToken?.token
-} 
+}
 
-function App(){
+function App() {
   const token = getToken();
-  
-  if(!token) {
+
+  if (!token) {
     return <Login setToken={setToken} />
   }
   return (
     <div className="wrapper">
       <TopNav />
-      <BrowserRouter>
-          <Route path="/home">
-            <Home />
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/gallery">
-            <Gallery />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-      </BrowserRouter>
+      <Routes>
+        <Route element={<Home />} path="/home" />
+        <Route element={<About />} path="/about" />
+        <Route element={<Gallery />} path="/Gallery" />
+        <Route element={<Register />} path="/register" />
+        <Route element={<Login />} path="/login" />
+      </Routes>
     </div>
   );
 }
