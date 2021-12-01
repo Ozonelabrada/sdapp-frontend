@@ -7,6 +7,7 @@ import TopNav from './components/topnav/topNav';
 import About from './Routes/About';
 import Gallery from './Routes/Gallery';
 import Register from './Routes/Register';
+import VideoStream from './Routes/VideoStream';
 
 function setToken(userToken) {
   sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -22,7 +23,7 @@ function App() {
   const token = getToken();
 
   if (!token) {
-    return <Login setToken={setToken} />
+    // return <Login setToken={setToken} />
   }
   return (
     <div className="wrapper">
@@ -33,6 +34,7 @@ function App() {
         <Route element={<Gallery />} path="/Gallery" />
         <Route element={<Register />} path="/register" />
         <Route element={<Login />} path="/login" />
+        <Route element={<VideoStream />} path="/stream" />
       </Routes>
     </div>
   );
