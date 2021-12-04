@@ -28,7 +28,7 @@ const Dropdown = ({ color }) => {
         <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-white">
             <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
                 <div className="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
-                    <Link to="/" className="px-3 py-2 flex items-center uppercase font-bold leading-snug text-gray-400 hover:opacity-75">
+                    <Link to="/home" className="px-3 py-2 flex items-center uppercase font-bold leading-snug text-gray-400 hover:opacity-75">
                         <i className="mdi mdi-eye-circle-outline mdi-24px" ></i>
                         <span className="text-8x1 ml-1">KITA</span>
                     </Link>
@@ -41,7 +41,7 @@ const Dropdown = ({ color }) => {
                 <div className="lg:flex flex-grow items-center" id="example-navbar-warning">
                     <ul className="flex flex-col lg:flex-row list-none ml-auto">
                         <li className="nav-item inline-block">
-                            <Link to="/" className="px-7 py-2 flex items-center text-4x1 uppercase font-bold leading-snug text-gray-400 hover:opacity-75">Home</Link>
+                            <Link to="/home" className="px-7 py-2 flex items-center text-4x1 uppercase font-bold leading-snug text-gray-400 hover:opacity-75">Home</Link>
                         </li>
                         <li className="nav-item inline-block">
                             <Link to="/about" className="px-7 py-2 flex items-center text-4x1 uppercase font-bold leading-snug text-gray-400 hover:opacity-75">About</Link>
