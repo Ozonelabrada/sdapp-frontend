@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import Home from './components/dashboard/Home';
-import Login from './components/login/login';
-import TopNav from './components/topnav/topNav';
+import Home from './components/Home';
+import Login from './components/Login';
+import TopNav from './components/TopNav';
 import About from './Routes/About';
 import Gallery from './Routes/Gallery';
 import Register from './Routes/Register';
