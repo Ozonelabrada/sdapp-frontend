@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
+import Axios from 'axios';
+
+const api = Axios.create({
+  baseURL: 'http://localhost:5000/api',
+})
 
 async function loginUser(credentials) {
-  return fetch('https://reqres.in/api/users/2', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
+  try {
+    const res = await api.post(`/auth/login`, credentials);
+    console.log(res)
+  }
+  catch (err) { console.error(err) }
 }
+
 
 
 export default function Login({ setToken }) {
@@ -24,7 +27,7 @@ export default function Login({ setToken }) {
       email,
       password
     });
-    setToken(token);
+    // setToken(console.log(token));
   }
 
   return (
@@ -36,11 +39,11 @@ export default function Login({ setToken }) {
             <form className="flex flex-col pt-3 md:pt-8" onSubmit={handleSubmit}>
               <div className="flex flex-col pt-4">
                 <label htmlFor="email" className="text-lg">Email</label>
-                <input type="email"  placeholder="your@email.com" onChange={e => setUserEmail(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
+                <input type="email" placeholder="your@email.com" onChange={e => setUserEmail(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
               </div>
               <div className="flex flex-col pt-4">
                 <label htmlFor="password" className="text-lg">Password</label>
-                <input type="password"  placeholder="Password" onChange={e => setPassword(e.target.value)}  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
+                <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" />
               </div>
               <button className="bg-black text-white rounded font-bold text-lg hover:bg-gray-700 p-2 mt-8" type="submit">Log In</button>
             </form>

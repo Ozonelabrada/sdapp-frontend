@@ -2,6 +2,7 @@
   "name": "sdfrontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000/api",
   "dependencies": {
     "@craco/craco": "^6.4.1",
     "@mdi/font": "^6.5.95",
