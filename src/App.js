@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import Home from './components/dashboard/home';
+import Home from './components/dashboard/Home';
 import Login from './components/login/login';
 import TopNav from './components/topnav/topNav';
 import About from './Routes/About';
@@ -26,12 +26,12 @@ function App() {
     // return <Login setToken={setToken} />
   }
   return (
-    <div className="wrapper">
+    <div>
       <TopNav />
       <Routes>
         <Route element={<Home />} path="/home" />
         <Route element={<About />} path="/about" />
-        <Route element={<Gallery />} path="/Gallery" />
+        <Route element={<Gallery />} path="/gallery" />
         <Route element={<Register />} path="/register" />
         <Route element={<Login />} path="/login" />
         <Route element={<VideoStream />} path="/stream" />
