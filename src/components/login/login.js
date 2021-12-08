@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
-import Axios from 'axios';
+import api from '../../api';
 
-const api = Axios.create({
-  baseURL: 'http://localhost:5000/api',
-})
-
+// just follow the pattern
 async function loginUser(credentials) {
   try {
     const res = await api.post(`/auth/login`, credentials);
