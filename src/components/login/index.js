@@ -24,7 +24,7 @@ export default function Login({ setToken }) {
       email,
       password
     });
-    // setToken(console.log(token));
+    setToken(console.log(token));
   }
 
   return (
