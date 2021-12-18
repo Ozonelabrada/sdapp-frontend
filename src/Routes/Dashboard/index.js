@@ -2,8 +2,6 @@ import React from "react";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import { Link } from "react-router-dom";
-// import LineChart from "./components/LineChart";
-// import BarChart from "./components/BarChart";
 
 
 
