@@ -1,8 +1,9 @@
 import React from "react";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
-import LineChart from "./components/LineChart";
-import BarChart from "./components/BarChart";
+import { Link } from "react-router-dom";
+// import LineChart from "./components/LineChart";
+// import BarChart from "./components/BarChart";
 
 
 
@@ -24,8 +25,7 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                            Traffic
-                          </h5>
+                            Violation Detected</h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             350,897
                           </span>
@@ -36,38 +36,9 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </div>
-                        <p className="text-sm text-blueGray-400 mt-4">
+                      <p className="text-sm text-blueGray-400 mt-4">
                         <span className="text-emerald-500 mr-2">
                           <i className="fas fa-arrow-up"></i> 3.48%
-                        </span>
-                        <span className="whitespace-nowrap">
-                          Since last month
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-                  <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                    <div className="flex-auto p-4">
-                      <div className="flex flex-wrap">
-                        <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-                          <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                            New users
-                          </h5>
-                          <span className="font-semibold text-xl text-blueGray-700">
-                            2,356
-                          </span>
-                        </div>
-                        <div className="relative w-auto pl-4 flex-initial">
-                          <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500">
-                            <i className="fas fa-chart-pie"></i>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-sm text-blueGray-400 mt-4">
-                        <span className="text-red-500 mr-2">
-                          <i className="fas fa-arrow-down"></i> 3.48%
                         </span>
                         <span className="whitespace-nowrap">
                           Since last week
@@ -82,14 +53,43 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                            Sales
+                            Average Violation
+                          </h5>
+                          <span className="font-semibold text-xl text-blueGray-700">
+                            2,356
+                          </span>
+                        </div>
+                        <div className="relative w-auto pl-4 flex-initial">
+                          <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-yellow-700">
+                            <i className="fas fa-chart-pie"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-sm text-blueGray-400 mt-4">
+                        <span className="text-red-500 mr-2">
+                          <i className="fas fa-arrow-down"></i> 3.48%
+                        </span>
+                        <span className="whitespace-nowrap">
+                          Since last month
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                  <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+                    <div className="flex-auto p-4">
+                      <div className="flex flex-wrap">
+                        <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
+                          <h5 className="text-blueGray-400 uppercase font-bold text-xs">
+                            Violation Solved
                           </h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             924
                           </span>
                         </div>
                         <div className="relative w-auto pl-4 flex-initial">
-                          <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
+                          <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-green-700">
                             <i className="fas fa-users"></i>
                           </div>
                         </div>
@@ -99,7 +99,7 @@ export default function Dashboard() {
                           <i className="fas fa-arrow-down"></i> 1.10%
                         </span>
                         <span className="whitespace-nowrap">
-                          Since yesterday
+                          Since last month
                         </span>
                       </p>
                     </div>
@@ -118,7 +118,7 @@ export default function Dashboard() {
                           </span>
                         </div>
                         <div className="relative w-auto pl-4 flex-initial">
-                          <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-lightBlue-500">
+                          <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-">
                             <i className="fas fa-percent"></i>
                           </div>
                         </div>
@@ -140,8 +140,6 @@ export default function Dashboard() {
         </div>
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <div className="flex flex-wrap">
-            <LineChart />
-            <BarChart />
           </div>
           <div className="flex flex-wrap mt-4">
             <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
@@ -150,7 +148,7 @@ export default function Dashboard() {
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                       <h3 className="font-semibold text-base text-blueGray-700">
-                        Page visits
+                        Violation Log
                       </h3>
                     </div>
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -170,7 +168,7 @@ export default function Dashboard() {
                     <thead>
                       <tr>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Page name
+                          Log Date
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                           Visitors
@@ -270,7 +268,7 @@ export default function Dashboard() {
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                       <h3 className="font-semibold text-base text-blueGray-700">
-                        Social traffic
+                        Complied the Violation
                       </h3>
                     </div>
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -420,47 +418,47 @@ export default function Dashboard() {
                 <div className="w-full md:w-4/12 px-4">
                   <div className="text-sm text-blueGray-500 font-semibold py-1">
                     Copyright © {new Date().getFullYear()}{" "}
-                    <a
-                      href="#"
+                    <Link
                       className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                      to="/home"
                     >
-                      Social Distancing App
-                    </a>
+                      <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Social Distancing App
+                    </Link>
                   </div>
                 </div>
                 <div className="w-full md:w-8/12 px-4">
                   <ul className="flex flex-wrap list-none md:justify-end  justify-center">
                     <li>
-                      <a
-                        href="#"
-                        className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
+                      <Link
+                        className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                        to="/home"
                       >
-                        Social Distancing App
-                      </a>
+                        <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Social Distancing App |
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href=""
-                        className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
+                      <Link
+                        className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                        to="/about"
                       >
-                        About Us
-                      </a>
+                        <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> About Us |
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href=""
-                        className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
+                      <Link
+                        className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                        to="/home"
                       >
-                        Blog
-                      </a>
+                        <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> News |
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href=""
-                        className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
+                      <Link
+                        className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                        to="/home"
                       >
-                        MIT License
-                      </a>
+                        <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> MIT License
+                      </Link>
                     </li>
                   </ul>
                 </div>
