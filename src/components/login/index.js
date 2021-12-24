@@ -78,7 +78,7 @@ export default function Login() {
   if (user && user.token) return <Navigate to={location.state.from.pathname} state={{from: location}} />
   return (
     <div>
-      <div className="w-full flex flex-wrap bg-blue-200">
+      <div className="w-full flex flex-wrap bg-bgLogin">
         <div className="w-full md:w-1/2 flex flex-col">
           <div className="flex flex-col justify-center md:justify-start my-auto pt-2 md:pt-0 md:px-12 lg:px-16 bg-white lg:m-28 md:m-10">
             <p className="text-center pt-10 text-3xl">Login</p>
@@ -128,7 +128,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="w-1/2 shadow-2xl pb-10s flex flex-col justify-center md:justify-start my-auto h-screen">
+        <div className="w-1/2 s pb-10s flex flex-col justify-center md:justify-start my-auto h-screen">
           <img className="object-cover rounded-3xl inline-flex justify-self-center md:mt-15  h-5/6  md:block md:m-auto md:w-3/4" alt="" src="./images/socialdistancing.jpg" />
         </div>
       </div>
