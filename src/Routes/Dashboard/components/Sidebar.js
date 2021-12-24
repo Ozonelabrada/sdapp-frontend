@@ -19,7 +19,12 @@ export default function Sidebar() {
             <i className="fas fa-bars"></i>
           </button>
           {/* Brand */}
-          <Link to="/home" className="flex flex-none items-center"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
+          <Link
+            className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
+            to="/"
+          >
+            Tailwind Starter Kit
+          </Link>
           {/* User */}
           <ul className="md:hidden items-center flex flex-wrap list-none">
             <li className="inline-block relative">
@@ -39,6 +44,9 @@ export default function Sidebar() {
             {/* Collapse header */}
             <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
               <div className="flex flex-wrap">
+                <div className="w-6/12">
+                        <Link to="/home" className="flex flex-none items-center"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
+                </div>
                 <div className="w-6/12 flex justify-end">
                   <button
                     type="button"
@@ -56,7 +64,7 @@ export default function Sidebar() {
                 <input
                   type="text"
                   placeholder="Search"
-                  className="border-0 px-3 py-2 h-12 border-solid  border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
+                  className=" px-3 py-2 h-12 border border-solid  border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
                 />
               </div>
             </form>
@@ -74,26 +82,36 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link
                   className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                  to="/stream"
+                  to="/dashboard"
                 >
-                  <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i> Video Stream Page
+                  <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i> Profile Information
                 </Link>
               </li>
 
               <li className="items-center">
                 <Link
                   className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                  to="/register"
+                  to="/dashboard"
                 >
-                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Profile Page
+                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> USER'S PAGE
                 </Link>
+              </li>
+
+              <li className="items-center">
+                <a
+                  className="text-blueGray-300 text-xs uppercase py-3 font-bold block"
+                  href="#pablo"
+                  onClick={e => e.preventDefault()}
+                >
+                  <i className="fas fa-clipboard-list text-blueGray-300 mr-2 text-sm"></i> Register
+                </a>
               </li>
             </ul>
             {/* Divider */}
             <hr className="my-4 md:min-w-full" />
             {/* Heading */}
             <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              Documentation
+              Transactions
             </h6>
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
@@ -111,19 +129,9 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                   to="/"
                 >
-                  <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Students
+                  <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Case Solved
                 </Link>
               </li>
-
-              <li className="inline-flex">
-                <Link
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                  to="/"
-                >
-                  <i className="fab fa-vuejs mr-2 text-blueGray-400 text-base"></i> Users
-                </Link>
-              </li>
-            <hr className="my-4 md:min-w-full" />
             </ul>
           </div>
         </div>
