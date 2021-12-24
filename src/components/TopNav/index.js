@@ -1,73 +1,57 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from "react-router-dom";
 import '@mdi/font/css/materialdesignicons.min.css';
+import { UserContext } from '../../context/userContext';
+import userEvent from '@testing-library/user-event';
 
-import { createPopper } from "@popperjs/core";
+const TopNav = () => {
+    const { setUser, user } = useContext(UserContext)
+    const [showMenu, setShowMenu] = React.useState(false)
 
-const TopNav = ({ color }) => {
-    // dropdown props
-    const [showDropdown, setShowDropdown] = React.useState(false);
-
-    const btnDropdownRef = React.createRef();
-    const popoverDropdownRef = React.createRef();
-
-    const toggleDropdown = () => {
-        if (showDropdown) {
-            createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
-                placement: "bottom-start"
-            })
-        }
-        setShowDropdown(!showDropdown);
-    };
-
-    
+    //create function to toggle menu
+    const toggleMenu = () => {
+        setShowMenu(showMenu => !showMenu)
+    }
+    const handleLogout = () => {
+        setUser(null)
+    }
     return (
-        <div className="border-b-2">
-            <nav className="lg:container text-gray-600 uppercase">
-                <div className="flex items-center justify-between">
-                    <div className="flex-1 ml-10 font-extrabold leading-snug">
-                        <Link to="/home" className="flex flex-none items-center"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
-                    </div>
-                    <div className="flex-1 flex justify-around items-center font-normal">
-                        <Link to="/home" className="mr-5"><span className="hover:underline hover:opacity-75">Home</span></Link>
-                        <Link to="/about" className="mr-5"><span className="hover:underline hover:opacity-75">About</span></Link>
-                        <Link to="/gallery" className="mr-5"><span className="hover:underline hover:opacity-75">Gallery</span></Link>
-                        <Link to="/login" className="mr-5 sflex items-center pr-4 hover:opacity-75"><span className="hover:underline hover:opacity-75">Login</span></Link>
-                        <button
-                            className="mr-5 bg-gray-800 rounded pl-3 pb-1 flex items-center pr-4 hover:bg-opacity-75 hover:text-gray-200"
-                            ref={btnDropdownRef}
-                            onClick={toggleDropdown}
-                        >Toggle</button>
-                    </div>
+        <div className="lg:container border-b-2 text-gray-600">
+            <nav className="flex items-center justify-between flex-wrap uppercase">
+                <div className="flex items-center flex-shrink-0  ml-10">
+                    <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
                 </div>
-                <div
-                    ref={popoverDropdownRef}
-                    className={
-                        (showDropdown ? "block " : "hidden ") +
-                        "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 hover:shadow-lg border-2"
-                    }
-                    style={{ minWidth: "12rem" }}
-                >
-                    <a
-                        href="#Logout"
-                        className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent"
-                        onClick={e => e.preventDefault()}
+                <div className="block md:hidden">
+                    <button
+                        onClick={toggleMenu}
+                        className="flex items-center px-3 py-2 border rounded text-green-600 border-green-400 hover:text-black hover:border-black"
                     >
-                        Logout
-                    </a>
-                    <div className="h-0 my-2 border border-solid border-t-0 border-gray-800 opacity-25" />
-                    <a
-                        href="#Changepass"
-                        className={
-                            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " 
+                        <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
+                    </button>
+                </div>
+                <div className={`w-full ${showMenu ? "block" : "hidden"} md:flex md:items-center md:w-auto`}>
+                    <div className="md:flex-grow">
+                        <Link to="/home" className="block md:inline-block md:mt-4 mx-5"><span className="hover:underline hover:opacity-75">Home</span></Link>
+                        <Link to="/about" className="block md:inline-block md:mt-4 mx-5"><span className="hover:underline hover:opacity-75">About</span></Link>
+                        <Link to="/gallery" className="block md:inline-block md:mt-4 mx-5"><span className="hover:underline hover:opacity-75">Gallery</span></Link>
+                    </div>
+                    <div>
+                        {/* <a href="#" className="inline-block text-sm px-4 py-2 leading-none border rounded   hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Download</a> */}
+                        {
+                            (user && user.token)
+                                ? <button
+                                    onClick={handleLogout}
+                                    className="bg-green-600 border-1 rounded-full mt-4 px-4 py-1 text-white hover:text-gray-900 hover:bg-green-500">
+                                    <i className="mdi mdi-logout-variant"></i>
+                                    Logout
+                                </button>
+                                : <Link to="/login" className="block md:inline-block mt-4 mx-5"><span className="hover:underline hover:opacity-75">Login</span></Link>
                         }
-                        onClick={e => e.preventDefault()}
-                    >
-                        Change Password
-                    </a>
+                    </div>
                 </div>
             </nav>
-        </div>
+
+        </div >
     );
 };
 

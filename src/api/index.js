@@ -9,4 +9,9 @@ const options = {
 }
 const api = axios.create(options)
 
+// create function to set headers
+export const setHeaders = (key, value) => {
+    api.defaults.headers.common[key] = value
+}
+
 export default api
