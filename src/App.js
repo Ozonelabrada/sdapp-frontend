@@ -1,45 +1,49 @@
 import React, { Profiler } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { setHeaders } from './api';
+import { getMe } from './api/endpoints/user';
 import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
 import TopNav from './components/TopNav';
+import { UserContext } from './context/userContext';
 import About from './Routes/About';
 import Dashboard from './Routes/Dashboard';
 import Gallery from './Routes/Gallery';
+import Private from './Routes/Private';
 import Register from './Routes/Register';
 import VideoStream from './Routes/VideoStream';
 
-function setToken(userToken) {
-  sessionStorage.setItem('token', JSON.stringify(userToken));
-}
-
-function getToken() {
-  const tokenString = sessionStorage.getItem('token');
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token
-}
+let token = null
 
 function App() {
-  const token = getToken();
+  const { user, setUser } = React.useContext(UserContext);
+  try {
+    token = localStorage.getItem('token')
+    setHeaders("Authorization", `Bearer ${token}`)
+  } catch (e) { localStorage.removeItem('token') }
 
-  if (!token) {
-    // return <Login setToken={setToken} />
-  }
+  React.useEffect(() => {
+    if (!user && token) {
+      getMe().then(res => setUser({ ...res, token }))
+    }
+  }, [])
+
   return (
     <div>
       <TopNav />
       <Routes>
+        <Route element={<Home />} path="/" />
         <Route element={<Home />} path="/home" />
         <Route element={<About />} path="/about" />
-        <Route element={<Gallery />} path="/gallery" />
         <Route element={<Register />} path="/register" />
         <Route element={<Login />} path="/login" />
-        <Route element={<VideoStream />} path="/stream" />
-        <Route element={<Dashboard />} path="/dashboard" />
+        <Route path="/gallery" element={<Private component={Gallery} />} />
+        <Route path="/stream" element={<Private component={VideoStream} />} />
       </Routes>
     </div>
   );
 }
+
 
 export default App;
