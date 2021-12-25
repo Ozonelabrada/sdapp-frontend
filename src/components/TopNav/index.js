@@ -2,19 +2,15 @@ import React, { useContext } from 'react'
 import { Link } from "react-router-dom";
 import '@mdi/font/css/materialdesignicons.min.css';
 import { UserContext } from '../../context/userContext';
-import userEvent from '@testing-library/user-event';
 
 const TopNav = () => {
     const { setUser, user } = useContext(UserContext)
     const [showMenu, setShowMenu] = React.useState(false)
 
     //create function to toggle menu
-    const toggleMenu = () => {
-        setShowMenu(showMenu => !showMenu)
-    }
-    const handleLogout = () => {
-        setUser(null)
-    }
+    const toggleMenu = () => setShowMenu(showMenu => !showMenu)
+    const handleLogout = () => setUser(null)
+    
     return (
         <div className="lg:container border-b-2 text-gray-600">
             <nav className="flex items-center justify-between flex-wrap uppercase">
