@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Profiler } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { setHeaders } from './api';
 import { getMe } from './api/endpoints/user';
@@ -32,15 +32,16 @@ function App() {
   return (
     <div>
       <TopNav />
-      <Routes>
-        <Route element={<Home />} path="/" />
-        <Route element={<Home />} path="/home" />
-        <Route element={<About />} path="/about" />
-        <Route element={<Register />} path="/register" />
-        <Route element={<Login />} path="/login" />
-        <Route path="/gallery" element={<Private component={Gallery} />} />
-        <Route path="/stream" element={<Private component={VideoStream} />} />
-      </Routes>
+        <Routes>
+          <Route element={<Home />} path="/" />
+          <Route element={<Home />} path="/home" />
+          <Route element={<About />} path="/about" />
+          <Route element={<Register />} path="/register" />
+          <Route element={<Login />} path="/login" />
+          <Route path="/gallery" element={<Private component={Gallery} />} />
+          <Route path="/stream" element={<Private component={VideoStream} />} />
+          <Route path="/dashboard" element={<Private component={Dashboard} />} />
+        </Routes>
     </div>
   );
 }
