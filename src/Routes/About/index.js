@@ -6,7 +6,7 @@ const About = props => {
     return (
         <div className="h-screen w-screen signIn-page justify row-span-full grid grid-flow-col gap-2">
             <br />
-            <div className="bg-gray-900 w-3/3 sm:w-1/1 col-span-1">
+            <div className="bg-bgAboutL w-3/3 sm:w-1/1 col-span-1">
                 <h1 className="text-center text-6xl l lg:text-8xl md:text-8xl  pt-40 sm:text-8xl  leading-9 font-extrabold text-white w-full mt-1" >KITA:</h1>
                 <div className="w-full mt-5">
                     <h1 className="text-center text-4xl leading-10 font-black text-white w-full pl-24 pr-24"
@@ -18,7 +18,7 @@ const About = props => {
                         SYSTEM</h1>
                 </div>
             </div>
-            <div className="col-span-3 text-2xl bg-purple-900 mr-5  sm:w-1/1  sm:p-5 row-span-full grid grid-flow-col"
+            <div className="col-span-3 text-2xl bg-bgAboutR mr-5  sm:w-1/1  sm:p-5 row-span-full grid grid-flow-col"
                 style={{ fontFamily: "dm sans" }}>
                 <div>
                     <p className="pt-40 pl-20">
