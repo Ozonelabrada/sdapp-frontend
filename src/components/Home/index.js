@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 
 const Home = props => {
     return (
-        <div>
-            <div className="w-full h-screen flex flex-wrap bg-bgHome">
+        <div className='bg-bgHome pt-10'>
+            <div className="w-full h-screen flex flex-wrap">
                 <div className="w-screen md:w-1/2 flex flex-col">
                 <h1 className="p-16 text-6xl font-black leading-snug md:mt-20"
                     style={{ fontFamily: "Montserrat" }}>

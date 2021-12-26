@@ -32,16 +32,16 @@ function App() {
   return (
     <div>
       <TopNav />
-      <Routes>
-        <Route element={<Home />} path="/" />
-        <Route element={<Home />} path="/home" />
-        <Route element={<About />} path="/about" />
-        <Route element={<Register />} path="/register" />
-        <Route element={<Login />} path="/login" />
-        <Route path="/gallery" element={<Private component={Gallery} />} />
-        <Route path="/stream" element={<Private component={VideoStream} />} />
-        <Route path="/dashboard" element={<Private component={Dashboard} />} />
-      </Routes>
+        <Routes>
+          <Route element={<Home />} path="/" />
+          <Route element={<Home />} path="/home" />
+          <Route element={<About />} path="/about" />
+          <Route element={<Register />} path="/register" />
+          <Route element={<Login />} path="/login" />
+          <Route path="/gallery" element={<Private component={Gallery} />} />
+          <Route path="/stream" element={<Private component={VideoStream} />} />
+          <Route path="/dashboard" element={<Private component={Dashboard} />} />
+        </Routes>
     </div>
   );
 }
