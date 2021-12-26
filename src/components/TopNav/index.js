@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { Link } from "react-router-dom";
 import '@mdi/font/css/materialdesignicons.min.css';
 import { UserContext } from '../../context/userContext';
-import userEvent from '@testing-library/user-event';
 
 const TopNav = () => {
     const { setUser, user } = useContext(UserContext)
@@ -14,6 +13,7 @@ const TopNav = () => {
     }
     const handleLogout = () => {
         setUser(null)
+        localStorage.clear()
     }
     return (
         <div className="lg:container border-b-2 text-gray-600">
