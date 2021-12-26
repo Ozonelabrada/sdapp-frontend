@@ -40,6 +40,7 @@ function App() {
         <Route element={<Login />} path="/login" />
         <Route path="/gallery" element={<Private component={Gallery} />} />
         <Route path="/stream" element={<Private component={VideoStream} />} />
+        <Route path="/dashboard" element={<Private component={Dashboard} />} />
       </Routes>
     </div>
   );
