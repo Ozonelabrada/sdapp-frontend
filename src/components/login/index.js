@@ -75,7 +75,7 @@ export default function Login() {
   }
 
   //if token ang user context is not null, redirect to previous path
-  if (user && user.token) return <Navigate to={location.state?.from.pathname || ""} state={{from: location}} />
+  if (user && user.token) return <Navigate to={location.state?.from.pathname || "/stream"} state={{from: location}} />
   return (
     <div>
       <div className="w-full flex flex-wrap bg-bgLogin">
