@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const options = {
-    baseURL: "http://localhost:5000/api",
+    baseURL: process.env.REACT_APP_BASEURL,
     headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
