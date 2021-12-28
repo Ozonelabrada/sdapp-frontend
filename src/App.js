@@ -8,6 +8,7 @@ import Login from './components/Login';
 import TopNav from './components/TopNav';
 import { UserContext } from './context/userContext';
 import About from './Routes/About';
+import Dashboard from './Routes/Dashboard';
 import Gallery from './Routes/Gallery';
 import Private from './Routes/Private';
 import Register from './Routes/Register';
