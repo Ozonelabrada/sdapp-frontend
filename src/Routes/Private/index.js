@@ -5,7 +5,6 @@ import { UserContext } from "../../context/userContext";
 const Private = ({ component: Component }) => {
     const location = useLocation();
     const { user } = React.useContext(UserContext);
-    console.log(user)
 
     // create React useMemo hook to check if user is authenticated
     const isAuthenticated = React.useMemo(() => {

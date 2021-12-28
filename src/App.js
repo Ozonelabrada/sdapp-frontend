@@ -25,7 +25,7 @@ function App() {
 
   React.useEffect(() => {
     if (!user && token) {
-      getMe().then(res => setUser({ ...res, token }))
+      getMe().then(res => res && setUser({ ...res, token }))
     }
   }, [])
 
