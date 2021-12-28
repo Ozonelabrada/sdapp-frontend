@@ -2,7 +2,7 @@
   "name": "sdfrontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000/api",
+  "proxy": "",
   "homepage": "https://staging-pdr.herokuapp.com/",
   "dependencies": {
     "@craco/craco": "^6.4.1",
