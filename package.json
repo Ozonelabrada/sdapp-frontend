@@ -2,7 +2,8 @@
   "name": "sdfrontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000/api",
+  "proxy": "",
+  "homepage": "https://staging-pdr.herokuapp.com/",
   "dependencies": {
     "@craco/craco": "^6.4.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -26,7 +27,10 @@
     "react-router": "^6.0.0-beta.8",
     "react-router-dom": "^6.0.0-beta.8",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "autoprefixer": "^9.8.8",
+    "postcss": "^7.0.39",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   },
   "scripts": {
     "api": "json-server db.json -p 3333 --delay 1500",
@@ -54,8 +58,5 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^9.8.8",
-    "postcss": "^7.0.39",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   }
 }
