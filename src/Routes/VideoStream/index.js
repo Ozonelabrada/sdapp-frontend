@@ -9,7 +9,7 @@ const VideoStream = () => {
                 <div className=" md:w-2/3 flex flex-col">
                     <div id="" className="relative md:h-4/6 md:w-3/4 md:mr-auto md:ml-auto md:mt-14">
                         <iframe title="aa" className="relative md:w-full pr-0 md:h-full"
-                            src="./video/sample.mp4"
+                            src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         />
