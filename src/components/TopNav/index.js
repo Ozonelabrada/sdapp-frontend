@@ -18,8 +18,13 @@ const TopNav = () => {
     return (
         <div className="lg:container border-b-2 text-gray-600  fixed bg-transparent">
             <nav className="flex items-center justify-between flex-wrap uppercase">
-                <div className="flex items-center flex-shrink-0  ml-10">
-                    <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
+                <div className="flex items-center flex-shrink-0  ml-10">{
+                            (user && user.token)
+                                ? 
+                                <Link to="/stream" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
+                                : <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
+                        }
+
                 </div>
                 <div className="block md:hidden">
                     <button
