@@ -40,7 +40,7 @@ const TopNav = () => {
                         <Link to="/about" className="block md:inline-block md:mt-4 mx-5"><span className="hover:underline hover:opacity-75">About</span></Link>
                         <Link to="/gallery" className="block md:inline-block md:mt-4 mx-5"><span className="hover:underline hover:opacity-75">Gallery</span></Link>
                     </div>
-                    <div>
+                    <div className='pr-10'>
                         {/* <a href="#" className="inline-block text-sm px-4 py-2 leading-none border rounded   hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Download</a> */}
                         {
                             (user && user.token)
