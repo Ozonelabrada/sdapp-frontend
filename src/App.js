@@ -1,5 +1,5 @@
 import React, { Profiler } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Redirect } from 'react-router-dom';
 import { setHeaders } from './api';
 import { getMe } from './api/endpoints/user';
 import { UserContext } from './context/userContext';
@@ -7,6 +7,8 @@ import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
 import TopNav from './components/TopNav';
+import { UserContext } from './context/userContext';
+import Notfound from './Routes/404NF';
 import About from './Routes/About';
 import Dashboard from './Routes/Dashboard';
 import Gallery from './Routes/Gallery';
@@ -41,6 +43,7 @@ function App() {
           <Route path="/gallery" element={<Private component={Gallery} />} />
           <Route path="/stream" element={<Private component={VideoStream} />} />
           <Route path="/dashboard" element={<Private component={Dashboard} />} />
+          <Route path='*' element={<Notfound />} />
         </Routes>
     </div>
   );
