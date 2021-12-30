@@ -2,7 +2,6 @@ import React, { Profiler } from 'react';
 import { Routes, Route, Redirect } from 'react-router-dom';
 import { setHeaders } from './api';
 import { getMe } from './api/endpoints/user';
-import { UserContext } from './context/userContext';
 import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
