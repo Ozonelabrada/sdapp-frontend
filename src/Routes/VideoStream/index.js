@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom'
 
 const VideoStream = () => {
     return (
-        <div className='lg:overflow-y-hidden'>
-            <div className="w-full h-screen md:flex md:flex-wrap bg-blue-200 pt-20">
-                <div className=" md:w-2/3 sm:w-full flex flex-col">
-                    <div id="" className="relative md:h-4/6 sm:h-full md:w-3/4 sm:w-full mr-auto ml-auto md:mt-14">
-                        <iframe title="aa" className="md:relative w-full md:pr-0 h-full"
-                            src="./video/sample.mp4"
+        <div className='overflow-y-hidden'>
+            <div className="w-full h-screen flex flex-wrap bg-blue-200 pt-20">
+                <div className=" md:w-2/3 flex flex-col">
+                    <div id="" className="relative md:h-4/6 md:w-3/4 md:mr-auto md:ml-auto md:mt-14">
+                        <iframe title="aa" className="relative md:w-full pr-0 md:h-full"
+                            src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         />
