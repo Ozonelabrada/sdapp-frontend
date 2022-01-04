@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const VideoStream = () => {
     return (
         <div className='lg:overflow-y-hidden'>
-            <div className="w-full h-screen md:flex md:flex-wrap bg-blue-200 pt-20">
+            <div className="w-full h-screen md:flex md:flex-wrap bg-blue-200 md:pt-20 p-2">
                 <div className=" md:w-2/3 sm:w-full flex flex-col">
                     <div id="" className="relative md:h-4/6 sm:h-full md:w-3/4 sm:w-full mr-auto ml-auto md:mt-14">
                         <iframe title="aa" className="md:relative w-full md:pr-0 h-full"
@@ -14,7 +14,7 @@ const VideoStream = () => {
                             allowFullScreen
                         />
                     </div>
-                    <div className='md:text-right md:pt-10 md:mr-28 to-black md:text-lg cursor-pointer md:hover:to-gray-400'><Link to="/gallery">
+                    <div className='text-right md:pt-10 mr-28 to-black md:text-lg cursor-pointer md:hover:to-gray-400'><Link to="/gallery">
                         G A L L E R Y <i class="mdi mdi-arrow-right"></i></Link>
                     </div>
                 </div>
@@ -30,7 +30,7 @@ const VideoStream = () => {
 
                         <div className="text-center h-full">
                             <div className="md:col-span-3 border-white md:py-2 md:inline-flex md:justify-self-center md:h-auto">DATE: 01-26-2022</div>
-                            <table className="md:table-auto border-collapse border border-gray-400 w-full md:col-span-full md:py-3 md:mb-2">
+                            <table className="md:table-auto border-collapse border border-gray-400 w-full md:col-span-full md:py-3 md:mb-2 md:text-lg text-sm">
                                 <thead className="md:py-2">
                                     <tr>
                                         <th className="border border-gray-300 ...">
