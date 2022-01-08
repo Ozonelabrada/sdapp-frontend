@@ -17,8 +17,8 @@ const TopNav = () => {
     }
     return (
         <div className="container text-gray-600 md:fixed md:bg-transparent md:w-screen">
-            <nav className="flex border-b-2 items-center justify-between flex-wrap uppercase w-screen">
-                <div className="flex md:items-center flex-shrink-0  ml-10">{
+            <nav className="flex border-b-2 items-center justify-between flex-wrap text-xl w-screen">
+                <div className="flex md:items-center flex-shrink-0 md:ml-10  ml-2">{
                             (user && user.token)
                                 ? 
                                 <Link to="/stream" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
@@ -35,22 +35,22 @@ const TopNav = () => {
                     </button>
                 </div>
                 <div className={`w-full ${showMenu ? "block" : "hidden"} md:flex md:items-center md:w-auto`}>
-                    <div className="md:flex-grow">
-                        <Link to="/home" className="block md:inline-block md:mt-4 mx-5"><span className="hover:underline hover:opacity-75">Home</span></Link>
-                        <Link to="/about" className="block md:inline-block md:mt-4 mx-5"><span className="hover:underline hover:opacity-75">About</span></Link>
-                        <Link to="/gallery" className="block md:inline-block md:mt-4 mx-5"><span className="hover:underline hover:opacity-75">Gallery</span></Link>
+                    <div className="md:flex-grow md:font-normal font-semibold pl-6">
+                        <Link to="/home" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Home</span></Link>
+                        <Link to="/about" className="block md:inline-block "><span className="hover:underline hover:opacity-75 m-auto px-5">About</span></Link>
+                        <Link to="/gallery" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Gallery</span></Link>
                     </div>
-                    <div className='md:px-10'>
+                    <div className='md:px-10 pl-2'>
                         {/* <a href="#" className="inline-block text-sm px-4 py-2 leading-none border rounded   hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Download</a> */}
                         {
                             (user && user.token)
                                 ? <button
                                     onClick={handleLogout}
-                                    className="bg-green-600 border-1 rounded-full mt-4 px-4 py-1 text-white hover:text-gray-900 hover:bg-green-500">
+                                    className="bg-green-600 border-1 text-semibold  rounded-full hover:underline hover:opacity-75 m-auto px-5">
                                     <i className="mdi mdi-logout-variant"></i>
                                     Logout
                                 </button>
-                                : <Link to="/login" className="block md:inline-block mt-4 mx-5"><span className="hover:underline hover:opacity-75">Login</span></Link>
+                                : <Link to="/login" className="block md:inline-block m-auto pr-5"><span className="hover:underline hover:opacity-75 m-auto px-5">Login</span></Link>
                         }
                     </div>
                 </div>
