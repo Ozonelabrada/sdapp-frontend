@@ -10,6 +10,7 @@ module.exports = {
      bgAboutL: '#bba7a3',
      bgAboutR: '#ddc3bd',
      bgHome: '#f1f1f1',
+     bgstreamImage: '#e4d4d0',
    },},
   },
   variants: {

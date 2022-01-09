@@ -38,7 +38,7 @@ function App() {
           <Route element={<Home />} path="/home" />
           <Route element={<About />} path="/about" />
           <Route element={<Register />} path="/register" />
-          <Route element={<Login />} path="/login" />
+          <Route element={<Login ><div className='overflow-hidden' ></div> </Login>} path="/login" />
           <Route path="/gallery" element={<Private component={Gallery} />} />
           <Route path="/stream" element={<Private component={VideoStream} />} />
           <Route path="/dashboard" element={<Private component={Dashboard} />} />

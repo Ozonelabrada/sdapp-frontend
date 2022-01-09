@@ -77,11 +77,11 @@ export default function Login() {
   //if token ang user context is not null, redirect to previous path
   if (user && user.token) return <Navigate to={location.state?.from.pathname || "/stream"} state={{from: location}} />
   return (
-    <div>
-      <div className="w-full flex flex-wrap bg-bgLogin">
-        <div className="w-full md:w-1/2 flex flex-col">
-          <div className="flex flex-col justify-center md:justify-start my-auto pt-2 md:pt-0 md:px-12 lg:px-16 bg-white lg:m-28 md:m-10">
-            <p className="text-center pt-10 text-3xl">Login</p>
+    <div className='lg:overflow-y-hidden'>
+      <div className=" h-full p-2 w-full flex flex-wrap bg-bgLogin">
+        <div className="w-full md:w-1/2 flex flex-col pb-4 2xl:px-24">
+          <div className="px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-white mx-5">
+            <p className="text-center pt-5 text-3xl">Login</p>
             <div className='mt-5'></div>
             {
               loginState.hasError &&
@@ -128,8 +128,8 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="w-1/2 s pb-10s flex flex-col justify-center md:justify-start my-auto h-screen">
-          <img className="object-cover rounded-3xl inline-flex justify-self-center md:mt-15  h-5/6  md:block md:m-auto md:w-3/4" alt="" src="./images/socialdistancing.jpg" />
+        <div className="flex-col md:w-1/2 justify-center h-screen justify-self-center block m-auto md:pt-16">
+          <img className="object-cover rounded-3xl h-full w-screen" alt="" src="./images/socialdistancing.jpg" />
         </div>
       </div>
     </div>
