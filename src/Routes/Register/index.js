@@ -1,3 +1,5 @@
+
+// REACT_APP_BASEURL=https://staging-pdp.herokuapp.com/api
 import React from 'react';
 import { Link, Navigate, useLocation } from "react-router-dom";
 import useForm from '../../hooks/useForm';
@@ -55,7 +57,7 @@ export default function Register() {
                 ...registerState,
                 isLoading: false,
                 hasError: true,
-                message: 'Invalid Credentials'
+                message: '',
             }))
         }
         //set isLoading to false then set isAuthenticated to true if there is no error
@@ -77,11 +79,11 @@ export default function Register() {
 
     if (user && user.token) return <Navigate to={location.state.from.pathname} state={{ from: location }} />
     return (
-        <div>
-            <div className="w-full h-screen flex flex-wrap bg-blue-200">
-                <div className="w-full md:w-1/2 flex flex-col">
-                    <div className="flex flex-col justify-center md:justify-start my-auto h-5/6 md:h-90 md:px-12 lg:px-16 bg-white lg:ml-28 lg:mr-28 md:m-auto">
-                        <p className="text-center pt-4 text-3xl">Register</p>
+        <div className='overflow-hidden'>
+        <div className=" h-screen w-full flex flex-wrap bg-bgLogin">
+          <div className="w-full md:w-1/2 flex flex-col 2xl:px-24">
+            <div className="px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-white mx-5">
+              <p className="text-center pt-5 text-3xl">Register</p>
 
                         {
                             registerState.hasError &&
@@ -137,8 +139,8 @@ export default function Register() {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/2 s pb-10s flex flex-col justify-center md:justify-start my-auto h-screen">
-                    <img className="object-cover rounded-3xl inline-flex justify-self-center md:mt-15  h-5/6  md:block md:m-auto md:w-3/4" alt="" src="./images/socialdistancing.jpg" />
+                <div className="flex-col sm:w-1/2 justify-center h-screen justify-self-center md:block m-auto md:pt-16 hidden">
+                    <img className="object-cover rounded-3xl h-full w-screen" alt="" src="./images/socialdistancing.jpg" />
                 </div>
             </div>
         </div>

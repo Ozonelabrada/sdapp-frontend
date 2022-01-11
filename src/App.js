@@ -1,5 +1,5 @@
-import React, { Profiler } from 'react';
-import { Routes, Route, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { setHeaders } from './api';
 import { getMe } from './api/endpoints/user';
 import './App.css';

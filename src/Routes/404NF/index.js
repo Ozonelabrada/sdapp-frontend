@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 
 const Notfound = () => {
-  const { setUser, user } = useContext(UserContext)
-  const [showMenu, setShowMenu] = React.useState(false)
+  const { user } = useContext(UserContext)
+  // const [ setShowMenu] = React.useState(false)
   //create function to toggle menu
-  const toggleMenu = () => {
-      setShowMenu(showMenu => !showMenu)
-  }
-  const handleLogout = () => {
-      setUser(null)
-      localStorage.clear()
-  }
+  // const toggleMenu = () => {
+  //     setShowMenu(showMenu => !showMenu)
+  // }
+  // const handleLogout = () => {
+  //     setUser(null)
+  //     localStorage.clear()
+  // }
   return (
     <div class="bg-gradient-to-r from-purple-300 to-blue-200">
       <div class="w-9/12 m-auto py-16 min-h-screen flex items-center justify-center">
