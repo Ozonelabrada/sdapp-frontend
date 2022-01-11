@@ -12,7 +12,7 @@ export default function Login() {
   // create form states
   const [credentials, setCredentials] = useForm({
     email: "",
-    password: ""
+    password: "",
   })
 
   // create login states
