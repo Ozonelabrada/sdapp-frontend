@@ -84,7 +84,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                   to="/dashboard"
                 >
-                  <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i> Profile Information
+                  <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i> Profile
                 </Link>
               </li>
 
@@ -93,18 +93,8 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                   to="/dashboard"
                 >
-                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> USER'S PAGE
+                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Accounts
                 </Link>
-              </li>
-
-              <li className="items-center">
-                <a
-                  className="text-blueGray-300 text-xs uppercase py-3 font-bold block"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <i className="fas fa-clipboard-list text-blueGray-300 mr-2 text-sm"></i> Register
-                </a>
               </li>
             </ul>
             {/* Divider */}

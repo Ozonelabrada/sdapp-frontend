@@ -10,6 +10,7 @@ import { UserContext } from './context/userContext';
 import Notfound from './Routes/404NF';
 import About from './Routes/About';
 import Dashboard from './Routes/Dashboard';
+import Profile from './Routes/Dashboard/Profile';
 import Gallery from './Routes/Gallery';
 import Private from './Routes/Private';
 import Register from './Routes/Register';
@@ -42,6 +43,7 @@ function App() {
           <Route path="/gallery" element={<Private component={Gallery} />} />
           <Route path="/stream" element={<Private component={VideoStream} />} />
           <Route path="/dashboard" element={<Private component={Dashboard} />} />
+          <Route path="/profile" element={<Private component={Profile} />} />
           <Route path='*' element={<Notfound />} />
         </Routes>
     </div>
