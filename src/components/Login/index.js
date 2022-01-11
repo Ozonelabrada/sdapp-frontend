@@ -75,7 +75,11 @@ export default function Login() {
   }
 
   //if token ang user context is not null, redirect to previous path
-  if (user && user.token) return <Navigate to={location.state?.from.pathname || "/stream"} state={{from: location}} />
+  if (user && user.token){
+    if(user.role === 'ADMIN') {return <Navigate to={location.state?.from.pathname || "/dashboard"} state={{from: location}} />}
+    if(user.role === 'USER') {return <Navigate to={location.state?.from.pathname || "/stream"} state={{from: location}} />}
+  }
+
   return (
     <div className='lg:overflow-y-hidden'>
       <div className=" h-screen p-2 w-full flex flex-wrap bg-bgLogin">
