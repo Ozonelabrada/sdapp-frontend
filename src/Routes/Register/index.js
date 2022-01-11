@@ -80,7 +80,7 @@ export default function Register() {
     if (user && user.token) return <Navigate to={location.state.from.pathname} state={{ from: location }} />
     return (
         <div className='overflow-hidden'>
-            <div className="h-full w-full flex flex-wrap bg-bgLogin">
+            <div className="md:h-full h-screen w-full flex flex-wrap bg-bgLogin">
                 <div className="w-full md:w-1/2 flex flex-col 2xl:px-24">
                     <div className="px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-white mx-10">
                         <p className="text-center pt-5 text-3xl">Register</p>
