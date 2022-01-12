@@ -7,7 +7,7 @@ import { UserContext } from '../../context/userContext';
 export default function Login() {
 
   const { user, setUser } = React.useContext(UserContext);
-  const location = useLocation()
+  const location = useLocation();
 
   // create form states
   const [credentials, setCredentials] = useForm({
