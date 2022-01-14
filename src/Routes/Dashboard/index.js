@@ -24,7 +24,7 @@ export default function Dashboard() {
                 className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                 to="/"
             >
-                Tailwind Starter Kit
+                KITA APP
             </Link>
             {/* User */}
             <ul className="md:hidden items-center flex flex-wrap list-none">
@@ -73,7 +73,7 @@ export default function Dashboard() {
                 <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                     <li className="items-center">
                         <Link
-                            className=" text-xs uppercase py-3 font-bold block"
+                            className="text-pink-500  text-xs uppercase py-3 font-bold block"
                             to="/dashboard"
                         >
                             <i className="fas fa-tv opacity-75 mr-2 text-sm"></i> Dashboard
@@ -82,7 +82,7 @@ export default function Dashboard() {
 
                     <li className="items-center">
                         <Link
-                            className="text-pink-500  hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
+                            className=" hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                             to="/profile"
                         >
                             <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i> Profile
@@ -92,7 +92,7 @@ export default function Dashboard() {
                     <li className="items-center">
                         <Link
                             className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                            to="/dashboard"
+                            to="/accounts"
                         >
                             <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Accounts
                         </Link>
@@ -111,13 +111,13 @@ export default function Dashboard() {
                             className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                             to="/stream"
                         >
-                            <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Monitoring
+                            <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Monitoring of KITA APP
                         </Link>
                     </li>
                     <li className="inline-flex">
                         <Link
                             className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                            to="/"
+                            to="/violation"
                         >
                             <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
                         </Link>
@@ -126,7 +126,7 @@ export default function Dashboard() {
                     <li className="inline-flex">
                         <Link
                             className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                            to="/"
+                            to="/archive"
                         >
                             <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Case Solved
                         </Link>
@@ -178,7 +178,7 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                            SAMPLE NAME
+                            Locations
                           </h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             2,356
@@ -192,10 +192,7 @@ export default function Dashboard() {
                       </div>
                       <p className="text-sm text-blueGray-400 mt-4">
                         <span className="text-red-500 mr-2">
-                          <i className="fas fa-arrow-down"></i> 3.48%
-                        </span>
-                        <span className="whitespace-nowrap">
-                          Since last week
+                          <i className="fas fa-arrow-down"></i>
                         </span>
                       </p>
                     </div>
@@ -207,7 +204,7 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                          SAMPLE NAME
+                          Users
                           </h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             924
@@ -236,7 +233,7 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                            SAMPLE NAME
+                            Case Solved
                           </h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             49,65%
@@ -271,7 +268,7 @@ export default function Dashboard() {
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                       <h3 className="font-semibold text-base text-blueGray-700">
-                        Page visits
+                        Vilations Log
                       </h3>
                     </div>
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -291,16 +288,16 @@ export default function Dashboard() {
                     <thead>
                       <tr>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Page name
+                          Location
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Visitors
+                          Date and Time
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Unique users
+                         Violation Type
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Bounce rate
+                           Enforcer Lookout
                         </th>
                       </tr>
                     </thead>

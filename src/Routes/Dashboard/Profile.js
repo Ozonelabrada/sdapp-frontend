@@ -82,7 +82,7 @@ export default function Profile() {
                             <li className="items-center">
                                 <Link
                                     className="text-pink-500  hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                                    to="/dashboard"
+                                    to="/profile"
                                 >
                                     <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i> Profile
                                 </Link>
@@ -91,7 +91,7 @@ export default function Profile() {
                             <li className="items-center">
                                 <Link
                                     className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                                    to="/dashboard"
+                                    to="/accounts"
                                 >
                                     <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Accounts
                                 </Link>
@@ -110,13 +110,13 @@ export default function Profile() {
                                     className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                                     to="/stream"
                                 >
-                                    <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Monitoring
+                                    <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Monitoring of KITA APP
                                 </Link>
                             </li>
                             <li className="inline-flex">
                                 <Link
                                     className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                    to="/"
+                                    to="/violation"
                                 >
                                     <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
                                 </Link>
@@ -125,7 +125,7 @@ export default function Profile() {
                             <li className="inline-flex">
                                 <Link
                                     className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                    to="/"
+                                    to="/archive"
                                 >
                                     <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Case Solved
                                 </Link>
@@ -140,7 +140,7 @@ export default function Profile() {
                         {/* Brand */}
                         <Link
                             className="text-white text-sm uppercase hidden lg:inline-block font-semibold"
-                            to="/"
+                            to="/profile"
                             onClick={e => e.preventDefault()}
                         >
                             Profile
@@ -161,9 +161,9 @@ export default function Profile() {
                     </div>
                 </nav>
                 {/* Header */}
-                <div className="relative bg-bgAboutR">
-                    <div className="px-4 md:px-10 mx-auto w-full">
-                        <div>
+        <div className="relative bg-bgAboutR pb-32 h-screen">
+          <div className="px-4 md:px-10 mx-auto w-full">
+            <div>
                             {/* Card Body*/}
                             <div className="font-sans antialiased text-gray-900 leading-normal tracking-wider bg-cover background-image:url('https://source.unsplash.com/1L71sPT5XKc');">
                                 <div class="max-w-4xl flex items-center lg:h-screen flex-wrap mx-auto lg:my-0">

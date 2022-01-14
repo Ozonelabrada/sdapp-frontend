@@ -10,7 +10,10 @@ import { UserContext } from './context/userContext';
 import Notfound from './Routes/404NF';
 import About from './Routes/About';
 import Dashboard from './Routes/Dashboard';
+import Accounts from './Routes/Dashboard/Accounts';
+import Archive from './Routes/Dashboard/Archive';
 import Profile from './Routes/Dashboard/Profile';
+import Violations from './Routes/Dashboard/Violations';
 import Gallery from './Routes/Gallery';
 import Private from './Routes/Private';
 import Register from './Routes/Register';
@@ -44,6 +47,9 @@ function App() {
           <Route path="/stream" element={<Private component={VideoStream} />} />
           <Route path="/dashboard" element={<Private component={Dashboard} />} />
           <Route path="/profile" element={<Private component={Profile} />} />
+          <Route path="/accounts" element={<Private component={Accounts} />} />
+          <Route path="/violation" element={<Private component={Violations} />} />
+          <Route path="/archive" element={<Private component={Archive} />} />
           <Route path='*' element={<Notfound />} />
         </Routes>
     </div>
