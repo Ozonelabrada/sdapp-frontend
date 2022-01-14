@@ -17,6 +17,7 @@ import Register from './Routes/Register';
 import VideoStream from './Routes/VideoStream';
 
 let token = null
+  let timeout;
 
 function App() {
   const { user, setUser } = React.useContext(UserContext);
@@ -30,7 +31,6 @@ function App() {
       getMe().then(res => res && setUser({ ...res, token }))
     }
   }, [])
-
   return (
     <div>
       <TopNav />
