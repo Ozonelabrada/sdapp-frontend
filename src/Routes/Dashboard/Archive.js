@@ -186,8 +186,7 @@ export default function Archive() {
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                                 <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
-                                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
                                             </td>
                                         </tr>
                                         <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
@@ -198,8 +197,7 @@ export default function Archive() {
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                                 <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
-                                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
                                             </td>
                                         </tr>
                                         <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
@@ -210,8 +208,7 @@ export default function Archive() {
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                                 <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
-                                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
                                             </td>
                                         </tr>
                                         <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
@@ -222,8 +219,7 @@ export default function Archive() {
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                                 <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
-                                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
                                             </td>
                                         </tr>
                                         <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
@@ -234,8 +230,7 @@ export default function Archive() {
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                                 <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
-                                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
                                             </td>
                                         </tr>
                                         <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
@@ -246,8 +241,7 @@ export default function Archive() {
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                                 <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
-                                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
                                             </td>
                                         </tr>
                                         <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
@@ -258,8 +252,51 @@ export default function Archive() {
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
                                             <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                                 <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
-                                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Violatpion ID</span>001</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Type</span>distancing</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Description</span>jrios@icloud.com</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Location</span>wholeway</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                                <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Violatpion ID</span>001</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Type</span>distancing</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Description</span>jrios@icloud.com</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Location</span>wholeway</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                                <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Violatpion ID</span>001</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Type</span>distancing</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Description</span>jrios@icloud.com</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Location</span>wholeway</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                                <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Violatpion ID</span>001</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Type</span>distancing</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Description</span>jrios@icloud.com</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Location</span>wholeway</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
+                                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                                <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
                                             </td>
                                         </tr>
                                     </tbody>
