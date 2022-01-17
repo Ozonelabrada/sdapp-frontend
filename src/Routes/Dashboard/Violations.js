@@ -7,20 +7,7 @@ import { showViolations } from "../../api/endpoints/violation.js";
 const Violations = () => {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
     const [violations, setViolations] = useState([]);
-    const fetchData = () => {
-        fetch(showViolations)
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                setViolations(data)
-            })
-    }
 
-    useEffect(() => {
-        fetchData()
-    }, [])
-    
     return (
         <>
             <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -182,36 +169,36 @@ const Violations = () => {
                             {/* Card stats */}
                             <div className="flex flex-wrap max-h-96 overflow-y-auto ">
                                 <table class="min-w-full border-black block md:table ">
-                                    <thead class="block md:table-header-group">
-                                        <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                                            <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Violation ID</th>
-                                            <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Type</th>
-                                            <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Description</th>
-                                            <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Location</th>
-                                            <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Date / Time</th>
-                                            <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
+                                    <thead className="block md:table-header-group">
+                                        <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
+                                            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Violation ID</th>
+                                            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Type</th>
+                                            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Description</th>
+                                            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Location</th>
+                                            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Date / Time</th>
+                                            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
                                         </tr>
                                     </thead>
 
-                                        { violations.length > 0 && (
-                                    <tbody class="block md:table-row-group w-full">
-                                            {violations.map(user => (
-                                            <tr class="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
-                                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Violatpion ID</span>{violations.id}</td>
-                                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Type</span>{violations.type}</td>
-                                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Description</span>jrios@icloud.com</td>
-                                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Location</span>wholeway</td>
-                                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
-                                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                                    <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
-                                                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Remove</button>
-                                                </td>
-                                            </tr>
-                                            ))}
-                                        
-                                    </tbody>
-                                    )}
+                                    { violations.length ?
+                                            <tbody className="block md:table-row-group w-full">
+                                                {violations.map(user => (
+                                                    <tr className="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
+                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Violatpion ID</span>{violations.id}</td>
+                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Type</span>{violations.type}</td>
+                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Description</span>jrios@icloud.com</td>
+                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Location</span>wholeway</td>
+                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
+                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                                            <span className="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
+                                                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Remove</button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+
+                                            </tbody>
+                                      : null  }
                                 </table>
                             </div>
                         </div>
