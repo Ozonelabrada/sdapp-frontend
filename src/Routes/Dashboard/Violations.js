@@ -185,7 +185,7 @@ const Violations = () => {
                     </div>
                 </nav>
                 {/* Header */}
-                <div className="relative bg-bgAboutR pb-10 pt-24 h-screen">
+                <div className="relative bg-bgAboutR mt-9 pb-10 pt-24 h-screen">
                     <div className="px-4 md:px-10 mx-auto w-full">
                         <div>
                             {/* Card stats */}
