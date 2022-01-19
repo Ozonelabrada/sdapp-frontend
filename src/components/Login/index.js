@@ -76,7 +76,7 @@ export default function Login() {
 
   //if token ang user context is not null, redirect to previous path
   if (user && user.token){
-    if(user.role === 'ADMIN') {return <Navigate to={location.state?.from.pathname || "/dashboard"} state={{from: location}} />}
+    if( ['ADMIN','SUPER_ADMIN'].includes(user.role)) {return <Navigate to={location.state?.from.pathname || "/dashboard"} state={{from: location}} />}
     if(user.role === 'USER') {return <Navigate to={location.state?.from.pathname || "/stream"} state={{from: location}} />}
   }
 

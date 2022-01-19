@@ -2,12 +2,34 @@ import React, { useEffect, useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
 import { Link } from "react-router-dom";
 import NotificationDropdown from "./components/NotificationDropdown.js";
-import { showViolations } from "../../api/endpoints/violation.js";
+import { findAllViolation, findOwnViolation, deleteViolation } from "../../api/endpoints/violation.js";
+import { UserContext } from "../../context/userContext.js";
+import toast from "react-hot-toast";
+
 
 const Violations = () => {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
     const [violations, setViolations] = useState([]);
+    const { user, setUser } = React.useContext(UserContext);
 
+
+    React.useEffect(() => {
+        if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findAllViolation().then(setViolations);
+        else
+            findOwnViolation().then(setViolations);
+    }, []);
+    const handleViewViolation = (violation) => {
+        toast.success(violation.description)
+    }
+    const handleDeleteViolation = (id) => {
+        deleteViolation(id).then((res) => {
+            if (res) {
+                setViolations(violations => violations.filter(violation => violation.id !== res.id))
+                toast.success('Successfully Removed!')
+            } else toast.error(' Deletion Failed!')
+        });
+
+    }
     return (
         <>
             <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -168,7 +190,7 @@ const Violations = () => {
                         <div>
                             {/* Card stats */}
                             <div className="flex flex-wrap max-h-96 overflow-y-auto ">
-                                <table class="min-w-full border-black block md:table ">
+                                <table className="min-w-full border-black block md:table ">
                                     <thead className="block md:table-header-group">
                                         <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
                                             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Violation ID</th>
@@ -179,26 +201,29 @@ const Violations = () => {
                                             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
                                         </tr>
                                     </thead>
+                                    {/* {violations.length > 0 && ( */}
+                                    <tbody className="block md:table-row-group w-full">
+                                        {violations.map((violation, index) => (
 
-                                    { violations.length ?
-                                            <tbody className="block md:table-row-group w-full">
-                                                {violations.map(user => (
-                                                    <tr className="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
-                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Violatpion ID</span>{violations.id}</td>
-                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Type</span>{violations.type}</td>
-                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Description</span>jrios@icloud.com</td>
-                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Location</span>wholeway</td>
-                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Date / Time</span>2022-01-15 01:27:34.000</td>
-                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                                            <span className="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">View</button>
-                                                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Remove</button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                            <tr key={index} className="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
+                                                <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Violatpion ID</span>{violation.id}</td>
+                                                <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Type</span>{violation.type.type}</td>
+                                                <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Description</span>{violation.description}</td>
+                                                <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Location</span>{violation.location}</td>
+                                                <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Date / Time</span>{violation.created_at}</td>
+                                                <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                                    <span className="inline-block w-1/3 md:hidden font-bold">Actions</span>
 
-                                            </tbody>
-                                      : null  }
+                                                    <button className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-eye mdi-24px " title="View" onClick={()=>handleViewViolation(violation)}></button>
+
+                                                    {(user.role === 'SUPER_ADMIN' || user.id === violation.creator_id) && <button className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete inline-flex mdi-24px" title="Remove" onClick={() => handleDeleteViolation(violation.id)}></button>
+
+                                                    } </td>
+                                            </tr>
+                                        ))}
+
+                                    </tbody>
+                                    {/* } */}
                                 </table>
                             </div>
                         </div>
@@ -208,4 +233,5 @@ const Violations = () => {
         </>
     );
 }
+
 export default Violations;

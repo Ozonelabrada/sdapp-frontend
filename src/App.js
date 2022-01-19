@@ -1,4 +1,5 @@
 import React from 'react';
+import { Toaster } from 'react-hot-toast';
 import { Routes, Route } from 'react-router-dom';
 import { setHeaders } from './api';
 import { getMe } from './api/endpoints/user';
@@ -36,6 +37,10 @@ function App() {
 
   return (
     <div>
+      <Toaster
+  position="bottom-left"
+  reverseOrder={true}
+/>
       <TopNav />
         <Routes>
           <Route element={<Home />} path="/" />
