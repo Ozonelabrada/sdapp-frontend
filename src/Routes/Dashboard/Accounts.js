@@ -14,9 +14,6 @@ const Accounts = ({ color }) => {
 
     React.useEffect(() => {
         if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findAllUser().then(setAccounts);
-        else
-            getMe().then(setAccounts);
-        toast.success('Succes USER!');
     }, []);
 
     console.log(accounts)
@@ -260,7 +257,7 @@ const Accounts = ({ color }) => {
                                                 </div>
                                                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                                                     <div className="font-sans antialiased bg-grey-lightest">
-                                                       
+
                                                         {/* Content */}
                                                         <div className="w-full bg-gray-500" >
                                                             <div className="container mx-auto py-8">
@@ -296,9 +293,9 @@ const Accounts = ({ color }) => {
                                                                             <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="password" type="password" placeholder="Your secure password" />
                                                                             <p className="text-grey text-xs mt-1">At least 6 characters</p>
                                                                         </div>
-                                                                        <div className="flex items-center justify-between m-auto">
-                                                                            <button className="bg-blue-700 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="submit">
-                                                                                Sign Up
+                                                                        <div className="flex items-center justify-between m-auto w-80">
+                                                                            <button className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full" type="submit">
+                                                                                Create Now
                                                                             </button>
                                                                         </div>
                                                                     </div>
