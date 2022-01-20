@@ -26,7 +26,7 @@ const Violations = () => {
             if (res) {
                 setViolations(violations => violations.filter(violation => violation.id !== res.id))
                 toast.success('Successfully Removed!')
-            } else toast.error(' Deletion Failed!')
+            } else toast.error(' Deletion Failed Chack Network Connection!')
         });
 
     }

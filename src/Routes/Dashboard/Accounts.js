@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import NotificationDropdown from "./components/NotificationDropdown.js";
 import toast from "react-hot-toast";
 import { UserContext } from "../../context/userContext.js";
+import { findAllUser, getMe } from "../../api/endpoints/user.js";
 
 const Accounts = ({ color }) => {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
@@ -11,20 +12,14 @@ const Accounts = ({ color }) => {
     const [accounts, setAccounts] = useState([]);
     const { user, setUser } = React.useContext(UserContext);
 
-    React.useEffect(()=>{
-        if(user.role === 'SUPER_ADMIN')
-        {
-            toast.success(user.role )
-        }else if(user.role === 'ADMIN')
-        {
-            toast.success(UserContext.role)
-        }else
-        {
-            toast.success(user.role)
-        }
-    }
-    )
+    React.useEffect(() => {
+        if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findAllUser().then(setAccounts);
+        else
+            getMe().then(setAccounts);
+        toast.success('Succes USER!');
+    }, []);
 
+    console.log(accounts)
     return (
         <>
             <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -239,43 +234,86 @@ const Accounts = ({ color }) => {
                                                                     <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Name</th>
                                                                     <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">User Name</th>
                                                                     <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Email Address</th>
-                                                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Mobile</th>
+                                                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Role</th>
+                                                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Created</th>
                                                                     <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody className="block md:table-row-group">
-                                                                <tr className="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
-                                                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Name</span>Jamal Rios</td>
-                                                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">User Name</span>jrios1</td>
-                                                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Email Address</span>jrios@icloud.com</td>
-                                                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Mobile</span>582-3X2-6233</td>
-                                                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                                                        <span className="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
-                                                                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
-                                                                    </td>
-                                                                </tr>
+                                                                {accounts.map((account, index) => (
+                                                                    <tr key={index} className="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
+                                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Name</span>{account.first_name} {account.middle_name} {account.last_name} {account.suffix}</td>
+                                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">User Name</span>{account.username}</td>
+                                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Email Address</span>{account.email}</td>
+                                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Role</span>{account.role}</td>
+                                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Created</span>{account.created_at}</td>
+                                                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                                                            <span className="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
+                                                                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
                                                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                                                    <p>
-                                                        Completely synergize resource taxing relationships via
-                                                        premier niche markets. Professionally cultivate one-to-one
-                                                        customer service with robust ideas.
-                                                        <br />
-                                                        <br />
-                                                        Dynamically innovate resource-leveling customer service for
-                                                        state of the art customer service.
-                                                    </p>
+                                                    <div className="font-sans antialiased bg-grey-lightest">
+                                                       
+                                                        {/* Content */}
+                                                        <div className="w-full bg-gray-500" >
+                                                            <div className="container mx-auto py-8">
+                                                                <div className="w-5/6 lg:w-1/2 mx-auto bg-white rounded shadow">
+                                                                    <div className="py-4 px-8 text-black text-xl border-b border-grey-lighter m-auto">Register User</div>
+                                                                    <div className="py-4 px-8">
+                                                                        <div className="flex mb-4">
+                                                                            <div className="w-1/2 mr-1">
+                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="first_name">First Name</label>
+                                                                                <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="first_name" type="text" placeholder="Your first name" />
+                                                                            </div>
+                                                                            <div className="w-1/2 ml-1">
+                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Middle Initial</label>
+                                                                                <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="middle_name" type="text" placeholder="Your middle initial" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex mb-4">
+                                                                            <div className="w-1/2 mr-1">
+                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="first_name">Last Name</label>
+                                                                                <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="last_name" type="text" placeholder="Your last name" />
+                                                                            </div>
+                                                                            <div className="w-1/2 ml-1">
+                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Role</label>
+                                                                                <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="role" type="text" placeholder="Your Role" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Email Address</label>
+                                                                            <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email" type="email" placeholder="Your email address" />
+                                                                        </div>
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="password">Password</label>
+                                                                            <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="password" type="password" placeholder="Your secure password" />
+                                                                            <p className="text-grey text-xs mt-1">At least 6 characters</p>
+                                                                        </div>
+                                                                        <div className="flex items-center justify-between m-auto">
+                                                                            <button className="bg-blue-700 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="submit">
+                                                                                Sign Up
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                {/* Card stats */}
                             </div>
-                            {/* Card stats */}
                         </div>
                     </div>
                 </div>
@@ -283,11 +321,4 @@ const Accounts = ({ color }) => {
         </>
     );
 };
-
-export default function TabsRender() {
-    return (
-        <>
-            return <Accounts color="pink" />;
-        </>
-    );
-}
+export default Accounts;
