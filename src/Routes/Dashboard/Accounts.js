@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import NotificationDropdown from "./components/NotificationDropdown.js";
 import toast from "react-hot-toast";
 import { UserContext } from "../../context/userContext.js";
-import { findAllUser, getMe } from "../../api/endpoints/user.js";
+import { findAllUser, findUser, getMe } from "../../api/endpoints/user.js";
 
 const Accounts = ({ color }) => {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
@@ -14,7 +14,9 @@ const Accounts = ({ color }) => {
 
     React.useEffect(() => {
         if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findAllUser().then(setAccounts);
-    }, []);
+        else 
+        findUser().then(setAccounts);
+    }, [user.id]);
 
     console.log(accounts)
     return (
@@ -261,7 +263,7 @@ const Accounts = ({ color }) => {
                                                         {/* Content */}
                                                         <div className="w-full bg-gray-500" >
                                                             <div className="container mx-auto py-8">
-                                                                <div className="w-5/6 lg:w-1/2 mx-auto bg-white rounded shadow">
+                                                                <div className="w-5/6 lg:w-3/4 mx-auto bg-white rounded shadow">
                                                                     <div className="py-4 px-8 text-black text-xl border-b border-grey-lighter m-auto">Register User</div>
                                                                     <div className="py-4 px-8">
                                                                         <div className="flex mb-4">

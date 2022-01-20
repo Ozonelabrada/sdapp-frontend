@@ -13,3 +13,10 @@ export const findAllUser = async () => {
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }
+
+export const findUser = async (id) => {
+    try {
+        const res = await api.get(`/user/find/${id}`);
+        return res.status === 200 ? res.data : null;
+    } catch (error) { console.error(error) }
+}

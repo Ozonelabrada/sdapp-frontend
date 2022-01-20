@@ -104,7 +104,9 @@ export default function Login() {
               </div>
             }
 
-            <form className="flex flex-col pt-3 md:pt-8" onSubmit={handleSubmit}>
+            <form className="flex flex-col pt-3 px-5 md:pt-8 pb-5" onSubmit={handleSubmit}>
+
+
               <div className="flex flex-col pt-4">
                 <label htmlFor="email" className="text-lg">Email</label>
                 <input
@@ -127,13 +129,10 @@ export default function Login() {
               </div>
               <button className="bg-black text-white rounded font-bold text-lg hover:bg-gray-700 p-2 mt-8" type="submit">Log In</button>
             </form>
-            <div className="text-center pt-12 pb-12">
-              <p>Don't have an account?<Link to="/register" className="underline font-semibold">Register Here!</Link></p>
-            </div>
           </div>
         </div>
         <div className="flex-col md:w-1/2 justify-center h-screen justify-self-center md:block m-auto md:pt-16 hidden">
-          <img className="object-cover rounded-3xl h-full w-screen" alt="" src="./images/socialdistancing.jpg" />
+          <img className="object-cover rounded-3xl h-full w-screen inactive"  alt="" src="./images/socialdistancing.jpg" />
         </div>
       </div>
     </div>
