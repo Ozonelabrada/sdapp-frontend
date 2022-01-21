@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import NotificationDropdown from "./components/NotificationDropdown.js";
 import toast from "react-hot-toast";
 import { UserContext } from "../../context/userContext.js";
-import { findAllUser, getMe } from "../../api/endpoints/user.js";
+import { findAllUser } from "../../api/endpoints/user.js";
+import useForm from "../../hooks/useForm.js";
+import { registerUser } from "../../api/endpoints/auth.js";
 
-const Accounts = ({ color }) => {
+export default function Accounts(){
     const [collapseShow, setCollapseShow] = React.useState("hidden");
     const [openTab, setOpenTab] = React.useState(1);
     const [accounts, setAccounts] = useState([]);
@@ -16,7 +18,78 @@ const Accounts = ({ color }) => {
         if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findAllUser().then(setAccounts);
     }, []);
 
-    console.log(accounts)
+    const location = useLocation();
+
+    // create form states
+    const [credentials, setCredentials] = useForm({
+        email: "",
+        username: "",
+        first_name:"",
+        middle_name: "",
+        last_name: "",
+        suffix: "",
+        password: "",
+        role: "USER",
+    })
+
+    // create login states
+    const [registerState, , setRegisterState] = useForm({
+        isLoading: false,
+        isAuthenticated: false,
+        hasError: false,
+        message: ''
+    })
+
+    //create a function to toggle hasError
+    const toggleHasError = () => {
+        setRegisterState({
+            ...registerState,
+            hasError: !registerState.hasError,
+            message: '',
+        })
+    }
+
+    // handle form submit
+    const handleSubmit = async e => {
+        e.preventDefault();
+
+        //set isLoading to true
+        setRegisterState(registerState => ({
+            ...registerState,
+            isLoading: true,
+            hasError: false,
+            isAuthenticated: false,
+            message: '',
+        }))
+
+        const user = await registerUser(credentials)
+        //set isLoading to false then set hasError to true if there is an error
+        if (user === (null || undefined)) {
+
+            // force return to false
+            return setRegisterState(registerState => ({
+                ...registerState,
+                isLoading: false,
+                hasError: true,
+                message: 'Credential Duplicates',
+            }))
+        }
+        //set isLoading to false then set isAuthenticated to true if there is no error
+        setRegisterState(registerState => ({
+            ...registerState,
+            isLoading: false,
+            hasError: false,
+            isAuthenticated: true,
+            message: 'Register Successful'
+        }))
+
+        //update user context after 1sec of delay
+        setTimeout(() => setUser(user), 1000)
+
+        //save token to local storage
+        localStorage.setItem('token', user.token)
+
+    }
     return (
         <>
             <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -186,8 +259,8 @@ const Accounts = ({ color }) => {
                                                 className={
                                                     "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                                                     (openTab === 1
-                                                        ? "text-white bg-" + color + "-600"
-                                                        : "text-" + color + "-600 bg-white")
+                                                        ? "text-white bg-black-600"
+                                                        : "text-gray-600 bg-white")
                                                 }
                                                 onClick={e => {
                                                     e.preventDefault();
@@ -205,8 +278,8 @@ const Accounts = ({ color }) => {
                                                 className={
                                                     "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                                                     (openTab === 2
-                                                        ? "text-white bg-" + color + "-600"
-                                                        : "text-" + color + "-600 bg-white")
+                                                        ? "text-white bg-black-600"
+                                                        : "text-gray-600 bg-white")
                                                 }
                                                 onClick={e => {
                                                     e.preventDefault();
@@ -263,41 +336,70 @@ const Accounts = ({ color }) => {
                                                             <div className="container mx-auto py-8">
                                                                 <div className="w-5/6 lg:w-1/2 mx-auto bg-white rounded shadow">
                                                                     <div className="py-4 px-8 text-black text-xl border-b border-grey-lighter m-auto">Register User</div>
+
+
+                                                                    {
+                                                                        registerState.hasError &&
+                                                                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                                                            <span className="block sm:inline">{registerState.message}</span>
+                                                                            <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                                                                                <svg onClick={toggleHasError} className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+                                                                            </span>
+                                                                        </div>
+                                                                    }
+                                                                    {
+                                                                        registerState.isAuthenticated &&
+                                                                        <div className="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3" role="alert">
+                                                                            <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z" /></svg>
+                                                                            <p>{registerState.message}</p>
+                                                                        </div>
+                                                                    }
                                                                     <div className="py-4 px-8">
-                                                                        <div className="flex mb-4">
-                                                                            <div className="w-1/2 mr-1">
-                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="first_name">First Name</label>
-                                                                                <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="first_name" type="text" placeholder="Your first name" />
+                                                                        <form  onSubmit={handleSubmit}>
+                                                                            <div className="flex mb-4">
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Username</label>
+                                                                                <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="username" type="text" placeholder="Your username" onChange={setCredentials} />
                                                                             </div>
-                                                                            <div className="w-1/2 ml-1">
-                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Middle Initial</label>
-                                                                                <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="middle_name" type="text" placeholder="Your middle initial" />
+                                                                                <div className="w-1/2 mr-1">
+                                                                                    <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="first_name">First Name</label>
+                                                                                    <input onChange={setCredentials} 
+                                                                                    type="text"
+                                                                                    name="first_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" placeholder="Your first name" />
+                                                                                </div>
+                                                                                <div className="w-1/2 ml-1">
+                                                                                    <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Middle Initial</label>
+                                                                                    <input onChange={setCredentials}className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="middle_name" type="text" placeholder="Your middle initial" />
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div className="flex mb-4">
-                                                                            <div className="w-1/2 mr-1">
-                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="first_name">Last Name</label>
-                                                                                <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="last_name" type="text" placeholder="Your last name" />
+                                                                            <div className="flex mb-4">
+                                                                                <div className="w-1/2 mr-1">
+                                                                                    <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="firstname">Last Name</label>
+                                                                                    <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="last_name" type="text" placeholder="Your last name" />
+                                                                                </div>
+                                                                                <div className="w-1/2 ml-1">
+                                                                                    <label 
+                                                                                    disable= "true" className="block
+                                                                                    
+                                                                                    text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Suffix </label>
+                                                                                    <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="suffix" type="text" placeholder="Your Suffix" />
+                                                                                </div>
                                                                             </div>
-                                                                            <div className="w-1/2 ml-1">
-                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Role</label>
-                                                                                <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="role" type="text" placeholder="Your Role" />
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Email Address</label>
+                                                                                <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="email" type="email" placeholder="Your email address" onChange={setCredentials} />
                                                                             </div>
-                                                                        </div>
-                                                                        <div className="mb-4">
-                                                                            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Email Address</label>
-                                                                            <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email" type="email" placeholder="Your email address" />
-                                                                        </div>
-                                                                        <div className="mb-4">
-                                                                            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="password">Password</label>
-                                                                            <input className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="password" type="password" placeholder="Your secure password" />
-                                                                            <p className="text-grey text-xs mt-1">At least 6 characters</p>
-                                                                        </div>
-                                                                        <div className="flex items-center justify-between m-auto w-80">
-                                                                            <button className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full" type="submit">
-                                                                                Create Now
-                                                                            </button>
-                                                                        </div>
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="password">Password</label>
+                                                                                <input onChange={setCredentials}className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="password" type="password" placeholder="Your secure password" />
+                                                                                <p className="text-grey text-xs mt-1">At least 6 characters</p>
+                                                                            </div>
+                                                                            <div className="flex items-center justify-between m-auto w-80">
+                                                                                <button type="submit" className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full" type="submit">
+                                                                                    Create Now
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -318,4 +420,3 @@ const Accounts = ({ color }) => {
         </>
     );
 };
-export default Accounts;
