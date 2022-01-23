@@ -18,12 +18,13 @@ const TopNav = () => {
     return (
         <div className="container text-gray-600 md:fixed md:bg-transparent md:w-screen">
             <nav className="flex border-b-2 items-center justify-between flex-wrap text-xl w-screen">
-                <div className="flex md:items-center flex-shrink-0 md:ml-10  ml-2">{
-                            (user && user.token)
-                                ? 
-                                <Link to="/stream" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
-                                : <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
-                        }
+                <div className="flex md:items-center flex-shrink-0 md:ml-10  ml-2">
+                    {
+                        (user && user.token)
+                            ?
+                            <Link to="/stream" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
+                            : <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
+                    }
 
                 </div>
                 <div className="block md:hidden">
@@ -36,6 +37,7 @@ const TopNav = () => {
                 </div>
                 <div className={`w-full ${showMenu ? "block" : "hidden"} md:flex md:items-center md:w-auto`}>
                     <div className="md:flex-grow md:font-normal font-semi-bold pl-6">
+                        {(user && user.token) && (<Link to="/dashboard" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Dashboard</span></Link>)}
                         <Link to="/home" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Home</span></Link>
                         <Link to="/about" className="block md:inline-block "><span className="hover:underline hover:opacity-75 m-auto px-5">About</span></Link>
                         <Link to="/gallery" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Gallery</span></Link>

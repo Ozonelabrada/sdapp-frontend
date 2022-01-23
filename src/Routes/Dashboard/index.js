@@ -8,7 +8,7 @@ import UserDropdown from "./components/UserDropdown.js";
 export default function Dashboard() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
   return (
-    <>
+    <div className="h-screen">
     <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
         <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
             {/* Toggler */}
@@ -135,10 +135,10 @@ export default function Dashboard() {
             </div>
         </div>
     </nav>
-      <div className="relative md:ml-64  mt-9 bg-blueGray-100">
+      <div className="relative md:ml-64 bg-blueGray-100">
         <Navbar />
         {/* Header */}
-        <div className="relative bg-pink-600 md:pt-32 pb-32 pt-12 mt-25">
+        <div className="relative bg-gray-600 md:pt-32 pb-32 pt-12 mt-25">
           <div className="px-4 md:px-10 mx-auto w-full">
             <div>
               {/* Card stats */}
@@ -531,54 +531,54 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <footer className="block py-4">
+          <footer className="block py-4 pt-28">
             <div className="container mx-auto px-4">
               <hr className="mb-4 border-b-1 border-blueGray-200" />
               <div className="flex flex-wrap items-center md:justify-between justify-center">
                 <div className="w-full md:w-4/12 px-4">
                   <div className="text-sm text-blueGray-500 font-semibold py-1">
                     Copyright © {new Date().getFullYear()}{" "}
-                    <a
-                      href="https://www.creative-tim.com"
-                      className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                    <Link
+                      to="/dashboard"
+                      className=" m-auto text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
                     >
-                      Creative Tim
-                    </a>
+                      KITA APP (Social Distancing Application)
+                    </Link>
                   </div>
                 </div>
                 <div className="w-full md:w-8/12 px-4">
                   <ul className="flex flex-wrap list-none md:justify-end  justify-center">
                     <li>
-                      <a
-                        href="https://www.creative-tim.com"
+                      <Link
+                        to="/"
                         className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
-                        Creative Tim
-                      </a>
+                        Home
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="https://www.creative-tim.com/presentation"
+                      <Link
+                        to="/about"
                         className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
                         About Us
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="http://blog.creative-tim.com"
+                      <Link
+                        to="/stream"
                         className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
-                        Blog
-                      </a>
+                        Monitoring
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="https://github.com/creativetimofficial/tailwind-starter-kit/blob/main/LICENSE.md"
+                      <Link
+                        to="/violation"
                         className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
-                        MIT License
-                      </a>
+                        Violations
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -587,6 +587,6 @@ export default function Dashboard() {
           </footer>
         </div>
       </div>
-    </>
+    </div>
   );
 }
