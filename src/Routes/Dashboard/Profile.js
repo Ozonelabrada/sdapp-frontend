@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import NotificationDropdown from "./components/NotificationDropdown.js";
 import { UserContext } from "../../context/userContext.js";
 import useForm from "../../hooks/useForm.js";
-import { findAllUser, updateUser } from "../../api/endpoints/user.js";
+import { findUser, updateUser } from "../../api/endpoints/user.js";
 import toast from "react-hot-toast";
 
 export default function Profile() {
@@ -15,7 +15,7 @@ export default function Profile() {
 
 
     React.useEffect(() => {
-        if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findAllUser().then(setAccounts);
+        if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findUser().then(setAccounts);
     }, []);
 
     // create form states

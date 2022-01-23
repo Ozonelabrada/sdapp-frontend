@@ -7,7 +7,7 @@ export const getMe = async () => {
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }
-export const findAllUser = async () => {
+export const findUser = async () => {
     try {
         const res = await api.get(`/user/find`);
         return res.status === 200 ? res.data : null;

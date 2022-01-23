@@ -4,7 +4,7 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import NotificationDropdown from "./components/NotificationDropdown.js";
 import toast from "react-hot-toast";
 import { UserContext } from "../../context/userContext.js";
-import { findAllUser, findUser } from "../../api/endpoints/user.js";
+import { findUser } from "../../api/endpoints/user.js";
 import useForm from "../../hooks/useForm.js";
 import { registerUser } from "../../api/endpoints/auth.js";
 
@@ -16,7 +16,7 @@ export default function Accounts() {
     const [showModal, setShowModal] = React.useState(false);
 
     React.useEffect(() => {
-        if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findAllUser().then(setAccounts);
+        if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findUser().then(setAccounts);
         else 
         findUser().then(setAccounts);
     }, [user.id]);
