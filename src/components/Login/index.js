@@ -128,7 +128,7 @@ export default function Login() {
               <button className="bg-black text-white rounded font-bold text-lg hover:bg-gray-700 p-2 mt-8" type="submit">Log In</button>
             </form>
             <div className="text-center pt-12 pb-12">
-              <p>Don't have an account?<Link to="/register" className="underline font-semibold">Register Here!</Link></p>
+              {/* <p>Don't have an account?<Link to="/register" className="underline font-semibold">Register Here!</Link></p> */}
             </div>
           </div>
         </div>

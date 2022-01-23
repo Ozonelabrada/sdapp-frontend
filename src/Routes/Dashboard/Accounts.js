@@ -8,11 +8,12 @@ import { findAllUser } from "../../api/endpoints/user.js";
 import useForm from "../../hooks/useForm.js";
 import { registerUser } from "../../api/endpoints/auth.js";
 
-export default function Accounts(){
+export default function Accounts() {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
     const [openTab, setOpenTab] = React.useState(1);
     const [accounts, setAccounts] = useState([]);
     const { user, setUser } = React.useContext(UserContext);
+    const [showModal, setShowModal] = React.useState(false);
 
     React.useEffect(() => {
         if (['SUPER_ADMIN', 'ADMIN'].includes(user.role)) findAllUser().then(setAccounts);
@@ -24,7 +25,7 @@ export default function Accounts(){
     const [credentials, setCredentials] = useForm({
         email: "",
         username: "",
-        first_name:"",
+        first_name: "",
         middle_name: "",
         last_name: "",
         suffix: "",
@@ -90,6 +91,11 @@ export default function Accounts(){
         localStorage.setItem('token', user.token)
 
     }
+    const handleUpdateUser = (id) => {
+    }
+    const handleShowModal = () =>{
+        setShowModal(true)
+    }
     return (
         <>
             <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -107,7 +113,7 @@ export default function Accounts(){
                         className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                         to="/"
                     >
-                        Tailwind Starter Kit
+                        KITA APP
                     </Link>
                     {/* User */}
                     <ul className="md:hidden items-center flex flex-wrap list-none">
@@ -310,7 +316,7 @@ export default function Accounts(){
                                                                 </tr>
                                                             </thead>
                                                             <tbody className="block md:table-row-group">
-                                                                {accounts.map((account, index) => (
+                                                                {(user.role === 'SUPER_ADMIN') && accounts.map((account, index) => (
                                                                     <tr key={index} className="bg-gray-300 border border-grey-500 md:border-none block md:table-row">
                                                                         <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Name</span>{account.first_name} {account.middle_name} {account.last_name} {account.suffix}</td>
                                                                         <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">User Name</span>{account.username}</td>
@@ -319,13 +325,124 @@ export default function Accounts(){
                                                                         <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span className="inline-block w-1/3 md:hidden font-bold">Created</span>{account.created_at}</td>
                                                                         <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                                                             <span className="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
+                                                                            <button  onClick={() => handleShowModal(user.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</button>
                                                                             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
                                                                         </td>
                                                                     </tr>
-                                                                ))}
+                                                                )
+                                                                    //     (user.role === 'USERS') && 
+                                                                    //     <div className="bg-red-100 px-6 border border-red-400 text-red-700 py-3 rounded relative" role="alert">
+                                                                    //     <span className="block sm:inline">No data</span>
+
+                                                                    // </div>
+                                                                )}
                                                             </tbody>
                                                         </table>
+                                                        {showModal ? (
+                                                                <>
+                                                                    <div
+                                                                        className="md:ml-60 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                                                    >
+                                                                        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                                                            {/*content*/}
+                                                                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                                                                {/*header*/}
+                                                                                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                                                                                    <h3 className="text-3xl font-semibold">
+                                                                                        Modal Title
+                                                                                    </h3>
+                                                                                    <button
+                                                                                        className="p-1 ml-auto bg-transparent border-0 text-black opacity-100 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                                                        onClick={() => setShowModal(false)}
+                                                                                    >
+                                                                                        <span className="bg-transparent text-black  h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                                                            ×
+                                                                                        </span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                {/*body*/}
+                                                                                <div className="w-full container mx-auto py-8">
+                                                                                    <div className="w-5/6 lg:w-3/4 mx-auto bg-white rounded shadow">
+                                                                                        <div className="py-4 px-8 text-black text-xl border-b border-grey-lighter m-auto">Register User</div>
+                                                                                        <div className="py-4 px-8">
+                                                                                            <form>
+                                                                                                <div className="flex mb-4">
+                                                                                                    <div className="mb-4">
+                                                                                                        <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Username</label>
+                                                                                                        <input required onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={user.username} name="username" type="text" placeholder="Your username" />
+                                                                                                    </div>
+                                                                                                    <div className="w-1/2 mr-1">
+                                                                                                        <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="first_name">First Name</label>
+                                                                                                        <input required onChange={setCredentials} type="text" name="first_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={user.first_name} placeholder="Your first name" />
+                                                                                                    </div>
+                                                                                                    <div className="w-1/2 ml-1">
+                                                                                                        <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Middle Initial</label>
+                                                                                                        <input required onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={user.middle_name} name="middle_name" type="text" placeholder="Your middle initial" />
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div className="flex mb-4">
+                                                                                                    <div className="w-1/2 mr-1">
+                                                                                                        <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="firstname">Last Name</label>
+                                                                                                        <input required onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={user.last_name} name="last_name" type="text" placeholder="Your last name" />
+                                                                                                    </div>
+                                                                                                    <div className="w-1/2 ml-1">
+                                                                                                        <label
+                                                                                                            disable="true" className="block
+                                                                                    
+                                                                                    text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Suffix </label>
+                                                                                                        <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={user.suffix} name="suffix" type="text" placeholder="Your Suffix" />
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div className="mb-4">
+                                                                                                    <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Email Address</label>
+                                                                                                    <input required onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={user.email} name="email" type="email" placeholder="Your email address" />
+                                                                                                </div>
+                                                                                                {/* <div className="mb-4">
+                                                                                    <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="password">Password</label>
+                                                                                    <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={user.password}  name="password" type="password" placeholder="Your secure password" />
+                                                                                    <p className="text-grey text-xs mt-1">At least 6 characters</p>
+                                                                                </div> */}
+                                                                                                <div className="flex items-center justify-between m-auto w-80">
+                                                                                                    <button onClick={() => handleUpdateUser(user.id)} className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full" type="submit">
+                                                                                                        Update Now
+                                                                                                    </button>
+                                                                                                    {/* <button
+                                                                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                                        type="button"
+                                                                                        onClick={() => setShowModal(false)}
+                                                                                    >
+                                                                                        Close
+                                                                                    </button> */}
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                {/*footer*/}
+                                                                                {/* <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                                                                    <button
+                                                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                        type="button"
+                                                                        onClick={() => setShowModal(false)}
+                                                                    >
+                                                                        Close
+                                                                    </button>
+                                                                    <button
+                                                                        className="bg-green-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                        type="button"
+                                                                        onClick={() => setShowModal(false)}
+                                                                    >
+                                                                        Save Changes
+                                                                    </button>
+                                                                </div> */}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                                                </>
+                                                            ) : null
+                                                        }
                                                     </div>
                                                 </div>
                                                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
@@ -340,7 +457,7 @@ export default function Accounts(){
 
                                                                     {
                                                                         registerState.hasError &&
-                                                                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                                                        <div className="bg-red-100 px-6 border border-red-400 text-red-700 py-3 rounded relative" role="alert">
                                                                             <span className="block sm:inline">{registerState.message}</span>
                                                                             <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
                                                                                 <svg onClick={toggleHasError} className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
@@ -355,31 +472,31 @@ export default function Accounts(){
                                                                         </div>
                                                                     }
                                                                     <div className="py-4 px-8">
-                                                                        <form  onSubmit={handleSubmit}>
+                                                                        <form onSubmit={handleSubmit}>
                                                                             <div className="flex mb-4">
-                                                                            <div className="mb-4">
-                                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Username</label>
-                                                                                <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="username" type="text" placeholder="Your username" onChange={setCredentials} />
-                                                                            </div>
+                                                                                <div className="mb-4">
+                                                                                    <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Username</label>
+                                                                                    <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="username" type="text" placeholder="Your username" onChange={setCredentials} />
+                                                                                </div>
                                                                                 <div className="w-1/2 mr-1">
                                                                                     <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="first_name">First Name</label>
-                                                                                    <input onChange={setCredentials} 
-                                                                                    type="text"
-                                                                                    name="first_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" placeholder="Your first name" />
+                                                                                    <input required onChange={setCredentials}
+                                                                                        type="text"
+                                                                                        name="first_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" placeholder="Your first name" />
                                                                                 </div>
                                                                                 <div className="w-1/2 ml-1">
                                                                                     <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Middle Initial</label>
-                                                                                    <input onChange={setCredentials}className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="middle_name" type="text" placeholder="Your middle initial" />
+                                                                                    <input required onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="middle_name" type="text" placeholder="Your middle initial" />
                                                                                 </div>
                                                                             </div>
                                                                             <div className="flex mb-4">
                                                                                 <div className="w-1/2 mr-1">
                                                                                     <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="firstname">Last Name</label>
-                                                                                    <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="last_name" type="text" placeholder="Your last name" />
+                                                                                    <input required onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="last_name" type="text" placeholder="Your last name" />
                                                                                 </div>
                                                                                 <div className="w-1/2 ml-1">
-                                                                                    <label 
-                                                                                    disable= "true" className="block
+                                                                                    <label
+                                                                                        disable="true" className="block
                                                                                     
                                                                                     text-grey-darker text-sm font-bold mb-2" htmlFor="last_name">Suffix </label>
                                                                                     <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="suffix" type="text" placeholder="Your Suffix" />
@@ -387,11 +504,11 @@ export default function Accounts(){
                                                                             </div>
                                                                             <div className="mb-4">
                                                                                 <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">Email Address</label>
-                                                                                <input onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="email" type="email" placeholder="Your email address" onChange={setCredentials} />
+                                                                                <input required onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="email" type="email" placeholder="Your email address" onChange={setCredentials} />
                                                                             </div>
                                                                             <div className="mb-4">
                                                                                 <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="password">Password</label>
-                                                                                <input onChange={setCredentials}className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="password" type="password" placeholder="Your secure password" />
+                                                                                <input required onChange={setCredentials} className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="password" type="password" placeholder="Your secure password" />
                                                                                 <p className="text-grey text-xs mt-1">At least 6 characters</p>
                                                                             </div>
                                                                             <div className="flex items-center justify-between m-auto w-80">
@@ -417,6 +534,7 @@ export default function Accounts(){
                     </div>
                 </div>
             </div>
+
         </>
     );
 };
