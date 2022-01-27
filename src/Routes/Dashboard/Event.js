@@ -3,7 +3,7 @@ import UserDropdown from "./components/UserDropdown.js";
 import { Link } from "react-router-dom";
 import NotificationDropdown from "./components/NotificationDropdown.js";
 
-export default function Archive() {
+export default function Event() {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
 
     return (
@@ -23,7 +23,7 @@ export default function Archive() {
                         className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                         to="/"
                     >
-                        Tailwind Starter Kit
+                        KITA APP
                     </Link>
                     {/* User */}
                     <ul className="md:hidden items-center flex flex-wrap list-none">
@@ -96,6 +96,14 @@ export default function Archive() {
                                     <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Accounts
                                 </Link>
                             </li>
+                            <li className="inline-flex">
+                                <Link
+                                    className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
+                                    to="/violation"
+                                >
+                                    <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
+                                </Link>
+                            </li>
                         </ul>
                         {/* Divider */}
                         <hr className="my-4 md:min-w-full" />
@@ -113,21 +121,13 @@ export default function Archive() {
                                     <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Monitoring of KITA APP
                                 </Link>
                             </li>
-                            <li className="inline-flex">
-                                <Link
-                                    className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                    to="/violation"
-                                >
-                                    <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
-                                </Link>
-                            </li>
 
                             <li className="inline-flex">
                                 <Link
                                     className="text-pink-500 text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                    to="/archive"
+                                    to="/event"
                                 >
-                                    <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Case Solved
+                                    <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Events
                                 </Link>
                             </li>
                         </ul>
@@ -140,10 +140,10 @@ export default function Archive() {
                         {/* Brand */}
                         <Link
                             className="text-white text-sm uppercase hidden lg:inline-block font-semibold"
-                            to="/archives"
+                            to="/event"
                             onClick={e => e.preventDefault()}
                         >
-                            Archives
+                            Events
                         </Link>
                         {/* Form */}
                         <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
@@ -164,6 +164,7 @@ export default function Archive() {
                 <div className="relative bg-bgAboutR pb-10 pt-24 h-screen">
                     <div className="px-4 md:px-10 mx-auto w-full">
                         <div>
+                            
                             {/* Card stats */}
                             <div className="flex flex-wrap max-h-96 overflow-y-auto ">
                                 <table class="min-w-full border-collapse block md:table ">

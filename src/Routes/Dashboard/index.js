@@ -97,6 +97,14 @@ export default function Dashboard() {
                             <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Accounts
                         </Link>
                     </li>
+                    <li className="inline-flex">
+                        <Link
+                            className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
+                            to="/violation"
+                        >
+                            <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
+                        </Link>
+                    </li>
                 </ul>
                 {/* Divider */}
                 <hr className="my-4 md:min-w-full" />
@@ -114,21 +122,13 @@ export default function Dashboard() {
                             <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Monitoring of KITA APP
                         </Link>
                     </li>
-                    <li className="inline-flex">
-                        <Link
-                            className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                            to="/violation"
-                        >
-                            <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
-                        </Link>
-                    </li>
 
                     <li className="inline-flex">
                         <Link
                             className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                            to="/archive"
+                            to="/event"
                         >
-                            <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Case Solved
+                            <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Events
                         </Link>
                     </li>
                 </ul>
@@ -233,7 +233,7 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                            Case Solved
+                           Events
                           </h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             49,65%

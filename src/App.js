@@ -12,12 +12,12 @@ import Notfound from './Routes/404NF';
 import About from './Routes/About';
 import Dashboard from './Routes/Dashboard';
 import Accounts from './Routes/Dashboard/Accounts';
-import Archive from './Routes/Dashboard/Archive';
+import Event from './Routes/Dashboard/Event';
 import Profile from './Routes/Dashboard/Profile';
 import Violations from './Routes/Dashboard/Violations';
+import ViolationType from './Routes/Dashboard/ViolationType';
 import Gallery from './Routes/Gallery';
 import Private from './Routes/Private';
-import Register from './Routes/Register';
 import VideoStream from './Routes/VideoStream';
 
 let token = null
@@ -46,7 +46,6 @@ function App() {
           <Route element={<Home />} path="/" />
           <Route element={<Home />} path="/home" />
           <Route element={<About />} path="/about" />
-          <Route element={<Register />} path="/register" />
           <Route element={<Login ><div className='overflow-hidden' ></div> </Login>} path="/login" />
           <Route path="/gallery" element={<Private component={Gallery} />} />
           <Route path="/stream" element={<Private component={VideoStream} />} />
@@ -54,7 +53,8 @@ function App() {
           <Route path="/profile" element={<Private component={Profile} />} />
           <Route path="/accounts" element={<Private component={Accounts} />} />
           <Route path="/violation" element={<Private component={Violations} />} />
-          <Route path="/archive" element={<Private component={Archive} />} />
+          <Route path="/violation-type" element={<Private component={ViolationType} />} />
+          <Route path="/event" element={<Private component={Event} />} />
           <Route path='*' element={<Notfound />} />
         </Routes>
     </div>

@@ -111,7 +111,7 @@ export default function Profile() {
 
                             <li className="items-center">
                                 <Link
-                                    className="text-pink-500  hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
+                                    className="text-pink-500 text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                                     to="/profile"
                                 >
                                     <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i> Profile
@@ -126,6 +126,15 @@ export default function Profile() {
                                     <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Accounts
                                 </Link>
                             </li>
+                            <li className="inline-flex">
+                                <Link
+                                    className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
+                                    to="/violation"
+                                >
+                                    <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
+                                </Link>
+                            </li>
+
                         </ul>
                         {/* Divider */}
                         <hr className="my-4 md:min-w-full" />
@@ -146,18 +155,9 @@ export default function Profile() {
                             <li className="inline-flex">
                                 <Link
                                     className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                    to="/violation"
+                                    to="/event"
                                 >
-                                    <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
-                                </Link>
-                            </li>
-
-                            <li className="inline-flex">
-                                <Link
-                                    className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                                    to="/archive"
-                                >
-                                    <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Case Solved
+                                    <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Events
                                 </Link>
                             </li>
                         </ul>
