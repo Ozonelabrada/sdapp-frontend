@@ -1,14 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { UserContext } from "../../../context/userContext.js";
 
-import NotificationDropdown from "./NotificationDropdown.js";
-import UserDropdown from "./UserDropdown.js";
+import NotificationDropdown from "../components/NotificationDropdown.js";
+import UserDropdown from "../components/UserDropdown.js";
 
-export default function Sidebar() {
+export default function SideNav() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
+  const { user, setUser } = React.useContext(UserContext);
+  const location = useLocation()
+
+  const isActive = React.useCallback(path => path === location.pathname.split("/").pop()? "text-pink-500" : "", [location.pathname]);
+  
   return (
     <>
-      <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+      <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
         <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
           {/* Toggler */}
           <button
@@ -23,7 +29,7 @@ export default function Sidebar() {
             className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             to="/"
           >
-            Tailwind Starter Kit
+            KITA APP
           </Link>
           {/* User */}
           <ul className="md:hidden items-center flex flex-wrap list-none">
@@ -45,7 +51,10 @@ export default function Sidebar() {
             <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
               <div className="flex flex-wrap">
                 <div className="w-6/12">
-                        <Link to="/home" className="flex flex-none items-center"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
+                  <Link to="/home" className="flex flex-none items-center">
+                    <i className="mdi mdi-eye-circle-outline mdi-24px"></i>
+                    <span className="m-5">KITA</span>
+                  </Link>
                 </div>
                 <div className="w-6/12 flex justify-end">
                   <button
@@ -59,43 +68,60 @@ export default function Sidebar() {
               </div>
             </div>
             {/* Form */}
-            <form className="mt-6 mb-4 md:hidden">
-              <div className="mb-3 pt-0">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className=" px-3 py-2 h-12 border border-solid  border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
-                />
-              </div>
-            </form>
+         
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
               <li className="items-center">
                 <Link
-                  className="text-pink-500 hover:text-pink-600 text-xs uppercase py-3 font-bold block"
+                  className={`${isActive("dashboard")} text-xs uppercase py-3 font-bold block`}
                   to="/dashboard"
                 >
-                  <i className="fas fa-tv opacity-75 mr-2 text-sm"></i> Dashboard
+                  <i className="fas fa-tv opacity-75 mr-2 text-sm"></i>{" "}
+                  Dashboard
                 </Link>
               </li>
 
               <li className="items-center">
                 <Link
-                  className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                  to="/dashboard"
+                  className={`${isActive("profile")} hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  to="/dashboard/profile"
                 >
-                  <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i> Profile
+                  <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i>{" "}
+                  Profile
                 </Link>
               </li>
 
               <li className="items-center">
                 <Link
-                  className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                  to="/dashboard"
+                  className={`${isActive("accounts")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  to="/dashboard/accounts"
                 >
-                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i> Accounts
+                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i>{" "}
+                  Accounts
                 </Link>
               </li>
+              {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
+                <>
+                  <li className="items-center">
+                <Link
+                  className={`${isActive("violation")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  to="/dashboard/violation"
+                >
+                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i>{" "}
+                  Violations
+                </Link>
+                  </li>
+                  <li className="inline-flex">
+                    <Link
+                  className={`${isActive("violation-type")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  to="/dashboard/violation-type"
+                >
+                      <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
+                      Violation Type
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
             {/* Divider */}
             <hr className="my-4 md:min-w-full" />
@@ -108,18 +134,20 @@ export default function Sidebar() {
               <li className="inline-flex">
                 <Link
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                  to="/"
+                  to="/stream"
                 >
-                  <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i> Violations
+                  <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
+                  Monitoring of KITA APP
                 </Link>
               </li>
 
               <li className="inline-flex">
                 <Link
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                  to="/"
+                  to="/dashboard/event"
                 >
-                  <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i> Case Solved
+                  <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i>{" "}
+                  Events
                 </Link>
               </li>
             </ul>
