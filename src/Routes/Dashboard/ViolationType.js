@@ -12,6 +12,7 @@ import {
   findAllViolationType,
   findOwnViolationType,
 } from "../../api/endpoints/violType.js";
+import moment from "moment";
 
 const ViolationType = () => {
   const [violationsType, setViolationsType] = useState([]);
@@ -131,7 +132,7 @@ const ViolationType = () => {
                                       Description
                                     </th>
                                     <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                      Location
+                                    Created by
                                     </th>
                                     <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
                                       Date / Time
@@ -152,55 +153,55 @@ const ViolationType = () => {
                                         <span className="inline-block w-1/3 md:hidden font-bold">
                                           Violatpion ID
                                         </span>
-                                        {/* {violationType.id} */}
+                                        {violationType.id}
                                       </td>
                                       <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold">
                                           Type
                                         </span>
-                                        {/* {violationType.type} */}
+                                        {violationType.type}
                                       </td>
                                       <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold">
                                           Description
                                         </span>
-                                        {/* {violation.description} */}
+                                        {violationType.description}
                                       </td>
                                       <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold">
-                                          Location
+                                          Created by
                                         </span>
-                                        {/* {violation.location} */}
+                                        {violationType.creator.email}
                                       </td>
                                       <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold">
                                           Date / Time
                                         </span>
-                                        {/* {violation.created_at} */}
+                                        {moment(violationType.created_at).format('lll')}
                                       </td>
                                       <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                         <span className="inline-block w-1/3 md:hidden font-bold">
                                           Actions
                                         </span>
-                                        {/* <button
-                                          className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-eye mdi-24px "
+                                        <button
+                                          className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
                                           title="View"
                                           onClick={() =>
-                                            handleViewViolation(violation)
+                                            handleViewViolation(violationType)
                                           }
-                                        ></button> */}
-                                        {/* {(user.role === "SUPER_ADMIN" ||
-                                          user.id === violation.creator_id) && (
+                                        ></button>
+                                        {(user.role === "SUPER_ADMIN" ||
+                                          user.id === violationType.creator_id) && (
                                           <button
-                                            className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete inline-flex mdi-24px"
+                                            className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
                                             title="Remove"
                                             onClick={() =>
                                               handleDeleteViolation(
-                                                violation.id
+                                                violationType.id
                                               )
                                             }
                                           ></button>
-                                        )}{" "} */}
+                                        )}{" "}
                                       </td>
                                     </tr>
                                   ))}
@@ -208,180 +209,6 @@ const ViolationType = () => {
                                 {/* } */}
                               </table>
                             )}
-                            {showModal ? (
-                              <>
-                                <div className="md:ml-60 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                  <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                                    {/*content*/}
-                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                      {/*header*/}
-                                      <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                                        <h3 className="text-3xl font-semibold">
-                                          Modify Information
-                                        </h3>
-                                        <button
-                                          className="p-1 ml-auto bg-transparent border-0 text-black opacity-100 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                          onClick={() => setShowModal(false)}
-                                        >
-                                          <span className="bg-transparent text-black  h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                            ×
-                                          </span>
-                                        </button>
-                                      </div>
-                                      {/*body*/}
-                                      {/* <div className="w-full container mx-auto py-8">
-                                        <div className="w-5/6 mx-auto bg-white rounded shadow">
-                                          <div className="py-4 px-8">
-                                            <form>
-                                              <div className="mb-4">
-                                                <div className="mb-4">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="email"
-                                                  >
-                                                    Username
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.username}
-                                                    name="username"
-                                                    type="text"
-                                                    placeholder="Your username"
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div className="flex mb-4">
-                                                <div className="w-1/2 mr-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="first_name"
-                                                  >
-                                                    First Name
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    type="text"
-                                                    name="first_name"
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.first_name}
-                                                    placeholder="Your first name"
-                                                  />
-                                                </div>
-                                                <div className="w-1/2 ml-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="last_name"
-                                                  >
-                                                    Middle Initial
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.middle_name}
-                                                    name="middle_name"
-                                                    type="text"
-                                                    placeholder="Your middle initial"
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div className="flex mb-4">
-                                                <div className="w-1/2 mr-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="firstname"
-                                                  >
-                                                    Last Name
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.last_name}
-                                                    name="last_name"
-                                                    type="text"
-                                                    placeholder="Your last name"
-                                                  />
-                                                </div>
-                                                <div className="w-1/2 ml-1">
-                                                  <label
-                                                    disable="true"
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="last_name"
-                                                  >
-                                                    Suffix{" "}
-                                                  </label>
-                                                  <input
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.suffix}
-                                                    name="suffix"
-                                                    type="text"
-                                                    placeholder="Your Suffix"
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div className="flex mb-4">
-                                                <div className="w-1/2 mr-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="email"
-                                                  >
-                                                    Email Address
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    name="email"
-                                                    type="email"
-                                                    value={user.email}
-                                                    placeholder="Your email address"
-                                                    onChange={setCredentials}
-                                                  />
-                                                </div>
-                                                <div className="w-1/2 ml-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="email"
-                                                  >
-                                                    Username
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.username}
-                                                    name="username"
-                                                    type="text"
-                                                    placeholder="Your username"
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div className="flex items-center justify-between m-auto w-80">
-                                                <button
-                                                  onClick={() =>
-                                                    handleUpdateUser(user.id)
-                                                  }
-                                                  className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
-                                                  type="submit"
-                                                >
-                                                  Update Now
-                                                </button>
-                                              </div>
-                                            </form>
-                                          </div>
-                                        </div>
-                                      </div> */}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-                              </>
-                            ) : null}
                           </div>
                         </div>
                         <div

@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { loginUser } from "../../api/endpoints/auth";
 import { UserContext } from "../../context/userContext";
@@ -16,12 +16,21 @@ export default function Login() {
   });
 
   // create login states
-  const [setLoginState] = useForm({
+  const [loginState, , setLoginState] = useForm({
     isLoading: false,
     isAuthenticated: false,
     hasError: false,
     message: "",
   });
+
+  //create a function to toggle hasError
+  const toggleHasError = () => {
+    setLoginState({
+      ...loginState,
+      hasError: !loginState.hasError,
+      message: "",
+    });
+  };
 
   // handle form submit
   const handleSubmit = async (e) => {
@@ -33,12 +42,13 @@ export default function Login() {
       isLoading: true,
       hasError: false,
       isAuthenticated: false,
+      message: "",
     }));
 
     const user = await loginUser(credentials);
     //set isLoading to false then set hasError to true if there is an error
     if (user === (null || undefined)) {
-      toast.error("Login Failed!", { duration: 5000 });
+      toast.error("Login Failed!");
       // force return to false
       return setLoginState((loginState) => ({
         ...loginState,
@@ -46,8 +56,8 @@ export default function Login() {
         hasError: true,
       }));
     }
+    toast.success("Successfuly Logged in.")
     //set isLoading to false then set isAuthenticated to true if there is no error
-    toast.success("Successfuly Login!")
     setLoginState((loginState) => ({
       ...loginState,
       isLoading: false,
@@ -77,11 +87,11 @@ export default function Login() {
   return (
     <div className="lg:overflow-y-hidden">
       <div className=" h-screen p-2 w-full flex flex-wrap bg-bgLogin">
-        <div className="m-auto w-full lg:w-1/2 flex flex-col 2xl:px-24">
-          <div className="rounded-lg px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-white mx-5">
-            <p className="text-left font-bold pt-5 text-3xl">Login</p>
+        <div className="w-full md:w-1/2 flex flex-col pb-4 2xl:px-24">
+          <div className="px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-white mx-5">
+            <p className="text-left font-semibold pt-5 text-3xl">Login</p>
             <form
-              className="flex flex-col px-5 md:pt-8 pb-5"
+              className="flex flex-col pt-3 px-5 md:pt-8 pb-5"
               onSubmit={handleSubmit}
             >
               <div className="flex flex-col pt-4">
@@ -109,7 +119,7 @@ export default function Login() {
                 />
               </div>
               <button
-                className="m-auto w-1/2 bg-gray-400 text-gray-800 rounded font-bold text-lg hover:bg-gray-200   p-2 mt-8"
+                className="bg-gray-500 m-auto w-1/2  text-gray-800 rounded font-bold text-lg hover:bg-gray-200 p-2 mt-8"
                 type="submit"
               >
                 Log In
@@ -120,7 +130,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="flex-col md:w-1/2 justify-center h-screen justify-self-center lg:block m-auto md:pt-16 hidden">
+        <div className="flex-col md:w-1/2 justify-center h-screen justify-self-center md:block m-auto md:pt-16 hidden">
           <img
             className="object-cover rounded-3xl h-full w-screen inactive"
             alt=""

@@ -19,3 +19,9 @@ export const updateUser = async (data) => {
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }
+export const deleteUser = async (id) => {
+    try {
+        const res = await api.delete(`/user/delete/${id}`);
+        return res.status === 200 ? res.data : null;
+    } catch (error) { console.error(error) }
+}
