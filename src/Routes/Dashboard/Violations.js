@@ -25,8 +25,6 @@ const Violations = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [openTab, setOpenTab] = React.useState(1);
   const [selectedViolation, setSelectedViolation] = React.useState(null);
-  const [violationValues, setViolationValues] = React.useState([]);
-
 
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
@@ -37,43 +35,59 @@ const Violations = () => {
       findOwnViolationType().then(setViolationsType);
     }
   }, []);
-
-  const handleViolationValues = (e) => {
-    const { name, value } = e.target;
-    setViolationValues((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
-
-    // console.log(e);
+  const handleShowModal = (violation) => {
+    setSelectedViolation(violation);
+    setShowModal(true);
   };
-  // create reister states
-  const [registerState, , setRegisterState] = useState({
+  const location = useLocation();
+  // create form states
+  const [violationValues, setViolationValues, setViolation] = useForm({
+    type_id: null,
+    description: "",
+    location: "",
+  });
+  // create register states
+  const [registerState, , setRegisterState] = useForm({
     isLoading: false,
     isAuthenticated: false,
     hasError: false,
     message: "",
   });
-  const handleSubmitViol= async () => {
+  const handleSubmitViol = async (e) => {
+    e.preventDefault();
 
-  const violation = await storeViolation(selectedViolation); 
+    //set isLoading to true
+    setRegisterState((registerState) => ({
+      ...registerState,
+      isLoading: true,
+      hasError: false,
+      isAuthenticated: false,
+      message: "",
+    }));
 
-  //set isLoading to false then set hasError to true if there is an error
-  if (violation === (null || undefined)) {
-    // force return to false
-    toast.error("Registration Failed!");
-  }
-  toast.success("Successfully Registered!");
-  handleViolationValues({});
-  setViolations((violation) => {
-    if (violation.includes(violation) === false) violations.push(violation);
-    return violations;
-  });
+    const viol = await storeViolation(violationValues);
 
-toast.success("submit")
-  }
+    //set isLoading to false then set hasError to true if there is an error
+    if (viol === (null || undefined)) {
+      // force return to false
+      toast.error("Registration Failed!");
+      return setRegisterState((registerState) => ({
+        ...registerState,
+        isLoading: false,
+        hasError: true,
+      }));
+    }
+    toast.success("Successfully Registered!");
+    // setViolationCredentials({});
+    // setViolations((violations) => {
+    //   if (violations.includes(viol) === false) violations.push(viol);
+    //   return violations;
+    // });
+
+    toast.success("submit");
+  };
+
+  // delete violationtion
   const handleDeleteViolation = (id) => {
     deleteViolation(id).then((res) => {
       if (res) {
@@ -187,9 +201,9 @@ toast.success("submit")
                                 </tr>
                               </thead>
                               <tbody className="block md:table-row-group w-full">
-                                {violations.map((violation, index) => (
+                                {violations.map((violation) => (
                                   <tr
-                                    key={index}
+                                    key={violation.id}
                                     className="bg-gray-300 border border-grey-500 md:border-none block md:table-row"
                                   >
                                     <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
@@ -231,9 +245,9 @@ toast.success("submit")
                                       <button
                                         className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-eye "
                                         title="View"
-                                        // onClick={() =>
-                                        //   handleShowModal(violation)
-                                        // }
+                                        onClick={() =>
+                                          handleShowModal(violation)
+                                        }
                                       ></button>
                                       {(user.role === "SUPER_ADMIN" ||
                                         user.id === violation.creator_id) && (
@@ -249,9 +263,7 @@ toast.success("submit")
                                   </tr>
                                 ))}
                               </tbody>
-                              {/* } */}
                             </table>
-                            {/* )} */}
                           </div>
                         </div>
                         <div
@@ -282,7 +294,7 @@ toast.success("submit")
                                           required
                                           type="text"
                                           name="name"
-                                          onChange={handleViolationValues}
+                                          onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           placeholder="Violation Name Here..."
                                         />
@@ -300,13 +312,19 @@ toast.success("submit")
                                           class="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                           aria-label=".form-select-sm"
                                           placeholder="Type here"
-                                          onChange={handleViolationValues}
-                                          
+                                          onChange={(e) =>
+                                            setViolation((prevState) => ({
+                                              ...prevState,
+                                              [e.target.name]: parseInt(
+                                                e.target.value
+                                              ),
+                                            }))
+                                          }
+                                          name="type_id"
                                         >
                                           {violationsType.map(
                                             (violationtype) => (
                                               <option
-                                              name="type_id"
                                                 key={violationtype.id}
                                                 value={violationtype.id}
                                               >
@@ -325,7 +343,7 @@ toast.success("submit")
                                         </label>
                                         <input
                                           required
-                                          onChange={handleViolationValues}
+                                          onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="location"
                                           type="text"
@@ -343,7 +361,7 @@ toast.success("submit")
                                         </label>
                                         <textarea
                                           required
-                                          onChange={handleViolationValues}
+                                          onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="description"
                                           type="text"

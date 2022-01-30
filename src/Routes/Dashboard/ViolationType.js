@@ -11,18 +11,68 @@ import { registerUser } from "../../api/endpoints/auth.js";
 import {
   findAllViolationType,
   findOwnViolationType,
+  storeViolationType,
 } from "../../api/endpoints/violType.js";
 import moment from "moment";
 
 const ViolationType = () => {
   const [violationsType, setViolationsType] = useState([]);
   const { user, setUser } = React.useContext(UserContext);
-  const [showModal, setShowModal] = React.useState(false);
   const [openTab, setOpenTab] = React.useState(1);
- 
+  
+  const location = useLocation();
+  // create form states
+  const [typeCredentials, setTypeCredentialValues, setTypeCredentials] = useForm({
+    type: "",
+    description: "",
+    creator_id: "",
+  });
+
+  // create register states
+  const [registerState, , setRegisterState] = useForm({
+    isLoading: false,
+    isAuthenticated: false,
+    hasError: false,
+    message: "",
+  });
   // handle form submit
   const handleSubmitViol = async (e) => {
     e.preventDefault();
+
+    //set isLoading to true
+    setRegisterState((registerState) => ({
+      ...registerState,
+      isLoading: true,
+      hasError: false,
+      isAuthenticated: false,
+      message: "",
+    }));
+
+    const violType = await storeViolationType(typeCredentials);
+    //set isLoading to false then set hasError to true if there is an error
+    if (violType === (null || undefined)) {
+      // force return to false
+      toast.error("Saving  Failed!");
+      
+      return setRegisterState((registerState) => ({
+        ...registerState,
+        isLoading: false,
+        hasError: true,
+      }));
+    }
+    toast.success("Successfully Saved!");
+    setTypeCredentials({});
+    setViolationsType((violationsType) => {
+      if (violationsType.includes(violType) === false) violationsType.push(violType);
+      return violationsType;
+    });
+    //set isLoading to false then set isAuthenticated to true if there is no error
+    setRegisterState((registerState) => ({
+      ...registerState,
+      isLoading: false,
+      hasError: false,
+      isAuthenticated: true,
+    }));
   }
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
@@ -113,7 +163,7 @@ const ViolationType = () => {
                       </a>
                     </li>
                   </ul>
-                  <div className="h-3/4 overflow-y-scroll relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                  <div className="h-full overflow-y-scroll relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
                     <div className="px-4 py-5 flex-auto">
                       <div className="tab-content tab-space">
                         <div
@@ -123,7 +173,7 @@ const ViolationType = () => {
                           <div className="flex flex-wrap ">
                             {(user.role === "ADMIN" ||
                               user.role === "SUPER_ADMIN") && (
-                              <table className="h-1/2 overflow-y-auto min-w-full border-black block md:table ">
+                              <table className="h-3/4 overflow-y-auto min-w-full border-black block md:table ">
                                 <thead className="block md:table-header-group">
                                   <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
                                     <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
@@ -242,24 +292,10 @@ const ViolationType = () => {
                                           <input
                                             required
                                             type="text"
-                                            name="type_id"
+                                            name="type"
+                                            onChange={setTypeCredentialValues}
                                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                             placeholder="Violation Type Here..."
-                                          />
-                                        </div>
-                                        <div className="w-1/2 mr-1">
-                                          <label
-                                            className="block text-grey-darker text-sm font-bold mb-2"
-                                            htmlFor="location"
-                                          >
-                                            Location
-                                          </label>
-                                          <input
-                                            required
-                                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                            name="location"
-                                            type="text"
-                                            placeholder="Location here..."
                                           />
                                         </div>
                                       </div>
@@ -273,6 +309,7 @@ const ViolationType = () => {
                                           </label>
                                           <textarea
                                             required
+                                            onChange={setTypeCredentialValues}
                                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                             name="description"
                                             type="text"

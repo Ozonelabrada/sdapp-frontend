@@ -46,7 +46,7 @@ export default function Accounts() {
     role: "USER",
   });
 
-  // create reister states
+  // create register states
   const [registerState, , setRegisterState] = useForm({
     isLoading: false,
     isAuthenticated: false,
@@ -71,8 +71,8 @@ export default function Accounts() {
     //set isLoading to false then set hasError to true if there is an error
     if (user === (null || undefined)) {
       // force return to false
-
       toast.error("Registration Failed!");
+      
       return setRegisterState((registerState) => ({
         ...registerState,
         isLoading: false,

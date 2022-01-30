@@ -90,7 +90,8 @@ export default function SideNav() {
                   Profile
                 </Link>
               </li>
-
+              {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
+                <>
               <li className="items-center">
                 <Link
                   className={`${isActive("accounts")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
@@ -100,8 +101,6 @@ export default function SideNav() {
                   Accounts
                 </Link>
               </li>
-              {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
-                <>
                   <li className="items-center">
                 <Link
                   className={`${isActive("violation")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
@@ -133,14 +132,26 @@ export default function SideNav() {
             <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
               <li className="inline-flex">
                 <Link
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+                  className={`${isActive("violation-type")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
                   to="/stream"
                 >
                   <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
-                  Monitoring of KITA APP
+                  Stream
                 </Link>
               </li>
 
+              <li className="inline-flex">
+                    <Link
+                  className={`${isActive("violation-type")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  to="/dashboard/violators"
+                >
+                      <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i>{" "}
+                      Violators
+                    </Link>
+                  </li>
+                  
+              {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
+                <>
               <li className="inline-flex">
                 <Link
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
@@ -150,6 +161,8 @@ export default function SideNav() {
                   Events
                 </Link>
               </li>
+              </>
+              )}
             </ul>
           </div>
         </div>
