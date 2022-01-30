@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTime, useDate } from 'react-timer-hook';
+import { useTime } from 'react-timer-hook';
 
 const VideoStream = () => {
     const locale = 'en';
@@ -21,7 +21,7 @@ const VideoStream = () => {
         clearInterval(timer); // Return a funtion to clear the timer so that it will stop being called on unmount
       }
     }, []);
-    const day = today.toLocaleDateString(locale, { weekday: 'long' });
+    // const day = today.toLocaleDateString(locale, { weekday: 'long' });
     const date = `Date: ${today.toLocaleDateString(locale, { month: 'long' }- {year: 'long'})}\n\n`;
     return (
         <div className='lg:overflow-y-hidden'>

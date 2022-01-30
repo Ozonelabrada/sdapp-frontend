@@ -18,12 +18,12 @@ const TopNav = () => {
     return (
         <div className="container text-gray-600 md:fixed md:bg-transparent md:w-screen">
             <nav className="flex border-b-2 items-center justify-between flex-wrap text-xl w-screen">
-                <div className="flex md:items-center flex-shrink-0 md:ml-10  ml-2">{
-                            (user && user.token)
-                                ? 
-                                <Link to="/stream" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
-                                : <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-24px"></i><span className="m-5">KITA</span></Link>
-                        }
+                <div className="flex md:items-center flex-shrink-0 md:ml-10 ml-2">
+                    {
+                        user?.token
+                            ? <Link to="/stream" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-36px"></i><span className="m-5">KITA</span></Link>
+                            : <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-36px"></i><span className="m-5">KITA</span></Link>
+                    }
 
                 </div>
                 <div className="block md:hidden">
@@ -36,6 +36,7 @@ const TopNav = () => {
                 </div>
                 <div className={`w-full ${showMenu ? "block" : "hidden"} md:flex md:items-center md:w-auto`}>
                     <div className="md:flex-grow md:font-normal font-semi-bold pl-6">
+                        {(user && user.token) && (<Link to="/dashboard" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Dashboard</span></Link>)}
                         <Link to="/home" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Home</span></Link>
                         <Link to="/about" className="block md:inline-block "><span className="hover:underline hover:opacity-75 m-auto px-5">About</span></Link>
                         <Link to="/gallery" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Gallery</span></Link>
@@ -46,8 +47,8 @@ const TopNav = () => {
                             (user && user.token)
                                 ? <button
                                     onClick={handleLogout}
-                                    className="bg-green-600 border-1 rounded-full px-2 text-white hover:text-gray-900 hover:bg-green-500 m-auto">
-                                    <i className="mdi mdi-logout-variant m-auto"></i>
+                                    className="bg-gray-500 border-1 rounded px-3 py-1 text-white hover:text-gray-900 hover:bg-gray-200 m-auto">
+                                    <i className="mdi mdi-logout-variant mx-auto pr-1"></i>
                                     Logout
                                 </button>
                                 : <Link to="/login" className="block md:inline-block m-auto p-5"><span className="hover:underline hover:opacity-75">Login</span></Link>

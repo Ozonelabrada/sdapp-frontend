@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 
 
 const Gallery = () => {
@@ -41,41 +42,38 @@ const Gallery = () => {
                                     <div className="">
                                         <Menu.Item>
                                             {({ active }) => (
-                                                <a
-                                                    href="#"
+                                                <Link
                                                     className={classNames(
                                                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                         'block px-4 py-2 text-sm'
                                                     )}
                                                 >
                                                     2020
-                                                </a>
+                                                </Link>
                                             )}
                                         </Menu.Item>
                                         <Menu.Item>
                                             {({ active }) => (
-                                                <a
-                                                    href="#"
+                                                <Link
                                                     className={classNames(
                                                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                         'block px-4 py-2 text-sm'
                                                     )}
                                                 >
                                                     2021
-                                                </a>
+                                                </Link>
                                             )}
                                         </Menu.Item>
                                         <Menu.Item>
                                             {({ active }) => (
-                                                <a
-                                                    href="#"
+                                                <Link
                                                     className={classNames(
                                                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                         'block px-4 py-2 text-sm'
                                                     )}
                                                 >
                                                     2022
-                                                </a>
+                                                </Link>
                                             )}
                                         </Menu.Item>
                                     </div>

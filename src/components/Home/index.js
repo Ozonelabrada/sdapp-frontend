@@ -1,26 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import landing_img from './images/landing.webp'
 
 
 const Home = props => {
     return (
-        <div className='overflow-hidden'>
-            <div className='bg-bgHome'>
-                <div className="h-full pt-2 w-full flex flex-wrap">
-                    <div className="w-full md:w-1/2 flex flex-col pb-4 2xl:px-24">
-                        <h1 className="md:p-16 p-2 xl:text-6xl md:text-5xl text-3xl font-black leading-snug md:mt-20"
-                            style={{ fontFamily: "Montserrat" }}>
-                            AI-BASED
-                            SOCIAL
-                            DISTANCING
-                            MONITORING
-                            SYSTEM
-                        </h1>
-                    </div>
-                    <div className="flex-col md:w-1/2 justify-center h-screen justify-self-center block m-auto md:pt-16">
-                        <img className="object-cover rounded-3xl h-full w-screen" alt="" src="./images/socialdistancing.jpg" />
-                    </div>
-                </div>
+        <div className="pt-20 flex flex-col lg:flex-row justify-center items-center">
+            <div className="lg:text-right text-center lg:w-4/12">
+                <h1 className="pr-auto mx-auto  xl:text-5xl md:text-4xl text-4xl font-black"
+                    style={{ fontFamily: "Montserrat" }}>
+                    AI-BASED SOCIAL DISTANCING MONITORING SYSTEM
+                </h1>
+            </div>
+            <div className="hidden md:block mx-10 lg:w-8/12">
+                <img className="object-cover rounded-2xl" alt="" src={landing_img} />
             </div>
         </div>
     )

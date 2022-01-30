@@ -7,3 +7,21 @@ export const getMe = async () => {
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }
+export const findUser = async () => {
+    try {
+        const res = await api.get(`/user/find`);
+        return res.status === 200 ? res.data : null;
+    } catch (error) { console.error(error) }
+}
+export const updateUser = async (data) => {
+    try {
+        const res = await api.patch(`/user/update/${data.id}`,data);
+        return res.status === 200 ? res.data : null;
+    } catch (error) { console.error(error) }
+}
+export const deleteUser = async (id) => {
+    try {
+        const res = await api.delete(`/user/delete/${id}`);
+        return res.status === 200 ? res.data : null;
+    } catch (error) { console.error(error) }
+}

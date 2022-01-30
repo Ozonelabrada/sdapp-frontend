@@ -1,16 +1,29 @@
 import React from "react";
-
-import Navbar from "./components/Navbar.js";
-import Sidebar from "./components/Sidebar.js";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   return (
-    <>
-      <Sidebar />
+    <div className="h-screen">
       <div className="relative md:ml-64 bg-blueGray-100">
-        <Navbar />
+      {/* Navbar */}
+      <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
+        <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
+          {/* Brand */}
+          <a
+            className="text-white text-sm uppercase hidden lg:inline-block font-semibold"
+            href="#pablo"
+            onClick={e => e.preventDefault()}
+          >
+            Dashboard
+          </a>
+          {/* User */}
+          <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
+            {/* <UserDropdown /> */}
+          </ul>
+        </div>
+      </nav>
         {/* Header */}
-        <div className="relative bg-pink-600 md:pt-32 pb-32 pt-12">
+        <div className="relative bg-gray-600 md:pt-32 pb-32 pt-12 mt-25">
           <div className="px-4 md:px-10 mx-auto w-full">
             <div>
               {/* Card stats */}
@@ -33,7 +46,7 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </div>
-                        <p className="text-sm text-blueGray-400 mt-4">
+                      <p className="text-sm text-blueGray-400 mt-4">
                         <span className="text-emerald-500 mr-2">
                           <i className="fas fa-arrow-up"></i> 3.48%
                         </span>
@@ -50,7 +63,7 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                            SAMPLE NAME
+                            Locations
                           </h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             2,356
@@ -64,10 +77,7 @@ export default function Dashboard() {
                       </div>
                       <p className="text-sm text-blueGray-400 mt-4">
                         <span className="text-red-500 mr-2">
-                          <i className="fas fa-arrow-down"></i> 3.48%
-                        </span>
-                        <span className="whitespace-nowrap">
-                          Since last week
+                          <i className="fas fa-arrow-down"></i>
                         </span>
                       </p>
                     </div>
@@ -79,7 +89,7 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                          SAMPLE NAME
+                            Users
                           </h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             924
@@ -108,7 +118,7 @@ export default function Dashboard() {
                       <div className="flex flex-wrap">
                         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                           <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                            SAMPLE NAME
+                            Events
                           </h5>
                           <span className="font-semibold text-xl text-blueGray-700">
                             49,65%
@@ -143,7 +153,7 @@ export default function Dashboard() {
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                       <h3 className="font-semibold text-base text-blueGray-700">
-                        Page visits
+                        Vilations Log
                       </h3>
                     </div>
                     <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -163,16 +173,16 @@ export default function Dashboard() {
                     <thead>
                       <tr>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Page name
+                          Location
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Visitors
+                          Date and Time
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Unique users
+                          Violation Type
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Bounce rate
+                          Enforcer Lookout
                         </th>
                       </tr>
                     </thead>
@@ -406,54 +416,54 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <footer className="block py-4">
+          <footer className="block py-4 pt-28">
             <div className="container mx-auto px-4">
               <hr className="mb-4 border-b-1 border-blueGray-200" />
               <div className="flex flex-wrap items-center md:justify-between justify-center">
                 <div className="w-full md:w-4/12 px-4">
                   <div className="text-sm text-blueGray-500 font-semibold py-1">
                     Copyright © {new Date().getFullYear()}{" "}
-                    <a
-                      href="https://www.creative-tim.com"
-                      className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                    <Link
+                      to="/dashboard"
+                      className=" m-auto text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
                     >
-                      Creative Tim
-                    </a>
+                      KITA APP (Social Distancing Application)
+                    </Link>
                   </div>
                 </div>
                 <div className="w-full md:w-8/12 px-4">
                   <ul className="flex flex-wrap list-none md:justify-end  justify-center">
                     <li>
-                      <a
-                        href="https://www.creative-tim.com"
+                      <Link
+                        to="/"
                         className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
-                        Creative Tim
-                      </a>
+                        Home
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="https://www.creative-tim.com/presentation"
+                      <Link
+                        to="/about"
                         className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
                         About Us
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="http://blog.creative-tim.com"
+                      <Link
+                        to="/stream"
                         className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
-                        Blog
-                      </a>
+                        Monitoring
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="https://github.com/creativetimofficial/tailwind-starter-kit/blob/main/LICENSE.md"
+                      <Link
+                        to="/violation"
                         className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
-                        MIT License
-                      </a>
+                        Violations
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -462,6 +472,6 @@ export default function Dashboard() {
           </footer>
         </div>
       </div>
-    </>
+    </div>
   );
 }
