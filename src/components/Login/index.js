@@ -1,9 +1,10 @@
 import React from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { loginUser } from "../../api/endpoints/auth";
 import { UserContext } from "../../context/userContext";
 import toast from "react-hot-toast";
+import landing_image from "./landing.webp";
 
 export default function Login() {
   const { user, setUser } = React.useContext(UserContext);
@@ -85,10 +86,11 @@ export default function Login() {
   }
 
   return (
-    <div className="lg:overflow-y-hidden">
-      <div className="h-screen p-2 w-full flex flex-wrap bg-bgLogin">
-        <div className=" w-full md:w-1/2 flex flex-col pb-4 2xl:px-24">
-          <div className="rounded px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-white mx-5">
+
+    <div className="overflow-y-hidden">
+      <div className="h-screen w-full flex flex-wrap bg-bgLogin pt-2">
+        <div className="w-full md:w-1/2 flex flex-col">
+          <div className="rounded px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-gray-300 mx-5">
             <p className="text-left font-semibold pt-5 text-3xl">Login</p>
             <form
               className="flex flex-col pt-3 px-5 md:pt-8 pb-5"
@@ -130,11 +132,11 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="flex-col md:w-1/2 justify-center h-screen justify-self-center md:block m-auto md:pt-16 hidden">
+        <div className="md:w-1/2 md:block m-auto md:pt-16 hidden">
           <img
-            className="object-cover rounded-3xl h-full w-screen inactive"
+            className="object-cover rounded-2xl h-screen inactive"
             alt=""
-            src="./images/socialdistancing.jpg"
+            src={landing_image}
           />
         </div>
       </div>
