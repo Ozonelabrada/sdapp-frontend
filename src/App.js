@@ -39,7 +39,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="">
       <Toaster position="top-center" reverseOrder={true} />
       <TopNav />
       <Routes>
