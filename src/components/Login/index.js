@@ -86,9 +86,9 @@ export default function Login() {
 
   return (
     <div className="lg:overflow-y-hidden">
-      <div className=" h-screen p-2 w-full flex flex-wrap bg-bgLogin">
-        <div className="w-full md:w-1/2 flex flex-col pb-4 2xl:px-24">
-          <div className="px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-white mx-5">
+      <div className="h-screen p-2 w-full flex flex-wrap bg-bgLogin">
+        <div className=" w-full md:w-1/2 flex flex-col pb-4 2xl:px-24">
+          <div className="rounded px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-white mx-5">
             <p className="text-left font-semibold pt-5 text-3xl">Login</p>
             <form
               className="flex flex-col pt-3 px-5 md:pt-8 pb-5"

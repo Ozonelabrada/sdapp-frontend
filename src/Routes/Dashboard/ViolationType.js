@@ -27,7 +27,11 @@ const ViolationType = () => {
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
       findAllViolationType().then(setViolationsType);
-    }},[])  
+    }else{
+      findOwnViolationType().the(setViolationsType);
+    }
+  },[])  
+  
   const handleViewViolation = (violation) => {
     toast.success(violation.description);
   };
@@ -75,7 +79,7 @@ const ViolationType = () => {
                         className={
                           "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                           (openTab === 1
-                            ? "text-white bg-gray-800"
+                            ? "text-white bg-pink-400"
                             : "text-gray-600 bg-white")
                         }
                         onClick={(e) => {
@@ -94,7 +98,7 @@ const ViolationType = () => {
                         className={
                           "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                           (openTab === 2
-                            ? "text-white bg-gray-800"
+                            ? "text-white bg-pink-400"
                             : "text-gray-600 bg-white")
                         }
                         onClick={(e) => {
@@ -109,17 +113,17 @@ const ViolationType = () => {
                       </a>
                     </li>
                   </ul>
-                  <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                  <div className="h-3/4 overflow-y-scroll relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
                     <div className="px-4 py-5 flex-auto">
                       <div className="tab-content tab-space">
                         <div
                           className={openTab === 1 ? "block" : "hidden"}
                           id="link1"
                         >
-                          <div className="flex flex-wrap">
+                          <div className="flex flex-wrap ">
                             {(user.role === "ADMIN" ||
                               user.role === "SUPER_ADMIN") && (
-                              <table className="min-w-full border-black block md:table ">
+                              <table className="h-1/2 overflow-y-auto min-w-full border-black block md:table ">
                                 <thead className="block md:table-header-group">
                                   <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
                                     <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
@@ -217,11 +221,10 @@ const ViolationType = () => {
                         >
                           <div className="font-sans antialiased bg-grey-lightest">
                             {/* Content */}
-                            <div className="w-full bg-gray-500">
-                              <div className="container mx-auto py-8">
-                                <div className="w-5/6 lg:w-3/4 mx-auto bg-white rounded shadow">
-                                  <div className="py-4 px-8 text-black text-xl border-b border-grey-lighter m-auto">
-                                    Violation Entry
+                            <div className="w-full bg-gray-200">
+                              <div className="container mx-auto py-5">
+                                  <div className="font-bold py-4 px-8 text-black text-xl border-b border-grey-lighter m-auto">
+                                    Add Violation Type
                                   </div>
                                   <div className="py-4 px-8">
                                     <form onSubmit={handleSubmitViol}>
@@ -241,26 +244,9 @@ const ViolationType = () => {
                                             type="text"
                                             name="type_id"
                                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                            placeholder="violation type here"
+                                            placeholder="Violation Type Here..."
                                           />
                                         </div>
-                                        <div className="w-1/2 ml-1">
-                                          <label
-                                            className="block text-grey-darker text-sm font-bold mb-2"
-                                            htmlFor="last_name"
-                                          >
-                                            Description
-                                          </label>
-                                          <textarea
-                                            required
-                                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                            name="description"
-                                            type="text"
-                                            placeholder="description"
-                                          />
-                                        </div>
-                                      </div>
-                                      <div className="flex mb-4">
                                         <div className="w-1/2 mr-1">
                                           <label
                                             className="block text-grey-darker text-sm font-bold mb-2"
@@ -273,29 +259,32 @@ const ViolationType = () => {
                                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                             name="location"
                                             type="text"
-                                            placeholder="location here"
+                                            placeholder="Location here..."
                                           />
                                         </div>
-                                        <div className="w-1/2 ml-1 hidden">
+                                      </div>
+                                      <div className="flex mb-4">
+                                        <div className="w-full ml-1">
                                           <label
-                                            disable="true"
                                             className="block text-grey-darker text-sm font-bold mb-2"
                                             htmlFor="last_name"
                                           >
-                                            Creator{" "}
+                                            Description
                                           </label>
-                                          <input
-                                            className=" appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                            // value={user.id}
-                                            name="creator_id"
+                                          <textarea
+                                            required
+                                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                            name="description"
                                             type="text"
+                                            rows={5}
+                                            placeholder="Description here..."
                                           />
                                         </div>
                                       </div>
                                       <div className="flex items-center justify-between m-auto w-80">
                                         <button
                                           type="submit"
-                                          className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
+                                          className="bg-pink-400 w-full hover:bg-gray-200 text-gray-700 font-bold  py-2 px-4 rounded-full"
                                           type="submit"
                                         >
                                           Create Now
@@ -304,7 +293,6 @@ const ViolationType = () => {
                                     </form>
                                   </div>
                                 </div>
-                              </div>
                             </div>
                           </div>
                         </div>

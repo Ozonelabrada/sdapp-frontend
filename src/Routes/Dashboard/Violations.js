@@ -5,105 +5,75 @@ import {
   findAllViolation,
   findOwnViolation,
   deleteViolation,
-  updateViolation,
+  storeViolation,
+  registerViolation,
 } from "../../api/endpoints/violation.js";
 import { UserContext } from "../../context/userContext.js";
 import toast from "react-hot-toast";
-import useForm from "../../hooks/useForm.js";
-import { registerUser } from "../../api/endpoints/auth.js";
 import UpdateViolation from "./modals/UpdateViolation.js";
 import moment from "moment";
+import {
+  findAllViolationType,
+  findOwnViolationType,
+} from "../../api/endpoints/violType.js";
+import useForm from "../../hooks/useForm.js";
 
 const Violations = () => {
   const [violations, setViolations] = useState([]);
+  const [violationsType, setViolationsType] = useState([]);
   const { user, setUser } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
   const [openTab, setOpenTab] = React.useState(1);
   const [selectedViolation, setSelectedViolation] = React.useState(null);
+  const [violationValues, setViolationValues] = React.useState([]);
 
-  const location = useLocation();
-  // create form states
-  const [credentials, setCredentials] = useForm({
-    email: "",
-    username: "",
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    suffix: "",
-    password: "",
-    role: "USER",
-  });
 
-  // create login states
-  const [registerState, , setRegisterState] = useForm({
+  React.useEffect(() => {
+    if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
+      findAllViolation().then(setViolations);
+      findAllViolationType().then(setViolationsType);
+    } else if (user.role === "USER") {
+      findOwnViolation().then(setViolations);
+      findOwnViolationType().then(setViolationsType);
+    }
+  }, []);
+
+  const handleViolationValues = (e) => {
+    const { name, value } = e.target;
+    setViolationValues((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
+
+    // console.log(e);
+  };
+  // create reister states
+  const [registerState, , setRegisterState] = useState({
     isLoading: false,
     isAuthenticated: false,
     hasError: false,
     message: "",
   });
+  const handleSubmitViol= async () => {
 
-  //create a function to toggle hasError
-  const toggleHasError = () => {
-    setRegisterState({
-      ...registerState,
-      hasError: !registerState.hasError,
-      message: "",
-    });
-  };
+  const violation = await storeViolation(selectedViolation); 
 
-  // handle form submit
-  const handleSubmitViol = async (e) => {
-    e.preventDefault();
+  //set isLoading to false then set hasError to true if there is an error
+  if (violation === (null || undefined)) {
+    // force return to false
+    toast.error("Registration Failed!");
+  }
+  toast.success("Successfully Registered!");
+  handleViolationValues({});
+  setViolations((violation) => {
+    if (violation.includes(violation) === false) violations.push(violation);
+    return violations;
+  });
 
-    //set isLoading to true
-    setRegisterState((registerState) => ({
-      ...registerState,
-      isLoading: true,
-      hasError: false,
-      isAuthenticated: false,
-      message: "",
-    }));
-
-    const user = await registerUser(credentials);
-    //set isLoading to false then set hasError to true if there is an error
-    if (user === (null || undefined)) {
-      // force return to false
-      return setRegisterState((registerState) => ({
-        ...registerState,
-        isLoading: false,
-        hasError: true,
-        message: "Credential Duplicates",
-      }));
-    }
-    //set isLoading to false then set isAuthenticated to true if there is no error
-    setRegisterState((registerState) => ({
-      ...registerState,
-      isLoading: false,
-      hasError: false,
-      isAuthenticated: true,
-      message: "Register Successful",
-    }));
-
-    //update user context after 1sec of delay
-    setTimeout(() => setUser(user), 1000);
-
-    //save token to local storage
-    localStorage.setItem("token", user.token);
-  };
-  const handleUpdateUser = (id) => {};
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
-  React.useEffect(() => {
-    if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
-      findAllViolation().then(setViolations);
-
-      toast.success("ADMINS");
-    } else if (user.role === "USER") {
-      findOwnViolation().then(setViolations);
-      toast.success("USEER");
-    }
-  }, []);
+toast.success("submit")
+  }
   const handleDeleteViolation = (id) => {
     deleteViolation(id).then((res) => {
       if (res) {
@@ -185,14 +155,14 @@ const Violations = () => {
                       </a>
                     </li>
                   </ul>
-                  <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                  <div className=" h-3/4 overflow-y-scroll relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
                     <div className="px-4 py-5 flex-auto">
                       <div className="tab-content tab-space">
                         <div
                           className={openTab === 1 ? "block" : "hidden"}
                           id="link1"
                         >
-                          <div className="flex flex-wrap">
+                          <div className="flex flex-wrap ">
                             <table className="min-w-full border-black block md:table ">
                               <thead className="block md:table-header-group">
                                 <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
@@ -261,9 +231,9 @@ const Violations = () => {
                                       <button
                                         className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-eye "
                                         title="View"
-                                        onClick={() =>
-                                          handleShowModal(violation)
-                                        }
+                                        // onClick={() =>
+                                        //   handleShowModal(violation)
+                                        // }
                                       ></button>
                                       {(user.role === "SUPER_ADMIN" ||
                                         user.id === violation.creator_id) && (
@@ -282,180 +252,6 @@ const Violations = () => {
                               {/* } */}
                             </table>
                             {/* )} */}
-                            {showModal ? (
-                              <>
-                                <div className="md:ml-60 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                  <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                                    {/*content*/}
-                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                                      {/*header*/}
-                                      <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                                        <h3 className="text-3xl font-semibold">
-                                          Modify Information
-                                        </h3>
-                                        <button
-                                          className="p-1 ml-auto bg-transparent border-0 text-black opacity-100 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                          onClick={() => setShowModal(false)}
-                                        >
-                                          <span className="bg-transparent text-black  h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                            ×
-                                          </span>
-                                        </button>
-                                      </div>
-                                      {/*body*/}
-                                      <div className="w-full container mx-auto py-8">
-                                        <div className="w-5/6 mx-auto bg-white rounded shadow">
-                                          <div className="py-4 px-8">
-                                            <form>
-                                              <div className="mb-4">
-                                                <div className="mb-4">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="email"
-                                                  >
-                                                    Username
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.username}
-                                                    name="username"
-                                                    type="text"
-                                                    placeholder="Your username"
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div className="flex mb-4">
-                                                <div className="w-1/2 mr-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="first_name"
-                                                  >
-                                                    First Name
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    type="text"
-                                                    name="first_name"
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.first_name}
-                                                    placeholder="Your first name"
-                                                  />
-                                                </div>
-                                                <div className="w-1/2 ml-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="last_name"
-                                                  >
-                                                    Middle Initial
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.middle_name}
-                                                    name="middle_name"
-                                                    type="text"
-                                                    placeholder="Your middle initial"
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div className="flex mb-4">
-                                                <div className="w-1/2 mr-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="firstname"
-                                                  >
-                                                    Last Name
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.last_name}
-                                                    name="last_name"
-                                                    type="text"
-                                                    placeholder="Your last name"
-                                                  />
-                                                </div>
-                                                <div className="w-1/2 ml-1">
-                                                  <label
-                                                    disable="true"
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="last_name"
-                                                  >
-                                                    Suffix{" "}
-                                                  </label>
-                                                  <input
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.suffix}
-                                                    name="suffix"
-                                                    type="text"
-                                                    placeholder="Your Suffix"
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div className="flex mb-4">
-                                                <div className="w-1/2 mr-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="email"
-                                                  >
-                                                    Email Address
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    name="email"
-                                                    type="email"
-                                                    value={user.email}
-                                                    placeholder="Your email address"
-                                                    onChange={setCredentials}
-                                                  />
-                                                </div>
-                                                <div className="w-1/2 ml-1">
-                                                  <label
-                                                    className="block text-grey-darker text-sm font-bold mb-2"
-                                                    htmlFor="email"
-                                                  >
-                                                    Username
-                                                  </label>
-                                                  <input
-                                                    required
-                                                    onChange={setCredentials}
-                                                    className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                                    value={user.username}
-                                                    name="username"
-                                                    type="text"
-                                                    placeholder="Your username"
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div className="flex items-center justify-between m-auto w-80">
-                                                <button
-                                                  onClick={() =>
-                                                    handleUpdateUser(user.id)
-                                                  }
-                                                  className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
-                                                  type="submit"
-                                                >
-                                                  Update Now
-                                                </button>
-                                              </div>
-                                            </form>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-                              </>
-                            ) : null}
                           </div>
                         </div>
                         <div
@@ -475,6 +271,24 @@ const Violations = () => {
                                       <div className="mb-4"></div>
                                     </div>
                                     <div className="flex mb-4">
+                                      <div className="w-full">
+                                        <label
+                                          className="block text-grey-darker text-sm font-bold mb-2"
+                                          htmlFor="type"
+                                        >
+                                          Violation Name
+                                        </label>
+                                        <input
+                                          required
+                                          type="text"
+                                          name="name"
+                                          onChange={handleViolationValues}
+                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                          placeholder="Violation Name Here..."
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="flex mb-4">
                                       <div className="w-1/2">
                                         <label
                                           className="block text-grey-darker text-sm font-bold mb-2"
@@ -482,14 +296,25 @@ const Violations = () => {
                                         >
                                           Violation Type
                                         </label>
-                                        <input
-                                          required
-                                          onChange={setCredentials}
-                                          type="text"
-                                          name="type_id"
-                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          placeholder="Violation Type Here..."
-                                        />
+                                        <select
+                                          class="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                          aria-label=".form-select-sm"
+                                          placeholder="Type here"
+                                          onChange={handleViolationValues}
+                                          
+                                        >
+                                          {violationsType.map(
+                                            (violationtype) => (
+                                              <option
+                                              name="type_id"
+                                                key={violationtype.id}
+                                                value={violationtype.id}
+                                              >
+                                                {violationtype.type}
+                                              </option>
+                                            )
+                                          )}
+                                        </select>
                                       </div>
                                       <div className="w-1/2 ml-2">
                                         <label
@@ -500,7 +325,7 @@ const Violations = () => {
                                         </label>
                                         <input
                                           required
-                                          onChange={setCredentials}
+                                          onChange={handleViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="location"
                                           type="text"
@@ -518,7 +343,7 @@ const Violations = () => {
                                         </label>
                                         <textarea
                                           required
-                                          onChange={setCredentials}
+                                          onChange={handleViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="description"
                                           type="text"

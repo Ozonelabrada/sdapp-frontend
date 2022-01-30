@@ -21,6 +21,7 @@ export default function Accounts() {
       findUser().then(setAccounts);
     else findUser().then(setAccounts);
   }, [user.id]);
+
   const handleDelete = (id) => {
     deleteUser(id).then((res) => {
       if (res) {
@@ -31,6 +32,7 @@ export default function Accounts() {
       } else toast.error("Delete Failed!");
     });
   };
+  
   const location = useLocation();
   // create form states
   const [credentials, setCredentialsValues, setCredentials] = useForm({
@@ -44,7 +46,7 @@ export default function Accounts() {
     role: "USER",
   });
 
-  // create login states
+  // create reister states
   const [registerState, , setRegisterState] = useForm({
     isLoading: false,
     isAuthenticated: false,
