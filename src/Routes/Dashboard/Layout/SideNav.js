@@ -132,7 +132,7 @@ export default function SideNav() {
             <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
               <li className="inline-flex">
                 <Link
-                  className={`${isActive("violation-type")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  className={`${isActive("stream")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
                   to="/stream"
                 >
                   <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
@@ -142,7 +142,7 @@ export default function SideNav() {
 
               <li className="inline-flex">
                     <Link
-                  className={`${isActive("violation-type")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  className={`${isActive("violators")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
                   to="/dashboard/violators"
                 >
                       <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i>{" "}
@@ -154,7 +154,7 @@ export default function SideNav() {
                 <>
               <li className="inline-flex">
                 <Link
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
+                  className={`${isActive("event")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
                   to="/dashboard/event"
                 >
                   <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i>{" "}
