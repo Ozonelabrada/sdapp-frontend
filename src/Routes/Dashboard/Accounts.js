@@ -105,7 +105,7 @@ export default function Accounts() {
           data={{ selUser, setSelUser, setAccounts }}
         />
       )}
-      <div className="relative md:ml-64 bg-blueGray-100">
+      <div className="md:overflow-y-scroll relative md:ml-64 bg-blueGray-100">
         <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
           <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
             {/* Brand */}
@@ -119,7 +119,7 @@ export default function Accounts() {
           </div>
         </nav>
         {/* Header */}
-        <div className="relative bg-bgAboutR md:pt-32 pb-32 pt-12 h-screen">
+        <div className="relative bg-bgAboutR pt-14 h-screen">
           <div className="px-4 md:px-10 mx-auto w-full">
             <div>
               <div className="flex flex-wrap">
@@ -167,135 +167,110 @@ export default function Accounts() {
                       </a>
                     </li>
                   </ul>
-                  <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-                    <div className="px-4 py-5 flex-auto">
+                  <div className=" h-auto flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                    <div className="flex-auto">
                       <div className="tab-content tab-space">
                         <div
                           className={openTab === 1 ? "block" : "hidden"}
                           id="link1"
                         >
-                          <div className="flex flex-wrap">
-                            {(user.role === "ADMIN" ||
-                              user.role === "SUPER_ADMIN") && (
-                              <table className="min-w-full border-collapse block md:table ">
-                                <thead className="block md:table-header-group">
-                                  <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                      Name
-                                    </th>
-                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                      User Name
-                                    </th>
-                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                      Email Address
-                                    </th>
-                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                      Role
-                                    </th>
-                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                      Created
-                                    </th>
-                                    <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                      Actions
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody className="block md:table-row-group">
-                                  {accounts.map(
-                                    (account) => (
-                                      <tr
-                                        key={account.id}
-                                        className="bg-gray-300 border border-grey-500 md:border-none block md:table-row"
-                                      >
-                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                          <span className="inline-block w-1/3 md:hidden font-bold">
-                                            Name
-                                          </span>
-                                          {account.first_name}{" "}
-                                          {account.middle_name}{" "}
-                                          {account.last_name} {account.suffix}
-                                        </td>
-                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                          <span className="inline-block w-1/3 md:hidden font-bold">
-                                            User Name
-                                          </span>
-                                          {account.username}
-                                        </td>
-                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                          <span className="inline-block w-1/3 md:hidden font-bold">
-                                            Email Address
-                                          </span>
-                                          {account.email}
-                                        </td>
-                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                          <span className="inline-block w-1/3 md:hidden font-bold">
-                                            Role
-                                          </span>
-                                          {account.role}
-                                        </td>
-                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                          <span className="inline-block w-1/3 md:hidden font-bold">
-                                            Created
-                                          </span>
-                                          {moment(account.created_at).format(
-                                            "lll"
-                                          )}
-                                        </td>
-                                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                          <span className="inline-block w-1/3 md:hidden font-bold">
-                                            Actions
-                                          </span>
-                                          <button
-                                            onClick={() =>
-                                              handleShowModal(account)
-                                            }
-                                            title="Edit"
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
-                                          ></button>
-                                          <button
-                                            title="Delete"
-                                            onClick={() =>
-                                              handleDelete(account.id)
-                                            }
-                                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 ml-2 rounded mdi mdi-delete-circle"
-                                          ></button>
-                                        </td>
-                                      </tr>
-                                    )
-                                    //     (user.role === 'USERS') &&
-                                    //     <div className="bg-red-100 px-6 border border-red-400 text-red-700 py-3 rounded relative" role="alert">
-                                    //     <span className="block sm:inline">No data</span>
-
-                                    // </div>
-                                  )}
-                                </tbody>
-                              </table>
-                            )}
-                            {user.role === "USER" && (
-                              <div
-                                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 w-full rounded relative"
-                                role="alert"
-                              >
-                                <strong className="font-bold pr-10">
-                                  Please be advised!
-                                </strong>
-                                <span className="block sm:inline">
-                                  You are not Allowed to View User List Module.
-                                </span>
-                                <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
-                                  <svg
-                                    className="fill-current h-6 w-6 text-red-500"
-                                    role="button"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <title>Close</title>
-                                    <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                                  </svg>
-                                </span>
+                        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                          <div className="rounded-t mb-0 px-4 py-3 border-0">
+                            <div className="flex flex-wrap items-center">
+                              <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                                <h3 className="font-semibold text-base text-blueGray-700">
+                                 Accounts
+                                </h3>
                               </div>
-                            )}
+                              <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                                <button
+                                  className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                  type="button"
+                                  style={{ transition: "all .15s ease" }}
+                                >
+                                  See all
+                                </button>
+                              </div>
+                            </div>
                           </div>
+                          <div className="block w-full overflow-y-scroll" style={{maxHeight:500}}>
+                            {/* Projects table */}
+                            <table className="items-center w-full bg-transparent border-collapse">
+                              <thead>
+                                <tr>
+                                  <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    ID
+                                  </td>
+                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Username
+                                  </th>
+                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Full Name
+                                  </th>
+                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Email
+                                  </th> 
+                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Role
+                                  </th>
+                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Date Created
+                                  </th>
+                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Actions
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {accounts.map((account) => (
+                                  <tr key={account.id}>
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                      {account.id}
+                                    </td>
+                                    <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                      {account.username}{" "}
+                                    </td>
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                      {account.first_name}{" "} {account.middle_name}{" "} {account.last_name}{" "}  {account.suffix}{" "}
+                                    </td>
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                      {account.email}
+                                    </td>
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                      {account.role}
+                                    </td>
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                      {moment(account.created_at).format("lll")}
+                                    </td>
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                      
+                                    <button
+                                        className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
+                                        title="View"
+                                        onClick={() =>
+                                          handleShowModal(account)
+                                        }
+                                      ></button>
+                                      {(user.role === "SUPER_ADMIN" ||
+                                        user.id ===
+                                        account.creator_id) && (
+                                        <button
+                                          className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
+                                          title="Remove"
+                                          onClick={() =>
+                                            handleDelete(
+                                              account.id
+                                            )
+                                          }
+                                        ></button>
+                                      )}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
                         </div>
                         <div
                           className={openTab === 2 ? "block" : "hidden"}

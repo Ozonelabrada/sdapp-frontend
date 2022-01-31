@@ -1,15 +1,15 @@
 import React from "react";
 import toast from "react-hot-toast";
-import { updateViolation } from "../../../api/endpoints/violation";
+import { updateViolationType } from "../../../api/endpoints/violType";
 
-export default function UpdateViolation(props) {
+export default function UpdateViolationType(props) {
   const { show, data } = props;
   const { setShowModal } = show;
-  const { selectedViolation, setSelectedViolation, setViolation } = data;
+  const { selectedViolationType, setSelectedViolationType, setViolationType } = data;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSelectedViolation((prevState) => {
+    setSelectedViolationType((prevState) => {
       return {
         ...prevState,
         [name]: value,
@@ -19,9 +19,9 @@ export default function UpdateViolation(props) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateViolation(selectedViolation).then((res) => {
+    updateViolationType(selectedViolationType).then((res) => {
       if (res) {
-        setViolation((prevState) => {
+        setViolationType((prevState) => {
           const index = prevState.findIndex((element) => element.id === res.id);
           if (index > -1) {
             prevState[index] = res;
@@ -38,13 +38,13 @@ export default function UpdateViolation(props) {
 
   return (
     <>
-      <div className="md:ml-60 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative  w-7/12  my-6 mx-auto">
+      <div className="md:ml-60  justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+        <div className="relative my-6 w-7/12 mx-auto">
           {/*content*/}
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+          <div className=" border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-              <h4 className="text-lg font-semibold">Update Violation</h4>
+              <h4 className="text-lg font-semibold">Update Violation Type</h4>
               <button
                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-100 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => setShowModal(false)}
@@ -103,7 +103,7 @@ export default function UpdateViolation(props) {
                             onChange={handleChange}
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="location"
-                            value={selectedViolation.location}
+                            value={selectedViolationType.location}
                             type="text"
                             placeholder="Location Here..."
                           />
@@ -123,7 +123,7 @@ export default function UpdateViolation(props) {
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="description"
                             type="text"
-                            value={selectedViolation.description}
+                            value={selectedViolationType.description}
                             rows={5}
                             placeholder="Description..."
                           />
@@ -133,7 +133,7 @@ export default function UpdateViolation(props) {
                         <button
                           type="submit"
                           className="bg-pink-400 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
-                          
+                          type="submit"
                         >
                           Update Now
                         </button>

@@ -12,14 +12,15 @@ import Notfound from "./Routes/404NF";
 import About from "./Routes/About";
 import Dashboard from "./Routes/Dashboard";
 import Accounts from "./Routes/Dashboard/Accounts";
-import Event from "./Routes/Dashboard/Event";
+import Events from "./Routes/Dashboard/Events";
 import Layout from "./Routes/Dashboard/Layout";
 import Profile from "./Routes/Dashboard/Profile";
+import Stream from "./Routes/Dashboard/Stream";
 import Violations from "./Routes/Dashboard/Violations";
 import ViolationType from "./Routes/Dashboard/ViolationType";
 import Gallery from "./Routes/Gallery";
 import Private from "./Routes/Private";
-import VideoStream from "./Routes/VideoStream";
+// import VideoStream from "./Routes/VideoStream";
 
 let token = null;
 
@@ -55,13 +56,14 @@ function App() {
           path="/login"
         />
         <Route path="/gallery" element={<Private component={Gallery} />} />
-        <Route path="/stream" element={<Private component={VideoStream} />} />
+        {/* <Route path="/stream" element={<Private component={VideoStream} />} /> */}
 
         <Route path="/dashboard" element={<Private component={Layout} />}>
           <Route index element={<Private component={Dashboard} />} />
           <Route path="profile" element={<Private component={Profile} />} />
           <Route path="accounts" element={<Private component={Accounts} />} />
-          <Route path="event" element={<Private component={Event} />} />
+          <Route path="events" element={<Private component={Events} />} />
+          <Route path="stream" element={<Private component={Stream} />} />
           <Route
             path="violation"
             element={<Private component={Violations} />}

@@ -2,38 +2,20 @@ import React from "react";
 import toast from "react-hot-toast";
 import { updateViolation } from "../../../api/endpoints/violation";
 
-export default function UpdateViolation(props) {
+export default function ShowEvents(props) {
   const { show, data } = props;
   const { setShowModal } = show;
-  const { selectedViolation, setSelectedViolation, setViolation } = data;
+  const { selectedEvent, setSelectedEvent, setEvent } = data;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSelectedViolation((prevState) => {
+    setSelectedEvent((prevState) => {
       return {
         ...prevState,
         [name]: value,
       };
     });
     // console.log(e);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    updateViolation(selectedViolation).then((res) => {
-      if (res) {
-        setViolation((prevState) => {
-          const index = prevState.findIndex((element) => element.id === res.id);
-          if (index > -1) {
-            prevState[index] = res;
-          }
-          return prevState;
-        });
-        toast.success("Updated Successfuly", { duration: 5000 });
-        setShowModal(false);
-      } else {
-        toast.error("Update Failed!", { duration: 5000 });
-      }
-    });
   };
 
   return (
@@ -60,34 +42,9 @@ export default function UpdateViolation(props) {
               <div className="w-full bg-gray-200">
                 <div className="rounded-lg container mx-auto py-2">
                   <div className="py-4 px-8">
-                    <form onSubmit={handleSubmit}>
+                    <form>
                       <div className="flex">
                         <div className="w-full">
-                          {/* <select
-                                          class="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                          aria-label=".form-select-sm"
-                                          placeholder="Type here"
-                                          onChange={(e) =>
-                                            setViolation((prevState) => ({
-                                              ...prevState,
-                                              [e.target.name]: parseInt(
-                                                e.target.value
-                                              ),
-                                            }))
-                                          }
-                                          name="type_id"
-                                        >
-                                          {setViolation.map(
-                                            (selViolation) => (
-                                              <option
-                                                key={selViolation.id}
-                                                value={selViolation.type.id}
-                                              >
-                                                {selViolation.type.type}
-                                              </option>
-                                            )
-                                          )}
-                                        </select> */}
                         </div>
                       </div>
                       <div className="flex mb-4">
@@ -103,7 +60,7 @@ export default function UpdateViolation(props) {
                             onChange={handleChange}
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="location"
-                            value={selectedViolation.location}
+                            value={selectedEvent.location}
                             type="text"
                             placeholder="Location Here..."
                           />
@@ -123,7 +80,7 @@ export default function UpdateViolation(props) {
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="description"
                             type="text"
-                            value={selectedViolation.description}
+                            value={selectedEvent.description}
                             rows={5}
                             placeholder="Description..."
                           />

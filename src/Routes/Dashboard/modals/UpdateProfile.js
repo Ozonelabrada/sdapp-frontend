@@ -34,12 +34,12 @@ export default function UpdateProfile(props) {
     <>
     
       <div className=" md:ml-60 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+        <div className="relative  w-7/12  my-6 mx-auto">
           {/*content*/}
           <div className="font-sans font-bold border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-              <h4 className="text-3xl font-semibold">Update Profile</h4>
+              <h4 className="text-lg font-semibold">Update Profile</h4>
               <button
                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-100 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => setShowModal(false)}
@@ -52,9 +52,9 @@ export default function UpdateProfile(props) {
             {/*body*/}
             <div className="w-full container mx-auto py-8">
               <div className="w-full mx-auto bg-white rounded shadow">
-                <div className="py-4 px-8">
+                <div className=" px-8">
                   <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
+                    <div className="flex">
                       <div className="mb-4">
                         <label
                           className="block text-grey-darker text-sm font-bold mb-2"

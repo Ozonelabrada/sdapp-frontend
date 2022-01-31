@@ -12,12 +12,19 @@ import {
   storeViolationType,
 } from "../../api/endpoints/violType.js";
 import moment from "moment";
+import UpdateViolationType from "./modals/UpdateViolationType.js";
 
 const ViolationType = () => {
   const [violationsType, setViolationsType] = useState([]);
   const { user, setUser } = React.useContext(UserContext);
   const [openTab, setOpenTab] = React.useState(1);
+  const [selectedViolationType, setSelectedViolationType] = React.useState(null);
+  const [showModal, setShowModal] = React.useState(false);
 
+  const handleShowModal = (violationType) => {
+    setSelectedViolationType(violationType);
+    setShowModal(true);
+  }
   const location = useLocation();
   // create form states
   const [typeCredentials, setTypeCredentialValues, setTypeCredentials] =
@@ -97,6 +104,14 @@ const ViolationType = () => {
   };
   return (
     <>
+    { showModal && selectedViolationType !== null &&(
+      
+      <UpdateViolationType 
+      show = {{showModal, setShowModal}}
+      data = {{selectedViolationType, setSelectedViolationType, setViolationsType}}
+      />
+    )
+    }
       <div className="relative md:ml-64 bg-blueGray-100">
         <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
           <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
@@ -115,7 +130,7 @@ const ViolationType = () => {
           </div>
         </nav>
         {/* Header */}
-        <div className="relative bg-bgAboutR pb-10 pt-14 h-screen">
+        <div className="relative bg-bgAboutR pt-14 h-screen">
           <div className="px-4 md:px-10 mx-auto w-full">
             <div>
               <div className="flex flex-wrap">
@@ -163,14 +178,13 @@ const ViolationType = () => {
                       </a>
                     </li>
                   </ul>
-                  <div className="h-full relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-                    <div className="px-4 py-5 flex-auto">
+                  <div className=" h-auto flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                    <div className="flex-auto">
                       <div className="tab-content tab-space">
                         <div
                           className={openTab === 1 ? "block" : "hidden"}
                           id="link1"
                         >
-                          <div className="w-full mb-12 xl:mb-0 px-4">
                             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
                               <div className="rounded-t mb-0 px-4 py-3 border-0">
                                 <div className="flex flex-wrap items-center">
@@ -233,7 +247,7 @@ const ViolationType = () => {
                                             className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
                                             title="View"
                                             onClick={() =>
-                                              handleViewViolation(violationType)
+                                              handleShowModal(violationType)
                                             }
                                           ></button>
                                           {(user.role === "SUPER_ADMIN" ||
@@ -325,7 +339,6 @@ const ViolationType = () => {
                               </div>
                             </div>
                           </div>
-                        </div>
                       </div>
                     </div>
                   </div>
