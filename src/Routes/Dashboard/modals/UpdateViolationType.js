@@ -61,8 +61,14 @@ export default function UpdateViolationType(props) {
                 <div className="rounded-lg container mx-auto py-2">
                   <div className="py-4 px-8">
                     <form onSubmit={handleSubmit}>
-                      <div className="flex">
-                        <div className="w-full">
+                      <div className="flex mb-4">
+                        <div className="w-full ml-2">
+                          <label
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="location"
+                          >
+                            Type
+                          </label>
                           {/* <select
                                           class="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                           aria-label=".form-select-sm"
@@ -88,24 +94,14 @@ export default function UpdateViolationType(props) {
                                             )
                                           )}
                                         </select> */}
-                        </div>
-                      </div>
-                      <div className="flex mb-4">
-                        <div className="w-full ml-2">
-                          <label
-                            className="block text-grey-darker text-sm font-bold mb-2"
-                            htmlFor="location"
-                          >
-                            Location
-                          </label>
                           <input
                             required
                             onChange={handleChange}
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="location"
-                            value={selectedViolationType.location}
+                            value={selectedViolationType.type}
                             type="text"
-                            placeholder="Location Here..."
+                            placeholder="Type Here..."
                           />
                         </div>
                       </div>

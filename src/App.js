@@ -18,6 +18,7 @@ import Profile from "./Routes/Dashboard/Profile";
 import Stream from "./Routes/Dashboard/Stream";
 import Violations from "./Routes/Dashboard/Violations";
 import ViolationType from "./Routes/Dashboard/ViolationType";
+import Violators from "./Routes/Dashboard/Violators";
 import Gallery from "./Routes/Gallery";
 import Private from "./Routes/Private";
 // import VideoStream from "./Routes/VideoStream";
@@ -64,6 +65,7 @@ function App() {
           <Route path="accounts" element={<Private component={Accounts} />} />
           <Route path="events" element={<Private component={Events} />} />
           <Route path="stream" element={<Private component={Stream} />} />
+          <Route path="violators" element={<Private component={Violators} />} />
           <Route
             path="violation"
             element={<Private component={Violations} />}

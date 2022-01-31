@@ -13,6 +13,7 @@ const Events = () => {
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
   findAllEvent().then(setEvents);
+  console.log(events);
     } else if (user.role === "USER") {
       findOwnEvent().then(setEvents);
     }

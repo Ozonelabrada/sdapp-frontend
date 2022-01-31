@@ -140,6 +140,8 @@ export default function SideNav() {
                 </Link>
               </li>
 
+              {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
+                <>
               <li className="inline-flex">
                     <Link
                   className={`${isActive("violators")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
@@ -149,9 +151,7 @@ export default function SideNav() {
                       Violators
                     </Link>
                   </li>
-                  
-              {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
-                <>
+{/*                   
               <li className="inline-flex">
                 <Link
                   className={`${isActive("event")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
@@ -160,7 +160,7 @@ export default function SideNav() {
                   <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i>{" "}
                   Events
                 </Link>
-              </li>
+              </li> */}
               </>
               )}
             </ul>
