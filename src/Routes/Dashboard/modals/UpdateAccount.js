@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { updateUser } from "../../../api/endpoints/user";
+import { findAllUser, updateUser } from "../../../api/endpoints/user";
 import { BlockUxContext } from "../../../context/BlockUx";
 
 export default function UpdateAccount(props) {
   const { show, data } = props;
   const { setShowModal } = show;
   const { selUser, setSelUser, setAccounts } = data;
+  const [userRole, setUserRole] = useState([]);
   const {setIsLoading} = React.useContext(BlockUxContext);
+
+  React.useEffect(() => {
+    findAllUser().then(setUserRole);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,7 +70,7 @@ export default function UpdateAccount(props) {
                 <div className="py-4 px-8">
                   <form onSubmit={handleSubmit}>
                     <div className="flex">
-                      <div className="mb-4">
+                      <div className="w-1/2 mb-4">
                         <label
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
@@ -83,6 +88,34 @@ export default function UpdateAccount(props) {
                           placeholder="Your username"
                         />
                       </div>
+                        <div className="w-1/2">
+                          <label
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="location"
+                          >
+                            Type
+                          </label>
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mdi mdi-chevron-down"
+                            aria-label=".form-select-sm"
+                            onChange={(e) =>
+                              setSelUser((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: (e.target.value),
+                              }))
+                            }
+                            name="role"
+                            value={selUser.role}
+                          >
+                            {userRole.length ? (
+                              userRole.map((role) => (
+                                <option key={role.id} value={role.role}>{role.role}</option>
+                              ))
+                            ) : (
+                              <option value=""> No Record Found!</option>
+                            )}
+                          </select>
+                        </div>
                     </div>
                     <div className="flex mb-4">
                       <div className="w-1/2 mr-1">
