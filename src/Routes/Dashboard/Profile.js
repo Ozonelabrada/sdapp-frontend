@@ -3,7 +3,7 @@ import UserDropdown from "./components/UserDropdown.js";
 import { Link, Outlet } from "react-router-dom";
 import { UserContext } from "../../context/userContext.js";
 import useForm from "../../hooks/useForm.js";
-import { findUser, updateUser } from "../../api/endpoints/user.js";
+import { findUser, getMe, updateUser } from "../../api/endpoints/user.js";
 import UpdateProfile from "./modals/UpdateProfile.js";
 
 export default function Profile() {
@@ -12,20 +12,9 @@ export default function Profile() {
   const [accounts, setAccounts] = useState([]);
 
   React.useEffect(() => {
-    if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
-      findUser().then(setAccounts);
+      getMe().then(setAccounts);
   }, []);
 
-  // create form states
-
-  const [credentials, setCredentials] = useForm({
-    email: "",
-    username: "",
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    suffix: "",
-  });
   return (
     <>
       {showModal && <UpdateProfile 

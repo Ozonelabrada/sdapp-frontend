@@ -5,7 +5,8 @@ import { updateViolationType } from "../../../api/endpoints/violType";
 export default function UpdateViolationType(props) {
   const { show, data } = props;
   const { setShowModal } = show;
-  const { selectedViolationType, setSelectedViolationType, setViolationType } = data;
+  const { selectedViolationType, setSelectedViolationType, setViolationType } =
+    data;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,40 +70,15 @@ export default function UpdateViolationType(props) {
                           >
                             Type
                           </label>
-                          {/* <select
-                                          class="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                          aria-label=".form-select-sm"
-                                          placeholder="Type here"
-                                          onChange={(e) =>
-                                            setViolation((prevState) => ({
-                                              ...prevState,
-                                              [e.target.name]: parseInt(
-                                                e.target.value
-                                              ),
-                                            }))
-                                          }
-                                          name="type_id"
-                                        >
-                                          {setViolation.map(
-                                            (selViolation) => (
-                                              <option
-                                                key={selViolation.id}
-                                                value={selViolation.type.id}
-                                              >
-                                                {selViolation.type.type}
-                                              </option>
-                                            )
-                                          )}
-                                        </select> */}
-                          <input
-                            required
-                            onChange={handleChange}
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            name="location"
-                            value={selectedViolationType.type}
-                            type="text"
-                            placeholder="Type Here..."
-                          />
+                        <input
+                          required
+                          onChange={handleChange}
+                          type="text"
+                          name="type"
+                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                          value={selectedViolationType.type ?? ""}
+                          placeholder="Your Violation Type..."
+                        />
                         </div>
                       </div>
                       <div className="flex mb-4">

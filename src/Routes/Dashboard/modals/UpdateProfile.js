@@ -1,13 +1,14 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { updateUser } from "../../../api/endpoints/user";
+import { BlockUxContext } from "../../../context/BlockUx";
 import { UserContext } from "../../../context/userContext";
 
 export default function UpdateProfile(props) {
   const { show } = props;
-  const { setShowModal} = show;
+  const { setShowModal } = show;
   const { user, setUser } = React.useContext(UserContext);
-
+  const { setIsLoading } = React.useContext(BlockUxContext);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser((prevState) => {
@@ -20,19 +21,21 @@ export default function UpdateProfile(props) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     updateUser(user).then((res) => {
       if (res) {
-        toast.success("Updated Successfuly" , {duration:5000});
+        setIsLoading(false);
+        toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
       } else {
-        toast.error("Sorry Found Some Difficulty" , {duration:5000} );
+        setIsLoading(false);
+        toast.error("Sorry Found Some Difficulty", { duration: 5000 });
       }
     });
   };
 
   return (
     <>
-    
       <div className=" md:ml-60 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative  w-7/12  my-6 mx-auto">
           {/*content*/}

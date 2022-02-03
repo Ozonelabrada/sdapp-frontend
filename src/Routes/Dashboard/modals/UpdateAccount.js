@@ -1,11 +1,13 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { updateUser } from "../../../api/endpoints/user";
+import { BlockUxContext } from "../../../context/BlockUx";
 
 export default function UpdateAccount(props) {
   const { show, data } = props;
   const { setShowModal } = show;
   const { selUser, setSelUser, setAccounts } = data;
+  const {setIsLoading} = React.useContext(BlockUxContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,6 +21,7 @@ export default function UpdateAccount(props) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     updateUser(selUser).then((res) => {
       if (res) {
         setAccounts((prevState) => {
@@ -28,10 +31,12 @@ export default function UpdateAccount(props) {
           }
           return prevState;
         });
+        setIsLoading(false);
         toast.success("Updated Successfuly" , {duration:5000});
         setShowModal(false);
       } else {
-        toast.error("Sorry Found Some Difficulty" , {duration:5000} );
+        setIsLoading(false);
+        toast.error("Failure to Update!" , {duration:5000} );
       }
     });
   };

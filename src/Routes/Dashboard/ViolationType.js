@@ -27,7 +27,7 @@ const ViolationType = () => {
   }
   const location = useLocation();
   // create form states
-  const [typeCredentials, setTypeCredentialValues, setTypeCredentials] =
+  const [violationTypes, setViolationTypeValues, setTypeValues] =
     useForm({
       type: "",
       description: "",
@@ -54,7 +54,7 @@ const ViolationType = () => {
       message: "",
     }));
 
-    const violType = await storeViolationType(typeCredentials);
+    const violType = await storeViolationType(violationTypes);
     //set isLoading to false then set hasError to true if there is an error
     if (violType === (null || undefined)) {
       // force return to false
@@ -67,7 +67,7 @@ const ViolationType = () => {
       }));
     }
     toast.success("Successfully Saved!");
-    setTypeCredentials({});
+    setTypeValues({});
     setViolationsType((violationsType) => {
       if (violationsType.includes(violType) === false)
         violationsType.push(violType);
@@ -82,24 +82,17 @@ const ViolationType = () => {
     }));
   };
   React.useEffect(() => {
-    if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
       findAllViolationType().then(setViolationsType);
-    } else {
-      findOwnViolationType().the(setViolationsType);
-    }
   }, []);
-
-  const handleViewViolation = (violation) => {
-    toast.success(violation.description);
-  };
+  
   const handleDeleteViolation = (id) => {
     deleteViolation(id).then((res) => {
       if (res) {
         setViolationsType((violationType) =>
           violationsType.filter((violationType) => violationType.id !== res.id)
         );
-        toast.success("Successfully Removed!");
-      } else toast.error(" Deletion Failed Check Network Connection!");
+        toast.success("Deleted Successfully!");
+      } else toast.error("You do not have Permission to delete!");
     });
   };
   return (
@@ -300,7 +293,7 @@ const ViolationType = () => {
                                           required
                                           type="text"
                                           name="type"
-                                          onChange={setTypeCredentialValues}
+                                          onChange={setViolationTypeValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           placeholder="Violation Type Here..."
                                         />
@@ -316,7 +309,7 @@ const ViolationType = () => {
                                         </label>
                                         <textarea
                                           required
-                                          onChange={setTypeCredentialValues}
+                                          onChange={setViolationTypeValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="description"
                                           type="text"

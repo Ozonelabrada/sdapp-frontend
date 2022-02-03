@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route } from "react-router-dom";
 import { setHeaders } from "./api";
 import { getMe } from "./api/endpoints/user";
 import "./App.css";
+import BlockUx from "./context/BlockUx";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import TopNav from "./components/TopNav";
@@ -41,7 +42,7 @@ function App() {
   }, []);
 
   return (
-    <div className="">
+    <BlockUx>
       <Toaster position="top-center" reverseOrder={true} />
       <TopNav />
       <Routes>
@@ -78,7 +79,7 @@ function App() {
         </Route>
         <Route path="*" element={<Notfound />} />
       </Routes>
-    </div>
+    </BlockUx>
   );
 }
 

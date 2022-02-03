@@ -55,7 +55,7 @@ export default function ShowEvents(props) {
                           <input
                             required
                             onChange={handleChange}
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="read-only appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="location"
                             value={selectedEvent.location}
                             type="text"
@@ -74,7 +74,7 @@ export default function ShowEvents(props) {
                           <textarea
                             required
                             onChange={handleChange}
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="read-only appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="description"
                             type="text"
                             value={selectedEvent.description}

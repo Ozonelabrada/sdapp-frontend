@@ -26,13 +26,8 @@ const Violations = () => {
   const [selectedViolation, setSelectedViolation] = React.useState(null);
 
   React.useEffect(() => {
-    if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
       findAllViolation().then(setViolations);
       findAllViolationType().then(setViolationsType);
-    } else if (user.role === "USER") {
-      findOwnViolation().then(setViolations);
-      findOwnViolationType().then(setViolationsType);
-    }
   }, []);
   const handleShowModal = (violation) => {
     setSelectedViolation(violation);
@@ -45,45 +40,23 @@ const Violations = () => {
     description: "",
     location: "",
   });
-  // create register states
-  const [registerState, , setRegisterState] = useForm({
-    isLoading: false,
-    isAuthenticated: false,
-    hasError: false,
-    message: "",
-  });
+
   const handleSubmitViol = async (e) => {
     e.preventDefault();
-
-    //set isLoading to true
-    setRegisterState((registerState) => ({
-      ...registerState,
-      isLoading: true,
-      hasError: false,
-      isAuthenticated: false,
-      message: "",
-    }));
 
     const viol = await storeViolation(violationValues);
 
     //set isLoading to false then set hasError to true if there is an error
     if (viol === (null || undefined)) {
       // force return to false
-      toast.error("Registration Failed!");
-      return setRegisterState((registerState) => ({
-        ...registerState,
-        isLoading: false,
-        hasError: true,
-      }));
+      toast.error("Saving Failed!");
     }
-    toast.success("Successfully Registered!");
-    // setViolationCredentials({});
-    // setViolations((violations) => {
-    //   if (violations.includes(viol) === false) violations.push(viol);
-    //   return violations;
-    // });
-
-    toast.success("submit");
+    toast.success("Successfully Saved!");
+    setViolation({});
+    setViolations((violations) => {
+      if (violations.includes(viol) === false) violations.push(viol);
+      return violations;
+    });
   };
 
   // delete violationtion

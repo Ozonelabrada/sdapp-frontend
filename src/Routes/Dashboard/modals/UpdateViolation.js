@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { updateViolation } from "../../../api/endpoints/violation";
+import { findAllViolationType } from "../../../api/endpoints/violType";
+import _ from "lodash";
 
 export default function UpdateViolation(props) {
   const { show, data } = props;
   const { setShowModal } = show;
-  const { selectedViolation, setSelectedViolation, setViolation } = data;
+  const { selectedViolation, setSelectedViolation, setViolations } = data;
+  const [violationsType, setViolationsType] = useState([]);
 
+  React.useEffect(() => {
+    findAllViolationType().then(setViolationsType);
+  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSelectedViolation((prevState) => {
@@ -15,13 +21,13 @@ export default function UpdateViolation(props) {
         [name]: value,
       };
     });
-    // console.log(e);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    delete selectedViolation.type //Temporary!!
     updateViolation(selectedViolation).then((res) => {
       if (res) {
-        setViolation((prevState) => {
+        setViolations((prevState) => {
           const index = prevState.findIndex((element) => element.id === res.id);
           if (index > -1) {
             prevState[index] = res;
@@ -35,7 +41,7 @@ export default function UpdateViolation(props) {
       }
     });
   };
-
+console.log(selectedViolation);
   return (
     <>
       <div className="md:ml-60 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -69,31 +75,26 @@ export default function UpdateViolation(props) {
                           >
                             Type
                           </label>
-                          {/* <select
-                                          class="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                          aria-label=".form-select-sm"
-                                          placeholder="Type here"
-                                          onChange={(e) =>
-                                            setViolation((prevState) => ({
-                                              ...prevState,
-                                              [e.target.name]: parseInt(
-                                                e.target.value
-                                              ),
-                                            }))
-                                          }
-                                          name="type_id"
-                                        >
-                                          {setViolation.map(
-                                            (selViolation) => (
-                                              <option
-                                                key={selViolation.id}
-                                                value={selViolation.type.id}
-                                              >
-                                                {selViolation.type.type}
-                                              </option>
-                                            )
-                                          )}
-                                        </select> */}
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mdi mdi-chevron-down"
+                            aria-label=".form-select-sm"
+                            onChange={(e) =>
+                              setSelectedViolation((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value),
+                              }))
+                            }
+                            name="type_id"
+                            value={selectedViolation.type_id}
+                          >
+                            {violationsType.length ? (
+                              violationsType.map((type) => (
+                                <option key={type.id} value={type.id}>{type.type}</option>
+                              ))
+                            ) : (
+                              <option value=""> No Record Found!</option>
+                            )}
+                          </select>
                         </div>
                         <div className="w-1/2 ml-2">
                           <label
@@ -156,7 +157,6 @@ export default function UpdateViolation(props) {
                         <button
                           type="submit"
                           className="bg-pink-400 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
-                          
                         >
                           Update Now
                         </button>

@@ -5,13 +5,15 @@ import { loginUser } from "../../api/endpoints/auth";
 import { UserContext } from "../../context/userContext";
 import toast from "react-hot-toast";
 import landing_image from "./landing.webp";
+import { BlockUxContext } from "../../context/BlockUx";
 
 export default function Login() {
   const { user, setUser } = React.useContext(UserContext);
+  const {setIsLoading} = React.useContext(BlockUxContext);
   const location = useLocation();
 
   // create form states
-  const [credentials, setCredentials] = useForm({
+  const [credentials, setCredentials, setCredentialsValues] = useForm({
     email: "",
     password: "",
   });
@@ -36,7 +38,7 @@ export default function Login() {
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     //set isLoading to true
     setLoginState((loginState) => ({
       ...loginState,
@@ -50,13 +52,16 @@ export default function Login() {
     //set isLoading to false then set hasError to true if there is an error
     if (user === (null || undefined)) {
       toast.error("Login Failed!");
+      setIsLoading(false);
       // force return to false
       return setLoginState((loginState) => ({
         ...loginState,
         isLoading: false,
         hasError: true,
       }));
+      setCredentials({});
     }
+    setIsLoading(false);
     toast.success("Successfuly Logged in.")
     //set isLoading to false then set isAuthenticated to true if there is no error
     setLoginState((loginState) => ({

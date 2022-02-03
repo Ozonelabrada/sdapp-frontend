@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
 import { useLocation } from "react-router-dom";
 import { UserContext } from "../../context/userContext.js";
-import { deleteUser, findUser } from "../../api/endpoints/user.js";
+import {
+  deleteUser,
+  findAllUser,
+  findUser,
+  getMe,
+} from "../../api/endpoints/user.js";
 import useForm from "../../hooks/useForm.js";
 import { registerUser } from "../../api/endpoints/auth.js";
 import UpdateAccount from "./modals/UpdateAccount.js";
 import moment from "moment";
 import toast from "react-hot-toast";
+import { BlockUxContext } from "../../context/BlockUx/index.js";
 
 export default function Accounts() {
   const [openTab, setOpenTab] = React.useState(1);
@@ -15,24 +21,27 @@ export default function Accounts() {
   const { user, setUser } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
   const [selUser, setSelUser] = React.useState(null);
+  const { setIsLoading } = React.useContext(BlockUxContext);
 
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
-      findUser().then(setAccounts);
-    else findUser().then(setAccounts);
+      findAllUser().then(setAccounts);
+    else getMe().then(setAccounts);
   }, [user.id]);
 
   const handleDelete = (id) => {
+    setIsLoading(true);
     deleteUser(id).then((res) => {
       if (res) {
         setAccounts((accounts) =>
           accounts.filter((account) => account.id !== res.id)
         );
+        setIsLoading(false);
         toast.success("Successfully Deleted!");
-      } else toast.error("Delete Failed!");
+      } else setIsLoading(false); toast.error("Delete Failed!");
     });
   };
-  
+
   const location = useLocation();
   // create form states
   const [credentials, setCredentialsValues, setCredentials] = useForm({
@@ -57,7 +66,7 @@ export default function Accounts() {
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     //set isLoading to true
     setRegisterState((registerState) => ({
       ...registerState,
@@ -71,14 +80,16 @@ export default function Accounts() {
     //set isLoading to false then set hasError to true if there is an error
     if (user === (null || undefined)) {
       // force return to false
+      setIsLoading(false);
       toast.error("Registration Failed!");
-      
+
       return setRegisterState((registerState) => ({
         ...registerState,
         isLoading: false,
         hasError: true,
       }));
     }
+    setIsLoading(false);
     toast.success("Successfully Registered!");
     setCredentials({});
     setAccounts((accounts) => {
@@ -174,103 +185,106 @@ export default function Accounts() {
                           className={openTab === 1 ? "block" : "hidden"}
                           id="link1"
                         >
-                        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-                          <div className="rounded-t mb-0 px-4 py-3 border-0">
-                            <div className="flex flex-wrap items-center">
-                              <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                                <h3 className="font-semibold text-base text-blueGray-700">
-                                 Accounts
-                                </h3>
-                              </div>
-                              <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                                <button
-                                  className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-                                  type="button"
-                                  style={{ transition: "all .15s ease" }}
-                                >
-                                  See all
-                                </button>
+                          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                            <div className="rounded-t mb-0 px-4 py-3 border-0">
+                              <div className="flex flex-wrap items-center">
+                                <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                                  <h3 className="font-semibold text-base text-blueGray-700">
+                                    Accounts
+                                  </h3>
+                                </div>
+                                <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                                  <button
+                                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                    type="button"
+                                    style={{ transition: "all .15s ease" }}
+                                  >
+                                    See all
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="block w-full overflow-y-scroll" style={{maxHeight:500}}>
-                            {/* Projects table */}
-                            <table className="items-center w-full bg-transparent border-collapse">
-                              <thead>
-                                <tr>
-                                  <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    ID
-                                  </td>
-                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Username
-                                  </th>
-                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Full Name
-                                  </th>
-                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Email
-                                  </th> 
-                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Role
-                                  </th>
-                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Date Created
-                                  </th>
-                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Actions
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {accounts.map((account) => (
-                                  <tr key={account.id}>
-                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                      {account.id}
+                            <div
+                              className="block w-full overflow-y-scroll"
+                              style={{ maxHeight: 500 }}
+                            >
+                              {/* Projects table */}
+                              <table className="items-center w-full bg-transparent border-collapse">
+                                <thead>
+                                  <tr>
+                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      ID
                                     </td>
-                                    <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                      {account.username}{" "}
-                                    </td>
-                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                      {account.first_name}{" "} {account.middle_name}{" "} {account.last_name}{" "}  {account.suffix}{" "}
-                                    </td>
-                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                      {account.email}
-                                    </td>
-                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                      {account.role}
-                                    </td>
-                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                      {moment(account.created_at).format("lll")}
-                                    </td>
-                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                      
-                                    <button
-                                        className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
-                                        title="View"
-                                        onClick={() =>
-                                          handleShowModal(account)
-                                        }
-                                      ></button>
-                                      {(user.role === "SUPER_ADMIN" ||
-                                        user.id ===
-                                        account.creator_id) && (
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Username
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Full Name
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Email
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Role
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Date Created
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Actions
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {accounts.map((account) => (
+                                    <tr key={account.id}>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {account.id}
+                                      </td>
+                                      <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {account.username}{" "}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {account.first_name}{" "}
+                                        {account.middle_name}{" "}
+                                        {account.last_name} {account.suffix}{" "}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {account.email}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {account.role}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {moment(account.created_at).format(
+                                          "lll"
+                                        )}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         <button
-                                          className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
-                                          title="Remove"
+                                          className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
+                                          title="View"
                                           onClick={() =>
-                                            handleDelete(
-                                              account.id
-                                            )
+                                            handleShowModal(account)
                                           }
                                         ></button>
-                                      )}
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
+                                        {(user.role === "SUPER_ADMIN" ||
+                                          user.id === account.creator_id) && (
+                                          <button
+                                            className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
+                                            title="Remove"
+                                            onClick={() =>
+                                              handleDelete(account.id)
+                                            }
+                                          ></button>
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
-                        </div>
                         </div>
                         <div
                           className={openTab === 2 ? "block" : "hidden"}
