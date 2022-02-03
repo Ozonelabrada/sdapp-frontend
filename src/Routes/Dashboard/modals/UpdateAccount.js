@@ -66,11 +66,11 @@ export default function UpdateAccount(props) {
             </div>
             {/*body*/}
             <div className="w-full container mx-auto py-8">
-              <div className="w-full mx-auto bg-white rounded shadow">
+              <div className="w-full mx-auto bg-white rounded ">
                 <div className="py-4 px-8">
                   <form onSubmit={handleSubmit}>
                     <div className="flex">
-                      <div className="w-1/2 mb-4">
+                      <div className="w-1/2 mb-4 mr-2">
                         <label
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
@@ -98,22 +98,14 @@ export default function UpdateAccount(props) {
                           <select
                             className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mdi mdi-chevron-down"
                             aria-label=".form-select-sm"
-                            onChange={(e) =>
-                              setSelUser((prevState) => ({
-                                ...prevState,
-                                [e.target.name]: (e.target.value),
-                              }))
-                            }
+                            onChange={handleChange}
                             name="role"
                             value={selUser.role}
                           >
-                            {userRole.length ? (
-                              userRole.map((role) => (
-                                <option key={role.id} value={role.role}>{role.role}</option>
-                              ))
-                            ) : (
-                              <option value=""> No Record Found!</option>
-                            )}
+                              <option value="USER">USER</option>
+                              <option value="ADMIN">ADMIN</option>
+                              <option value="SUPER_ADMIN">SUPER ADMIN</option>
+                              <option value="SYSTEM">SYSTEM</option>
                           </select>
                         </div>
                     </div>
@@ -211,7 +203,7 @@ export default function UpdateAccount(props) {
                     <div className="flex items-center justify-between m-auto w-80">
                       <button
                         type="submit"
-                        className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
+                        className="bg-pink-400 w-full hover:bg-gray-200 text-gray-800 font-bold  py-2 px-4 rounded-full"
                         
                       >
                         Update Now

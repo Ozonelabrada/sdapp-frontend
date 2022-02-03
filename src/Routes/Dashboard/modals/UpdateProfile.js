@@ -54,29 +54,9 @@ export default function UpdateProfile(props) {
             </div>
             {/*body*/}
             <div className="w-full container mx-auto py-8">
-              <div className="w-full mx-auto bg-white rounded shadow">
+              <div className="w-full mx-auto bg-white rounded ">
                 <div className=" px-8">
                   <form onSubmit={handleSubmit}>
-                    <div className="flex">
-                      <div className="mb-4">
-                        <label
-                          className="block text-grey-darker text-sm font-bold mb-2"
-                          htmlFor="email"
-                        >
-                          Username (Readonly)
-                        </label>
-                        <input
-                          required
-                          onChange={handleChange}
-                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                          readOnly
-                          value={user.username ?? ""}
-                          name="username"
-                          type="text"
-                          placeholder="Your username"
-                        />
-                      </div>
-                    </div>
                     <div className="flex mb-4">
                       <div className="w-1/2 mr-1">
                         <label
@@ -150,7 +130,7 @@ export default function UpdateProfile(props) {
                       </div>
                     </div>
                     <div className="flex mb-4">
-                      <div className="w-full mr-1">
+                      <div className="w-1/2 mr-1">
                         <label
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
@@ -160,18 +140,36 @@ export default function UpdateProfile(props) {
                         <input
                           readOnly
                           onChange={handleChange}
-                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                          className="appearance-none font-semibold border rounded w-full py-2 px-3 text-grey-darker"
                           name="email"
                           type="email"
                           value={user.email}
                           placeholder="Your email address"
                         />
                       </div>
+                      <div className="w-1/2 mb-4">
+                        <label
+                          className="block text-grey-darker text-sm font-bold mb-2"
+                          htmlFor="email"
+                        >
+                          Username (Readonly)
+                        </label>
+                        <input
+                          required
+                          onChange={handleChange}
+                          className="appearance-none border font-semibold rounded w-full py-2 px-3 text-grey-darker"
+                          readOnly
+                          value={user.username ?? ""}
+                          name="username"
+                          type="text"
+                          placeholder="Your username"
+                        />
+                      </div>
                     </div>
                     <div className="flex items-center justify-between m-auto w-80">
                       <button
                         type="submit"
-                        className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
+                        className="bg-pink-400 w-full hover:bg-gray-200 text-gray-700 font-bold  py-2 px-4 rounded-full"
                         type="submit"
                       >
                         Update Now

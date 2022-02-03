@@ -1,12 +1,14 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { updateViolationType } from "../../../api/endpoints/violType";
+import { BlockUxContext } from "../../../context/BlockUx";
 
 export default function UpdateViolationType(props) {
   const { show, data } = props;
   const { setShowModal } = show;
-  const { selectedViolationType, setSelectedViolationType, setViolationType } =
+  const { selectedViolationType, setSelectedViolationType, setViolationsType } =
     data;
+const { setIsLoading } = React.useContext(BlockUxContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,25 +18,31 @@ export default function UpdateViolationType(props) {
         [name]: value,
       };
     });
-    // console.log(e);
+    console.log(e);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    console.log(selectedViolationType.creator);
+    delete selectedViolationType.creator //Temporary deletion same with violation!!
     updateViolationType(selectedViolationType).then((res) => {
       if (res) {
-        setViolationType((prevState) => {
+        setViolationsType((prevState) => {
           const index = prevState.findIndex((element) => element.id === res.id);
           if (index > -1) {
             prevState[index] = res;
           }
           return prevState;
         });
+        setIsLoading(false);
         toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
       } else {
+        setIsLoading(false);
         toast.error("Update Failed!", { duration: 5000 });
       }
     });
+  console.log(selectedViolationType);
   };
 
   return (
