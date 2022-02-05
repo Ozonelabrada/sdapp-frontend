@@ -78,7 +78,7 @@ const Violations = () => {
         data = {{selectedViolation, setSelectedViolation, setViolations}}
         />
       )}
-      <div className="md:overflow-y-scroll relative md:ml-64 bg-blueGray-100">
+      <div className="md:overflow-y-auto relative md:ml-64 bg-blueGray-100">
         <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
           <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
             {/* Brand */}
@@ -171,9 +171,9 @@ const Violations = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="block w-full overflow-y-scroll" style={{maxHeight:500}}>
+                              <div className="h-full m-auto flex w-full overflow-y-scroll" style={{maxHeight:500}}>
                                 {/* Projects table */}
-                                <table className="items-center w-full bg-transparent border-collapse">
+                                <table className="items-center h-full w-full bg-transparent border-collapse">
                                   <thead>
                                     <tr>
                                       <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -199,7 +199,7 @@ const Violations = () => {
                                       </th>
                                     </tr>
                                   </thead>
-                                  <tbody>
+                                  <tbody className="h-full">
                                     {violations.map((violation) => (
                                       <tr key={violation.id}>
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">

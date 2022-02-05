@@ -15,7 +15,6 @@ const Events = () => {
 
   React.useEffect(() => {
     findAllEvent().then(setEvents);
-    console.log(events);
   }, []);
   const handleShowModal = (event) => {
     setSelectedEvent(event);

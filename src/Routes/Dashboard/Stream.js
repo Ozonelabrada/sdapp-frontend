@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UserDropdown from "./components/UserDropdown.js";
 import { Link, Outlet } from "react-router-dom";
-import UpdateProfile from "./modals/UpdateProfile.js";
 import { useTime } from "react-timer-hook";
+import { findAllViolator } from "../../api/endpoints/violator.js";
+import moment from "moment";
 
 export default function Stream() {
   const locale = "en";
   const [today, setDate] = React.useState(new Date());
+  const [violators, setViolators] = React.useState([]);
 
+  useEffect(()=>{
+    findAllViolator().then(setViolators);
+  })
   const {
     // seconds,
     minutes,
@@ -54,13 +59,12 @@ export default function Stream() {
           <div className="mx-auto w-full">
             {/* Card Body*/}
             <div className="w-full h-screen md:flex md:flex-wrap bg-blue-200 ">
-              <div className=" md:w-2/3 sm:w-full flex flex-col">
+              <div className=" xl:w-2/3 w-full flex flex-col">
                 <div
                   id=""
-                  className="relative md:h-4/6 sm:h-full md:w-full px-2 mr-auto ml-auto md:mt-14"
+                  className="relative md:h-4/6 h-screen w-full px-2 mr-auto ml-auto mt-14 sm:mt-20"
                 >
                   <iframe
-                    title="aa"
                     className="md:relative w-full md:pr-0 h-full"
                     src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -73,7 +77,7 @@ export default function Stream() {
                   </Link>
                 </div>
               </div>
-              <div className="sm:w-full md:w-1/3 md:pb-10 md:h-screen ">
+              <div className="sm:w-full hidden xl:block md:w-1/3 md:pb-10 md:h-screen ">
                 <div className="col-auto bg-bgstreamImage w-full -mt-3 h-1/2 uppercase -mb-4">
                   <div className="pt-5 font-bold pl-2 grid-rows-1">
                     <span>{date}</span>
@@ -90,8 +94,8 @@ export default function Stream() {
                     />
                   </div>
                 </div>
-                <div className="md:col-auto bg-black md:w-full md:h-3/4 text-white overflow-y-scroll">
-                  <div className="text-center h-full">
+                <div className="md:col-auto bg-black md:w-full h-3/5 text-white overflow-y-auto">
+                  <div className="text-center h-3/6">
                     <div className="md:col-span-3 border-white md:py-2 md:inline-flex md:justify-self-center md:h-auto uppercase">
                       {date}
                     </div>
@@ -107,96 +111,18 @@ export default function Stream() {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        {
+                          violators.map((violator)=>(
+                        <tr key={violator.id}>
                           <td className="border border-gray-300 ...">
-                            12:10 PM
+                          {moment(violator.timestamp).format("LT")}
                           </td>
-                          <td className="border border-gray-300 ...">1</td>
-                        </tr>
-                        <tr>
                           <td className="border border-gray-300 ...">
-                            10:30 AM
+                            {violator.involve_count}
                           </td>
-                          <td className="border border-gray-300 ...">3</td>
                         </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">1</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">1</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">1</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">1</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">1</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">1</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">1</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">2</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">2</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">2</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">2</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">2</td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-300 ...">
-                            9:04 AM
-                          </td>
-                          <td className="border border-gray-300 ...">8</td>
-                        </tr>
+                          )
+                          )}
                       </tbody>
                     </table>
                   </div>

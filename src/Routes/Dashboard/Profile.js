@@ -48,7 +48,6 @@ export default function Profile() {
                   <div className="w-full lg:-mt-80 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-white opacity-75 mx-6 lg:mx-0">
                     <div className="p-4 md:p-12 text-center lg:text-left">
                       {/* <!-- Image for mobile view--> */}
-                      <div className="block lg:hidden rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"></div>
                       <h1 className="text-3xl uppercase font-bold pt-8 lg:pt-0">
                         {user.first_name} {user.middle_name} {user.last_name}
                       </h1>
@@ -74,8 +73,7 @@ export default function Profile() {
                         {user.email}
                       </p>
                       <p className="pt-8 text-sm">
-                        Totally optional short description about yourself, what
-                        you do and so on.
+                        It is not our differences that divide us. It is our inability to recodnize, accept, and celebrate those differences. -Audre Lorde
                       </p>
 
                       <div className="pt-12 pb-8">

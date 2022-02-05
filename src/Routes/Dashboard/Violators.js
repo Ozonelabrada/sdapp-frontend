@@ -19,7 +19,7 @@ const Violators = () => {
           violators.filter((violator) => violator.id !== res.id)
         );
         toast.success("Successfully Deleted!");
-      } else toast.error("You do not have Permission to delete!");
+      } else toast.error("You do not have permission to delete!");
     })
   }
   return (
