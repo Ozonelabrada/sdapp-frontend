@@ -47,6 +47,7 @@ function App() {
   return (
     <BlockUx>
       <Toaster position="top-center" reverseOrder={true} />
+      <TopNav />
       {/* <TransitionGroup>
         <CSSTransition key={location.key} classNames="slide" timeout={2000}> */}
           <Routes>
