@@ -24,9 +24,11 @@ export default function Accounts() {
   const { setIsLoading } = React.useContext(BlockUxContext);
 
   React.useEffect(() => {
+    setIsLoading(true);
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
       findAllUser().then(setAccounts);
     else getMe().then(setAccounts);
+    setIsLoading(false);
   }, [user.id]);
 
   const handleDelete = (id) => {
@@ -38,7 +40,8 @@ export default function Accounts() {
         );
         setIsLoading(false);
         toast.success("Successfully Deleted!");
-      } else setIsLoading(false); toast.error("Delete Failed!");
+      } else setIsLoading(false);
+      toast.error("Delete Failed!");
     });
   };
 
@@ -90,7 +93,7 @@ export default function Accounts() {
       }));
     }
     setIsLoading(false);
-    toast.success("Successfully Registered!");
+    toast.success("Successfully Created!");
     setCredentials({});
     setAccounts((accounts) => {
       if (accounts.includes(user) === false) accounts.push(user);
@@ -178,7 +181,7 @@ export default function Accounts() {
                       </a>
                     </li>
                   </ul>
-                  <div className=" h-auto flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                  <div className=" h-auto flex flex-col min-w-0 break-words w-full mb-6 rounded">
                     <div className="flex-auto">
                       <div className="tab-content tab-space">
                         <div
@@ -205,7 +208,7 @@ export default function Accounts() {
                               </div>
                             </div>
                             <div
-                              className="block w-full overflow-y-scroll"
+                              className="block w-full overflow-y-auto"
                               style={{ maxHeight: 500 }}
                             >
                               {/* Projects table */}
@@ -229,6 +232,9 @@ export default function Accounts() {
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Date Created
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Date Updated
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Actions
@@ -261,24 +267,42 @@ export default function Accounts() {
                                         )}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        <button
-                                          className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
-                                          title="View"
-                                          onClick={() =>
-                                            handleShowModal(account)
-                                          }
-                                        ></button>
-                                        {(user.role === "SUPER_ADMIN" ||
-                                          user.id === account.creator_id) && (
+                                        {moment(account.updated_at).format(
+                                          "lll"
+                                        )}
+                                      </td>
+                                      {user.id === account.creator_id ||
+                                      user.role === "SUPER_ADMIN" ? (
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          <button
+                                            className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
+                                            title="Edit"
+                                            onClick={() =>
+                                              handleShowModal(account)
+                                            }
+                                          ></button>
                                           <button
                                             className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
-                                            title="Remove"
+                                            title="Delete"
                                             onClick={() =>
                                               handleDelete(account.id)
                                             }
                                           ></button>
-                                        )}
-                                      </td>
+                                        </td>
+                                      ) : (
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          <button
+                                            disabled
+                                            className="ml-2 bg-gray-400 text-white font-bold py-1 px-2 border rounded mdi mdi-pencil-box"
+                                            title="Edit Disabled"
+                                          ></button>
+                                          <button
+                                            disabled
+                                            className="ml-2 bg-gray-400 text-white font-bold py-1 px-2 border rounded mdi mdi-delete-circle inline-flex"
+                                            title="Remove Disabled"
+                                          ></button>
+                                        </td>
+                                      )}
                                     </tr>
                                   ))}
                                 </tbody>
@@ -325,16 +349,15 @@ export default function Accounts() {
                                           className="block text-grey-darker text-sm font-bold mb-2"
                                           htmlFor="last_name"
                                         >
-                                          Middle Initial
+                                          Middle Name
                                         </label>
                                         <input
-                                          required
                                           onChange={setCredentialsValues}
                                           value={credentials.middle_name || ""}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="middle_name"
                                           type="text"
-                                          placeholder="Your middle initial"
+                                          placeholder="Your middle name"
                                         />
                                       </div>
                                     </div>

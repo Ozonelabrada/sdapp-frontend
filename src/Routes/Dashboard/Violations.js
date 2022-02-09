@@ -26,8 +26,8 @@ const Violations = () => {
   const [selectedViolation, setSelectedViolation] = React.useState(null);
 
   React.useEffect(() => {
-      findAllViolation().then(setViolations);
-      findAllViolationType().then(setViolationsType);
+    findAllViolation().then(setViolations);
+    findAllViolationType().then(setViolationsType);
   }, []);
   const handleShowModal = (violation) => {
     setSelectedViolation(violation);
@@ -51,7 +51,7 @@ const Violations = () => {
       // force return to false
       toast.error("Saving Failed!");
     }
-    toast.success("Successfully Saved!");
+    toast.success("Successfully Created!");
     setViolation({});
     setViolations((violations) => {
       if (violations.includes(viol) === false) violations.push(viol);
@@ -73,9 +73,9 @@ const Violations = () => {
   return (
     <>
       {showModal && selectedViolation !== null && (
-        <UpdateViolation 
-        show = {{ showModal, setShowModal }} 
-        data = {{selectedViolation, setSelectedViolation, setViolations}}
+        <UpdateViolation
+          show={{ showModal, setShowModal }}
+          data={{ selectedViolation, setSelectedViolation, setViolations }}
         />
       )}
       <div className="md:overflow-y-auto relative md:ml-64 bg-blueGray-100">
@@ -144,112 +144,133 @@ const Violations = () => {
                       </a>
                     </li>
                   </ul>
-                  <div className=" h-auto flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                  <div className=" h-auto flex flex-col min-w-0 break-words w-full mb-6 rounded">
                     <div className="flex-auto">
                       <div className="tab-content tab-space">
                         <div
                           className={openTab === 1 ? "block" : "hidden"}
                           id="link1"
                         >
-                          
-                            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-                              <div className="rounded-t mb-0 px-4 py-3 border-0">
-                                <div className="flex flex-wrap items-center">
-                                  <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                                    <h3 className="font-semibold text-base text-blueGray-700">
-                                     List of Violations
-                                    </h3>
-                                  </div>
-                                  <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                                    <button
-                                      className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-                                      type="button"
-                                      style={{ transition: "all .15s ease" }}
-                                    >
-                                      See all
-                                    </button>
-                                  </div>
+                          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                            <div className="rounded-t mb-0 px-4 py-3 border-0">
+                              <div className="flex flex-wrap items-center">
+                                <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                                  <h3 className="font-semibold text-base text-blueGray-700">
+                                    List of Violations
+                                  </h3>
+                                </div>
+                                <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                                  <button
+                                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                    type="button"
+                                    style={{ transition: "all .15s ease" }}
+                                  >
+                                    See all
+                                  </button>
                                 </div>
                               </div>
-                              <div className="h-full m-auto flex w-full overflow-y-scroll" style={{maxHeight:500}}>
-                                {/* Projects table */}
-                                <table className="items-center h-full w-full bg-transparent border-collapse">
-                                  <thead>
-                                    <tr>
-                                      <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        ID
+                            </div>
+                            <div
+                              className="h-full m-auto flex w-full overflow-y-scroll"
+                              style={{ maxHeight: 500 }}
+                            >
+                              {/* Projects table */}
+                              <table className="items-center h-full w-full bg-transparent border-collapse">
+                                <thead>
+                                  <tr>
+                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      ID
+                                    </td>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Name
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Type
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Description
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Location
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Date Created
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Date Updated
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Actions
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody className="h-full">
+                                  {violations.map((violation) => (
+                                    <tr key={violation.id}>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.id}
                                       </td>
-                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Name
-                                      </th>
-                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Type
-                                      </th>
-                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Description
-                                      </th> 
-                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Location
-                                      </th>
-                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Date Created
-                                      </th>
-                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Actions
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody className="h-full">
-                                    {violations.map((violation) => (
-                                      <tr key={violation.id}>
+                                      <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.name}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.type.type}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.description}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.location}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {moment(violation.created_at).format(
+                                          "lll"
+                                        )}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {moment(violation.updated_at).format(
+                                          "lll"
+                                        )}
+                                      </td>
+                                      {user.id === violation.creator_id ||
+                                      user.role === "SUPER_ADMIN" ? (
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                          {violation.id}
-                                        </td>
-                                        <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                          {violation.name}
-                                        </td>
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                          {violation.type.type}
-                                        </td>
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                          {violation.description}
-                                        </td>
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                          {violation.location}
-                                        </td>
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                          {moment(violation.created_at).format("lll")}
-                                        </td>
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                          
-                                        <button
+                                          <button
                                             className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
-                                            title="View"
+                                            title="Edit"
                                             onClick={() =>
                                               handleShowModal(violation)
                                             }
                                           ></button>
-                                          {(user.role === "SUPER_ADMIN" ||
-                                            user.id ===
-                                            violation.creator_id) && (
-                                            <button
-                                              className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
-                                              title="Remove"
-                                              onClick={() =>
-                                                handleDeleteViolation(
-                                                  violation.id
-                                                )
-                                              }
-                                            ></button>
-                                          )}
+                                          <button
+                                            className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
+                                            title="Delete"
+                                            onClick={() =>
+                                              handleDeleteViolation(
+                                                violation.id
+                                              )
+                                            }
+                                          ></button>
                                         </td>
-                                      </tr>
-                                    ))}
-                                  </tbody>
-                                </table>
-                              </div>
+                                      ) : (
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          <button
+                                            className="ml-2 bg-gray-400  text-white font-bold py-1 px-2 border rounded mdi mdi-pencil-box"
+                                            title="Edit Disabled"
+                                          ></button>
+                                          <button
+                                            className="ml-2 bg-gray-400 text-white font-bold py-1 px-2 border  rounded mdi mdi-delete-circle inline-flex"
+                                            title="Remove Disabled"
+                                          ></button>
+                                        </td>
+                                      )}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
                             </div>
                           </div>
+                        </div>
                         <div
                           className={openTab === 2 ? "block" : "hidden"}
                           id="link2"
@@ -344,7 +365,6 @@ const Violations = () => {
                                           Description
                                         </label>
                                         <textarea
-                                          required
                                           onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="description"

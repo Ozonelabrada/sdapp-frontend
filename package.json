@@ -39,6 +39,7 @@
     "react-scripts": "4.0.3",
     "react-timer-hook": "^3.0.5",
     "react-transition-group": "^4.4.2",
+    "tailwind-react-ui": "^0.8.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
     "web-vitals": "^1.1.2"
   },

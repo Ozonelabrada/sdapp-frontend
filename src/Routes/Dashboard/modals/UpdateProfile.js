@@ -80,7 +80,7 @@ export default function UpdateProfile(props) {
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="last_name"
                         >
-                          Middle Initial
+                          Middle Name
                         </label>
                         <input
                           required
@@ -89,7 +89,7 @@ export default function UpdateProfile(props) {
                           value={user.middle_name ?? ""}
                           name="middle_name"
                           type="text"
-                          placeholder="Your middle initial"
+                          placeholder="Your middle name"
                         />
                       </div>
                     </div>
@@ -135,7 +135,7 @@ export default function UpdateProfile(props) {
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
                         >
-                          Email Address (Readonly)
+                          Email Address (Read-only)
                         </label>
                         <input
                           readOnly
@@ -152,7 +152,7 @@ export default function UpdateProfile(props) {
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
                         >
-                          Username (Readonly)
+                          Username (Read-only)
                         </label>
                         <input
                           required

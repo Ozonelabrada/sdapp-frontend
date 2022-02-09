@@ -72,7 +72,7 @@ const ViolationType = () => {
       }));
     }
     setIsLoading(false);
-    toast.success("Successfully Saved!");
+    toast.success("Successfully Created!");
     setViolationType({});
     setViolationsType((violationsType) => {
       if (violationsType.includes(violType) === false)
@@ -182,7 +182,7 @@ const ViolationType = () => {
                       </a>
                     </li>
                   </ul>
-                  <div className=" h-auto flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                  <div className=" h-auto flex flex-col min-w-0 break-words w-full mb-6 rounded">
                     <div className="flex-auto">
                       <div className="tab-content tab-space">
                         <div
@@ -229,6 +229,9 @@ const ViolationType = () => {
                                       Date Created
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Date Updated
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Actions
                                     </th>
                                   </tr>
@@ -251,6 +254,13 @@ const ViolationType = () => {
                                         ).format("lll")}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {moment(
+                                          violationType.updated_at
+                                        ).format("lll")}
+                                      </td>
+                                        {(user.role === "SUPER_ADMIN" ||
+                                          user.id === violationType.creator_id) ? (
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         <button
                                           className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
                                           title="View"
@@ -258,9 +268,6 @@ const ViolationType = () => {
                                             handleShowModal(violationType)
                                           }
                                         ></button>
-                                        {(user.role === "SUPER_ADMIN" ||
-                                          user.id ===
-                                            violationType.creator_id) && (
                                           <button
                                             className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
                                             title="Remove"
@@ -270,8 +277,19 @@ const ViolationType = () => {
                                               )
                                             }
                                           ></button>
-                                        )}
                                       </td>
+                                        ):(
+                                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                            <button
+                                              className="ml-2 bg-gray-400 text-white font-bold py-1 px-2 border rounded mdi mdi-pencil-box"
+                                              title="View"
+                                            ></button>
+                                              <button
+                                                className="ml-2 bg-gray-400  text-white font-bold py-1 px-2 border  rounded mdi mdi-delete-circle inline-flex"
+                                                title="Remove"
+                                              ></button>
+                                          </td>
+                                        )}
                                     </tr>
                                   ))}
                                 </tbody>

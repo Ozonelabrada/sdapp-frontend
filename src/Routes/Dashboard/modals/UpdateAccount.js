@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { findAllUser, updateUser } from "../../../api/endpoints/user";
 import { BlockUxContext } from "../../../context/BlockUx";
+import { UserContext } from "../../../context/userContext";
+// import { Checkbox } from "tailwind-react-ui";
 
 export default function UpdateAccount(props) {
   const { show, data } = props;
   const { setShowModal } = show;
   const { selUser, setSelUser, setAccounts } = data;
   const [userRole, setUserRole] = useState([]);
-  const {setIsLoading} = React.useContext(BlockUxContext);
+  const { setIsLoading } = React.useContext(BlockUxContext);
+  const { user, setUser } = React.useContext(UserContext);
 
   React.useEffect(() => {
     findAllUser().then(setUserRole);
@@ -24,6 +27,7 @@ export default function UpdateAccount(props) {
     });
     // console.log(e);
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -37,11 +41,11 @@ export default function UpdateAccount(props) {
           return prevState;
         });
         setIsLoading(false);
-        toast.success("Updated Successfuly" , {duration:5000});
+        toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
       } else {
         setIsLoading(false);
-        toast.error("Failure to Update!" , {duration:5000} );
+        toast.error("Failure to Update!", { duration: 5000 });
       }
     });
   };
@@ -75,7 +79,7 @@ export default function UpdateAccount(props) {
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
                         >
-                          Username (Readonly)
+                          Username (Read-only)
                         </label>
                         <input
                           required
@@ -88,13 +92,14 @@ export default function UpdateAccount(props) {
                           placeholder="Your username"
                         />
                       </div>
-                        <div className="w-1/2">
-                          <label
-                            className="block text-grey-darker text-sm font-bold mb-2"
-                            htmlFor="location"
-                          >
-                            Type
-                          </label>
+                      <div className="w-1/2">
+                        <label
+                          className="block text-grey-darker text-sm font-bold mb-2"
+                          htmlFor="location"
+                        >
+                          Role
+                        </label>
+                        {user.role === "SUPER_ADMIN" ? (
                           <select
                             className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mdi mdi-chevron-down"
                             aria-label=".form-select-sm"
@@ -102,12 +107,25 @@ export default function UpdateAccount(props) {
                             name="role"
                             value={selUser.role}
                           >
-                              <option value="USER">USER</option>
-                              <option value="ADMIN">ADMIN</option>
-                              <option value="SUPER_ADMIN">SUPER ADMIN</option>
-                              <option value="SYSTEM">SYSTEM</option>
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="SUPER_ADMIN">SUPER ADMIN</option>
+                            <option value="SYSTEM">SYSTEM</option>
                           </select>
-                        </div>
+                        ) : (
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mdi mdi-chevron-down"
+                            aria-label=".form-select-sm"
+                            onChange={handleChange}
+                            name="role"
+                            value={selUser.role}
+                          >
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="SYSTEM">SYSTEM</option>
+                          </select>
+                        )}
+                      </div>
                     </div>
                     <div className="flex mb-4">
                       <div className="w-1/2 mr-1">
@@ -132,7 +150,7 @@ export default function UpdateAccount(props) {
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="last_name"
                         >
-                          Middle Initial
+                          Middle Name
                         </label>
                         <input
                           required
@@ -141,7 +159,7 @@ export default function UpdateAccount(props) {
                           value={selUser.middle_name ?? ""}
                           name="middle_name"
                           type="text"
-                          placeholder="Your middle initial"
+                          placeholder="Your middle name"
                         />
                       </div>
                     </div>
@@ -187,7 +205,7 @@ export default function UpdateAccount(props) {
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
                         >
-                          Email Address (Readonly)
+                          Email Address (Read-only)
                         </label>
                         <input
                           readOnly
@@ -199,12 +217,21 @@ export default function UpdateAccount(props) {
                           placeholder="Your email address"
                         />
                       </div>
+                      {/* <div className="w-1/4 flex m-auto text-center">
+                        <Checkbox
+                          onChange={handleChange}
+                          checkbox
+                          name="isActive"
+                          value="1"
+                          label="Selected"
+                          defaultChecked
+                        />
+                      </div> */}
                     </div>
                     <div className="flex items-center justify-between m-auto w-80">
                       <button
                         type="submit"
                         className="bg-pink-400 w-full hover:bg-gray-200 text-gray-800 font-bold  py-2 px-4 rounded-full"
-                        
                       >
                         Update Now
                       </button>

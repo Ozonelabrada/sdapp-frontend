@@ -72,6 +72,10 @@ export default function Profile() {
                         </svg>
                         {user.email}
                       </p>
+                      <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start italic">
+                      <span class="mdi mdi-account-key h-4 fill-current text-green-700 pr-4"></span>
+                        {user.role}
+                      </p>
                       <p className="pt-8 text-sm">
                         It is not our differences that divide us. It is our inability to recodnize, accept, and celebrate those differences. -Audre Lorde
                       </p>
