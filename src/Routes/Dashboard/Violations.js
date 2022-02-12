@@ -42,6 +42,7 @@ const Violations = () => {
     type_id: null,
     description: "",
     location: "",
+    name: ""
   });
 
   const handleSubmitViol = async (e) => {
@@ -65,19 +66,15 @@ const Violations = () => {
   // delete violationtion
   const handleDeleteViolation = (id) => {
     setIsLoading(true);
-      deleteViolation(id).then((res) => {
-        if (res) {
-          if (res.status > 199 && res.status < 300) return res.data;
-          if (res.data.code) toast.error(findError(res.data.code));
-          return null;
-          setViolations((violations) =>
-            violations.filter((violation) => violation.id !== res.id)
-          );
-          setIsLoading(false);
-          toast.success("Successfully Removed!");
-        } else setIsLoading(false);
-        toast.error("FAILED! Already Have Transactions!");
-      });
+    deleteViolation(id).then((res) => {
+      if (res) {
+        setViolations((violations) =>
+          violations.filter((violation) => violation.id !== res.id)
+        );
+        setIsLoading(false);
+        toast.success("Successfully Removed!");
+      } else setIsLoading(false);
+    });
   };
   return (
     <>
@@ -242,7 +239,7 @@ const Violations = () => {
                                         )}
                                       </td>
                                       {user.id === violation.creator_id ||
-                                      user.role === "SUPER_ADMIN" ? (
+                                        user.role === "SUPER_ADMIN" ? (
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                           <button
                                             className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
@@ -308,6 +305,7 @@ const Violations = () => {
                                           required
                                           type="text"
                                           name="name"
+                                          value={violationValues.name || ""}
                                           onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           placeholder="Violation Name Here..."
@@ -326,6 +324,8 @@ const Violations = () => {
                                           className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                           aria-label=".form-select-sm"
                                           placeholder="Type here"
+                                          required
+                                          value={violationValues.type_id || ""}
                                           onChange={(e) =>
                                             setViolation((prevState) => ({
                                               ...prevState,
@@ -336,6 +336,7 @@ const Violations = () => {
                                           }
                                           name="type_id"
                                         >
+                                          <option value="" />
                                           {violationsType.map(
                                             (violationtype) => (
                                               <option
@@ -357,6 +358,7 @@ const Violations = () => {
                                         </label>
                                         <input
                                           required
+                                          value={violationValues.location || ""}
                                           onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="location"
@@ -379,6 +381,7 @@ const Violations = () => {
                                           name="description"
                                           type="text"
                                           rows={5}
+                                          value={violationValues.description || ""}
                                           placeholder="Description..."
                                         />
                                       </div>

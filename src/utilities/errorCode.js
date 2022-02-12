@@ -14,7 +14,7 @@ const errorCodes = [
   },
   {
     code:"P2003",
-    message: "Failed! Unable to Delete it has child records."
+    message: "Unable to Delete. Data has child records."
   }
 ];
 

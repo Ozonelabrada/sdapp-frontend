@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import useForm from "../../hooks/useForm.js";
 import { registerUser } from "../../api/endpoints/auth.js";
 import {
+  deleteViolationType,
   findAllViolationType,
   findOwnViolationType,
   storeViolationType,
@@ -93,16 +94,14 @@ const ViolationType = () => {
 
   const handleDeleteViolation = (id) => {
     setIsLoading(true);
-    deleteViolation(id).then((res) => {
+    deleteViolationType(id).then((res) => {
       if (res) {
         setViolationsType((violationType) =>
           violationsType.filter((violationType) => violationType.id !== res.id)
         );
-        setIsLoading(false);
         toast.success("Deleted Successfully!");
-      } else setIsLoading(false);
-      toast.error("You do not have Permission to delete!");
-    });
+      }
+    }).finally(() => setIsLoading(false));
   };
   return (
     <>
@@ -258,38 +257,27 @@ const ViolationType = () => {
                                           violationType.updated_at
                                         ).format("lll")}
                                       </td>
-                                        {(user.role === "SUPER_ADMIN" ||
-                                          user.id === violationType.creator_id) ? (
+
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         <button
-                                          className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
+                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id) ? "bg-blue-500 hover:bg-blue-700 border border-blue-500" : "bg-gray-400"} text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
                                           title="View"
+                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id)}
                                           onClick={() =>
                                             handleShowModal(violationType)
                                           }
                                         ></button>
-                                          <button
-                                            className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
-                                            title="Remove"
-                                            onClick={() =>
-                                              handleDeleteViolation(
-                                                violationType.id
-                                              )
-                                            }
-                                          ></button>
+                                        <button
+                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id) ? "bg-red-500 hover:bg-red-700  border border-red-500" : "bg-gray-400"}  text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
+                                          title="Remove"
+                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id)}
+                                          onClick={() =>
+                                            handleDeleteViolation(
+                                              violationType.id
+                                            )
+                                          }
+                                        ></button>
                                       </td>
-                                        ):(
-                                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            <button
-                                              className="ml-2 bg-gray-400 text-white font-bold py-1 px-2 border rounded mdi mdi-pencil-box"
-                                              title="View"
-                                            ></button>
-                                              <button
-                                                className="ml-2 bg-gray-400  text-white font-bold py-1 px-2 border  rounded mdi mdi-delete-circle inline-flex"
-                                                title="Remove"
-                                              ></button>
-                                          </td>
-                                        )}
                                     </tr>
                                   ))}
                                 </tbody>
