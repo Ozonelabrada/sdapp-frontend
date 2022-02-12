@@ -23,6 +23,7 @@ import Violators from "./Routes/Dashboard/Violators";
 import Gallery from "./Routes/Gallery";
 import Private from "./Routes/Private";
 import { findError } from "./utilities/errorCode";
+import AiConfig from "./Routes/Dashboard/AiConfig";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 // import VideoStream from "./Routes/VideoStream";
@@ -81,6 +82,10 @@ function App() {
               <Route
                 path="violation"
                 element={<Private component={Violations} />}
+              />
+              <Route
+                path="ai-config"
+                element={<Private component={AiConfig} />}
               />
               <Route
                 path="violation-type"

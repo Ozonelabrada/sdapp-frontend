@@ -37,14 +37,10 @@ export default function UpdateViolation(props) {
           }
           return prevState;
         });
-        setIsLoading(false);
         toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
-      } else {
-        setIsLoading(false);
-        toast.error("Update Failed!", { duration: 5000 });
       }
-    });
+    }).finally(() => setIsLoading(false));
   };
   return (
     <>

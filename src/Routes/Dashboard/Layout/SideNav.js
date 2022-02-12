@@ -133,6 +133,17 @@ export default function SideNav() {
                       Violation Type
                     </Link>
                   </li>
+                  {/* <li className="inline-flex">
+                    <Link
+                      className={`${isActive(
+                        "ai-config"
+                      )} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                      to="/dashboard/ai-config"
+                    >
+                      <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
+                      Ai Configuration
+                    </Link>
+                  </li> */}
                 </>
               )}
             </ul>

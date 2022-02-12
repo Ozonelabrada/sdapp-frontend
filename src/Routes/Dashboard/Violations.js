@@ -71,10 +71,9 @@ const Violations = () => {
         setViolations((violations) =>
           violations.filter((violation) => violation.id !== res.id)
         );
-        setIsLoading(false);
         toast.success("Successfully Removed!");
-      } else setIsLoading(false);
-    });
+      }
+    }).finally(() => setIsLoading(false));
   };
   return (
     <>
@@ -238,19 +237,19 @@ const Violations = () => {
                                           "lll"
                                         )}
                                       </td>
-                                      {user.id === violation.creator_id ||
-                                        user.role === "SUPER_ADMIN" ? (
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                           <button
-                                            className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
+                                            className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violation.creator_id) ? "bg-blue-500 hover:bg-blue-700 border border-blue-500" : "bg-gray-400"} text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
                                             title="Edit"
+                                            disabled={!(user.role === "SUPER_ADMIN" || user.id === violation.creator_id)}
                                             onClick={() =>
                                               handleShowModal(violation)
                                             }
                                           ></button>
                                           <button
-                                            className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
+                                            className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violation.creator_id) ? "bg-red-500 hover:bg-red-700  border border-red-500" : "bg-gray-400"}   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
                                             title="Delete"
+                                            disabled={!(user.role === "SUPER_ADMIN" || user.id === violation.creator_id)}
                                             onClick={() =>
                                               handleDeleteViolation(
                                                 violation.id
@@ -258,18 +257,6 @@ const Violations = () => {
                                             }
                                           ></button>
                                         </td>
-                                      ) : (
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                          <button
-                                            className="ml-2 bg-gray-400  text-white font-bold py-1 px-2 border rounded mdi mdi-pencil-box"
-                                            title="Edit Disabled"
-                                          ></button>
-                                          <button
-                                            className="ml-2 bg-gray-400 text-white font-bold py-1 px-2 border  rounded mdi mdi-delete-circle inline-flex"
-                                            title="Remove Disabled"
-                                          ></button>
-                                        </td>
-                                      )}
                                     </tr>
                                   ))}
                                 </tbody>
