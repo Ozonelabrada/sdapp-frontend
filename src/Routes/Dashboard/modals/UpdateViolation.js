@@ -37,7 +37,7 @@ export default function UpdateViolation(props) {
         toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
       }
-    }).finally(() => setIsLoading(false));
+    })
   };
   return (
     <>
