@@ -11,64 +11,19 @@ export default function Login() {
   const location = useLocation();
 
   // create form states
-  const [credentials, setCredentials] = useForm({
+  const [credentials, setCredentials, setCredentialsValues] = useForm({
     email: "",
     password: "",
   });
 
-  // create login states
-  const [loginState, , setLoginState] = useForm({
-    isLoading: false,
-    isAuthenticated: false,
-    hasError: false,
-    message: "",
-  });
-
-  //create a function to toggle hasError
-  const toggleHasError = () => {
-    setLoginState({
-      ...loginState,
-      hasError: !loginState.hasError,
-      message: "",
-    });
-  };
-
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    //set isLoading to true
-    setLoginState((loginState) => ({
-      ...loginState,
-      isLoading: true,
-      hasError: false,
-      isAuthenticated: false,
-      message: "",
-    }));
-
     const user = await loginUser(credentials);
-    //set isLoading to false then set hasError to true if there is an error
-    if (user === (null || undefined)) {
-      toast.error("Login Failed!");
-      // force return to false
-      return setLoginState((loginState) => ({
-        ...loginState,
-        isLoading: false,
-        hasError: true,
-      }));
-    }
-    toast.success("Successfuly Logged in.")
-    //set isLoading to false then set isAuthenticated to true if there is no error
-    setLoginState((loginState) => ({
-      ...loginState,
-      isLoading: false,
-      hasError: false,
-      isAuthenticated: true,
-    }));
-
+    if (!user) return // force return to false
+    toast.success("Successfuly Logged in.");
     //update user context after 1sec of delay
     setTimeout(() => setUser(user), 1000);
-
     //save token to local storage
     localStorage.setItem("token", user.token);
   };
@@ -86,7 +41,6 @@ export default function Login() {
   }
 
   return (
-
     <div className="overflow-y-hidden">
       <div className="h-screen w-full flex flex-wrap bg-bgLogin pt-2">
         <div className="w-full md:w-1/2 flex flex-col">
@@ -103,6 +57,7 @@ export default function Login() {
                 <input
                   name="email"
                   type="email"
+                  required
                   placeholder="your@email.com"
                   onChange={setCredentials}
                   className="shadow appearance-none border rounded w-full py-2 px-3 mt-1 leading-tight focus:outline-none focus:shadow-outline"
@@ -115,6 +70,7 @@ export default function Login() {
                 <input
                   name="password"
                   type="password"
+                  required
                   placeholder="Password"
                   onChange={setCredentials}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"

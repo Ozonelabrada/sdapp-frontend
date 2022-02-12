@@ -8,13 +8,17 @@ import UserDropdown from "../components/UserDropdown.js";
 export default function SideNav() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
   const { user, setUser } = React.useContext(UserContext);
-  const location = useLocation()
+  const location = useLocation();
 
-  const isActive = React.useCallback(path => path === location.pathname.split("/").pop()? "text-pink-500" : "", [location.pathname]);
-  
+  const isActive = React.useCallback(
+    (path) =>
+      path === location.pathname.split("/").pop() ? "text-pink-500" : "",
+    [location.pathname]
+  );
+
   return (
     <>
-      <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+      <nav className="md:overflow-y-auto md:left-0 md:block md:fixed md:top-0 md:bottom-0  md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
         <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
           {/* Toggler */}
           <button
@@ -68,12 +72,14 @@ export default function SideNav() {
               </div>
             </div>
             {/* Form */}
-         
+
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
               <li className="items-center">
                 <Link
-                  className={`${isActive("dashboard")} text-xs uppercase py-3 font-bold block`}
+                  className={`${isActive(
+                    "dashboard"
+                  )} text-xs uppercase py-3 font-bold block`}
                   to="/dashboard"
                 >
                   <i className="fas fa-tv opacity-75 mr-2 text-sm"></i>{" "}
@@ -83,43 +89,61 @@ export default function SideNav() {
 
               <li className="items-center">
                 <Link
-                  className={`${isActive("profile")} hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  className={`${isActive(
+                    "profile"
+                  )} hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
                   to="/dashboard/profile"
                 >
                   <i className="fas fa-newspaper text-blueGray-400 mr-2 text-sm"></i>{" "}
                   Profile
                 </Link>
               </li>
-
-              <li className="items-center">
-                <Link
-                  className={`${isActive("accounts")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
-                  to="/dashboard/accounts"
-                >
-                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i>{" "}
-                  Accounts
-                </Link>
-              </li>
               {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
                 <>
                   <li className="items-center">
-                <Link
-                  className={`${isActive("violation")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
-                  to="/dashboard/violation"
-                >
-                  <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i>{" "}
-                  Violations
-                </Link>
+                    <Link
+                      className={`${isActive(
+                        "accounts"
+                      )} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                      to="/dashboard/accounts"
+                    >
+                      <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i>{" "}
+                      Accounts
+                    </Link>
+                  </li>
+                  <li className="items-center">
+                    <Link
+                      className={`${isActive(
+                        "violation"
+                      )} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                      to="/dashboard/violation"
+                    >
+                      <i className="fas fa-user-circle text-blueGray-400 mr-2 text-sm"></i>{" "}
+                      Violations
+                    </Link>
                   </li>
                   <li className="inline-flex">
                     <Link
-                  className={`${isActive("violation-type")} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
-                  to="/dashboard/violation-type"
-                >
+                      className={`${isActive(
+                        "violation-type"
+                      )} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                      to="/dashboard/violation-type"
+                    >
                       <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
                       Violation Type
                     </Link>
                   </li>
+                  {/* <li className="inline-flex">
+                    <Link
+                      className={`${isActive(
+                        "ai-config"
+                      )} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                      to="/dashboard/ai-config"
+                    >
+                      <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
+                      Ai Configuration
+                    </Link>
+                  </li> */}
                 </>
               )}
             </ul>
@@ -133,23 +157,42 @@ export default function SideNav() {
             <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
               <li className="inline-flex">
                 <Link
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                  to="/stream"
+                  className={`${isActive(
+                    "stream"
+                  )} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                  to="/dashboard/stream"
                 >
                   <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
-                  Monitoring of KITA APP
+                  Stream
                 </Link>
               </li>
 
-              <li className="inline-flex">
-                <Link
-                  className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
-                  to="/dashboard/event"
-                >
-                  <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i>{" "}
-                  Events
-                </Link>
-              </li>
+              {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
+                <>
+                  <li className="inline-flex">
+                    <Link
+                      className={`${isActive(
+                        "violators"
+                      )} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                      to="/dashboard/violators"
+                    >
+                      <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i>{" "}
+                      Violators
+                    </Link>
+                  </li>
+                  <li className="inline-flex">
+                    <Link
+                      className={`${isActive(
+                        "events"
+                      )} stext-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block`}
+                      to="/dashboard/events"
+                    >
+                      <i className="fab fa-css3-alt mr-2 text-blueGray-400 text-base"></i>{" "}
+                      Events
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

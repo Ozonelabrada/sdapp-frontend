@@ -3,7 +3,7 @@ import UserDropdown from "./components/UserDropdown.js";
 import { Link, Outlet } from "react-router-dom";
 import { UserContext } from "../../context/userContext.js";
 import useForm from "../../hooks/useForm.js";
-import { findUser, updateUser } from "../../api/endpoints/user.js";
+import { findUser, getMe, updateUser } from "../../api/endpoints/user.js";
 import UpdateProfile from "./modals/UpdateProfile.js";
 
 export default function Profile() {
@@ -12,27 +12,16 @@ export default function Profile() {
   const [accounts, setAccounts] = useState([]);
 
   React.useEffect(() => {
-    if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
-      findUser().then(setAccounts);
+      getMe().then(setAccounts);
   }, []);
 
-  // create form states
-
-  const [credentials, setCredentials] = useForm({
-    email: "",
-    username: "",
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    suffix: "",
-  });
   return (
     <>
       {showModal && <UpdateProfile 
       show={{ showModal, setShowModal }}
       />}
-      <div className="relative md:ml-64 bg-blueGray-100">
-        <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
+      <div className="relative md:ml-64 bg-blueGray-100 ">
+        <nav className="absolute left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
           <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
             {/* Brand */}
             <Link
@@ -59,7 +48,6 @@ export default function Profile() {
                   <div className="w-full lg:-mt-80 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-white opacity-75 mx-6 lg:mx-0">
                     <div className="p-4 md:p-12 text-center lg:text-left">
                       {/* <!-- Image for mobile view--> */}
-                      <div className="block lg:hidden rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"></div>
                       <h1 className="text-3xl uppercase font-bold pt-8 lg:pt-0">
                         {user.first_name} {user.middle_name} {user.last_name}
                       </h1>
@@ -84,9 +72,12 @@ export default function Profile() {
                         </svg>
                         {user.email}
                       </p>
+                      <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start italic">
+                      <span class="mdi mdi-account-key h-4 fill-current text-green-700 pr-4"></span>
+                        {user.role}
+                      </p>
                       <p className="pt-8 text-sm">
-                        Totally optional short description about yourself, what
-                        you do and so on.
+                        It is not our differences that divide us. It is our inability to recodnize, accept, and celebrate those differences. -Audre Lorde
                       </p>
 
                       <div className="pt-12 pb-8">

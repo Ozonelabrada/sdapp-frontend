@@ -1,82 +1,82 @@
 import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
+import { useLocation } from "react-router-dom";
 import { UserContext } from "../../context/userContext.js";
-import {
-  deleteUser,
-  findAllUser,
-  getMe,
-} from "../../api/endpoints/user.js";
 import useForm from "../../hooks/useForm.js";
-import { registerUser } from "../../api/endpoints/auth.js";
-import UpdateAccount from "./modals/UpdateAccount.js";
 import moment from "moment";
 import toast from "react-hot-toast";
+import { BlockUxContext } from "../../context/BlockUx/index.js";
+import { findError } from "../../utilities/errorCode";
+import { deleteAi, findAllAi, getMyAi, storeAi } from "../../api/endpoints/aiConfig.js";
+// import { Checkbox, } from '@mui/material';
 
-export default function Accounts() {
+export default function AiConfig() {
   const [openTab, setOpenTab] = React.useState(1);
-  const [accounts, setAccounts] = useState([]);
+  const [aiConfigs, setAiConfigs] = useState([]);
   const { user, setUser } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
-  const [selUser, setSelUser] = React.useState(null);
+  const [selAiConfig, setSelAiConfig] = React.useState(null);
+  const { setIsLoading } = React.useContext(BlockUxContext);
 
   React.useEffect(() => {
-    if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
-      findAllUser().then(setAccounts);
-    else getMe().then(setAccounts);
+    setIsLoading(true);
+    if (["SUPER_ADMIN"].includes(user.role)) findAllAi().then(setAiConfigs);
+    else getMyAi().then(setAiConfigs);
   }, [user.id]);
 
   const handleDelete = (id) => {
+    setIsLoading(true);
+    deleteAi(id)
+      .then((res) => {
+        if (res) {
+          setAiConfigs((aiConfigs) =>
+            aiConfigs.filter((aIData) => aIData.id !== res.id)
+          );
+          toast.success("Successfully Deleted!");
+        }
+      })
+      .finally(() => setIsLoading(false));
+  };
 
-    deleteUser(id).then((res) => {
-      if (res) {
-        setAccounts((accounts) =>
-          accounts.filter((account) => account.id !== res.id)
-        );
-        toast.success("Successfully Deleted!");
-      }
-    });
-  }
-
+  const location = useLocation();
   // create form states
-  const [credentials, setCredentialsValues, setCredentials] = useForm({
-    email: "",
-    username: "",
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    suffix: "",
-    password: "",
-    role: "USER",
+  const [aiConfigValues, setAiConfigValues, setConfig] = useForm({
+    name: "",
+    description: "",
+    classification_type: "",
+    max_detection_num: "",
+    min_detection_num: "",
+    use_gpu: "",
   });
-
-
-  // handle form submit
-  const handleSubmit = async (e) => {
+const handleSubmitAiConfig = async (e) => {
     e.preventDefault();
 
-    const user = await registerUser(credentials);
-    //set isLoading to false then set hasError to true if there is an error
-    if (!user) return // force return to false
-    toast.error("Registration Failed!");
-    toast.success("Successfully Created!");
-    setCredentials({});
-    setAccounts((accounts) => {
-      if (accounts.includes(user) === false) accounts.push(user);
-      return accounts;
-    });
-  };
-  const handleShowModal = (account) => {
-    setSelUser(account);
+const data = await storeAi(aiConfigValues);
+//set isLoading to false then set hasError to true if there is an error
+if (data === (null || undefined)) {
+  // force return to false
+  toast.error("Saving Failed!");
+}
+toast.success("Successfully Created!");
+setConfig({});
+setAiConfigs((aiConfigs) => {
+  if (aiConfigs.includes(data) === false) aiConfigs.push(data);
+  return aiConfigs;
+});
+}
+
+  const handleShowModal = (ai) => {
+    setSelAiConfig(ai);
     setShowModal(true);
   };
   return (
     <>
-      {showModal && selUser !== null && (
+      {/* {showModal && selUser !== null && (
         <UpdateAccount
           show={{ showModal, setShowModal }}
           data={{ selUser, setSelUser, setAccounts }}
         />
-      )}
+      )} */}
       <div className="md:overflow-y-auto relative md:ml-64 bg-blueGray-100">
         <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
           <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
@@ -174,87 +174,116 @@ export default function Accounts() {
                                 <thead>
                                   <tr>
                                     <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      ID
+                                      Check Box
                                     </td>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Username
+                                      Name
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Full Name
+                                      Description
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Email
+                                      Classification Type
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Role
+                                      Maximum Detection
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Minimum Detection
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Creator
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Date Created
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Date Updated
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Actions
+                                      Date Updated{" "}
                                     </th>
                                   </tr>
+                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Actions
+                                  </th>
                                 </thead>
                                 <tbody>
-                                  {accounts.map((account) => (
-                                    <tr key={account.id}>
+                                  {aiConfigs.map((aIData) => (
+                                    <tr key={aIData.id}>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         {/* <Checkbox {...label} defaultChecked /> */}
                                       </td>
                                       <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {account.username}{" "}
+                                        {aIData.name}{" "}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {account.first_name}{" "}
-                                        {account.middle_name}{" "}
-                                        {account.last_name} {account.suffix}{" "}
+                                        {aIData.description}{" "}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {account.email}
+                                        {aIData.classification_type}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {account.role}
+                                        {aIData.max_detection_num}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {moment(account.created_at).format(
+                                        {aIData.use_gpu}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {aIData.creator.creator.email}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {moment(aIData.created_at).format(
                                           "lll"
                                         )}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {moment(account.updated_at).format(
+                                        {moment(aIData.updated_at).format(
                                           "lll"
                                         )}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         <button
-                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === account.creator_id) ? "bg-blue-500 hover:bg-blue-700 border border-blue-500" : "bg-gray-400"} text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
+                                          className={`ml-2 ${
+                                            user.role === "SUPER_ADMIN" ||
+                                            user.id === aIData.creator_id
+                                              ? "bg-blue-500 hover:bg-blue-700 border border-blue-500"
+                                              : "bg-gray-400"
+                                          } text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
                                           title="Edit"
-                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === account.creator_id)}
+                                          disabled={
+                                            !(
+                                              user.role === "SUPER_ADMIN" ||
+                                              user.id === aIData.creator_id
+                                            )
+                                          }
                                           onClick={() =>
-                                            handleShowModal(account)
+                                            handleShowModal(aIData)
                                           }
                                         ></button>
                                         <button
-                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === account.creator_id) ? "bg-red-500 hover:bg-red-700  border border-red-500" : "bg-gray-400"}   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
+                                          className={`ml-2 ${
+                                            user.role === "SUPER_ADMIN" ||
+                                            user.id === aIData.creator_id
+                                              ? "bg-red-500 hover:bg-red-700  border border-red-500"
+                                              : "bg-gray-400"
+                                          }   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
                                           title="Delete"
-                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === account.creator_id)}
+                                          disabled={
+                                            !(
+                                              user.role === "SUPER_ADMIN" ||
+                                              user.id === aIData.creator_id
+                                            )
+                                          }
                                           onClick={() =>
-                                            handleDelete(account.id)
+                                            handleDelete(aIData.id)
                                           }
                                         ></button>
                                       </td>
-                                    </tr >
-                                  ))
-                                  }
-                                </tbody >
-                              </table >
-                            </div >
-                          </div >
-                        </div >
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
                         <div
                           className={openTab === 2 ? "block" : "hidden"}
                           id="link2"
@@ -264,10 +293,10 @@ export default function Accounts() {
                             <div className="w-full bg-gray-200 rounded-lg">
                               <div className="container mx-auto py-8">
                                 <div className="py-4 font-bold px-8 text-black text-xl border-b border-grey-lighter m-auto">
-                                  Add User Account
+                                  Add Ai Configuration
                                 </div>
                                 <div className="py-4 px-8">
-                                  <form onSubmit={handleSubmit}>
+                                  <form onSubmit={handleSubmitAiConfig}>
                                     <div className="mb-4">
                                       <div className="mb-4"></div>
                                     </div>
@@ -281,8 +310,8 @@ export default function Accounts() {
                                         </label>
                                         <input
                                           required
-                                          onChange={setCredentialsValues}
-                                          value={credentials.first_name || ""}
+                                          onChange={setAiConfigValues}
+                                          value={setConfig.first_name || ""}
                                           type="text"
                                           name="first_name"
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
@@ -297,8 +326,8 @@ export default function Accounts() {
                                           Middle Name
                                         </label>
                                         <input
-                                          onChange={setCredentialsValues}
-                                          value={credentials.middle_name || ""}
+                                          onChange={setAiConfigValues}
+                                          value={setConfig.middle_name || ""}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="middle_name"
                                           type="text"
@@ -316,8 +345,8 @@ export default function Accounts() {
                                         </label>
                                         <input
                                           required
-                                          value={credentials.last_name || ""}
-                                          onChange={setCredentialsValues}
+                                          value={setConfig.last_name || ""}
+                                          onChange={setAiConfigValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="last_name"
                                           type="text"
@@ -333,8 +362,8 @@ export default function Accounts() {
                                           Suffix{" "}
                                         </label>
                                         <input
-                                          onChange={setCredentialsValues}
-                                          value={credentials.suffix || ""}
+                                          onChange={setAiConfigValues}
+                                          value={setConfig.suffix || ""}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="suffix"
                                           type="text"
@@ -352,13 +381,12 @@ export default function Accounts() {
                                         </label>
                                         <input
                                           required
-                                          value={credentials.email || ""}
-                                          onChange={setCredentialsValues}
+                                          value={setConfig.email || ""}
+                                          onChange={setAiConfigValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="email"
                                           type="email"
                                           placeholder="Your email address"
-                                          onChange={setCredentialsValues}
                                         />
                                       </div>
                                       <div className="w-1/2 ml-1">
@@ -370,8 +398,8 @@ export default function Accounts() {
                                         </label>
                                         <input
                                           required
-                                          value={credentials.username || ""}
-                                          onChange={setCredentialsValues}
+                                          value={setConfig.username || ""}
+                                          onChange={setAiConfigValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="username"
                                           type="text"
@@ -388,8 +416,8 @@ export default function Accounts() {
                                       </label>
                                       <input
                                         required
-                                        value={credentials.password || ""}
-                                        onChange={setCredentialsValues}
+                                        value={setConfig.password || ""}
+                                        onChange={setAiConfigValues}
                                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                         name="password"
                                         type="password"
@@ -414,16 +442,16 @@ export default function Accounts() {
                             </div>
                           </div>
                         </div>
-                      </div >
-                    </div >
-                  </div >
-                </div >
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 {/* Card stats */}
-              </div >
-            </div >
-          </div >
-        </div >
-      </div >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }

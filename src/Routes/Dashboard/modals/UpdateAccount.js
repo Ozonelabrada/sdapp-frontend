@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { updateUser } from "../../../api/endpoints/user";
+import { findAllUser, updateUser } from "../../../api/endpoints/user";
+import { UserContext } from "../../../context/userContext";
+// import { Checkbox } from "tailwind-react-ui";
 
 export default function UpdateAccount(props) {
   const { show, data } = props;
   const { setShowModal } = show;
   const { selUser, setSelUser, setAccounts } = data;
+  const [userRole, setUserRole] = useState([]);
+  const { user, setUser } = React.useContext(UserContext);
+
+  React.useEffect(() => {
+    findAllUser().then(setUserRole);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,8 +23,8 @@ export default function UpdateAccount(props) {
         [name]: value,
       };
     });
-    // console.log(e);
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     updateUser(selUser).then((res) => {
@@ -28,10 +36,8 @@ export default function UpdateAccount(props) {
           }
           return prevState;
         });
-        toast.success("Updated Successfuly" , {duration:5000});
+        toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
-      } else {
-        toast.error("Sorry Found Some Difficulty" , {duration:5000} );
       }
     });
   };
@@ -39,12 +45,12 @@ export default function UpdateAccount(props) {
   return (
     <>
       <div className="md:ml-60 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+        <div className="relative my-6 mx-auto  w-7/12 ">
           {/*content*/}
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             {/*header*/}
             <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-              <h4 className="text-3xl font-semibold">Update User</h4>
+              <h4 className="text-lg font-semibold">Update User</h4>
               <button
                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-100 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => setShowModal(false)}
@@ -56,16 +62,16 @@ export default function UpdateAccount(props) {
             </div>
             {/*body*/}
             <div className="w-full container mx-auto py-8">
-              <div className="w-full mx-auto bg-white rounded shadow">
+              <div className="w-full mx-auto bg-white rounded ">
                 <div className="py-4 px-8">
                   <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                      <div className="mb-4">
+                    <div className="flex">
+                      <div className="w-1/2 mb-4 mr-2">
                         <label
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
                         >
-                          Username (Readonly)
+                          Username (Read-only)
                         </label>
                         <input
                           required
@@ -77,6 +83,40 @@ export default function UpdateAccount(props) {
                           type="text"
                           placeholder="Your username"
                         />
+                      </div>
+                      <div className="w-1/2">
+                        <label
+                          className="block text-grey-darker text-sm font-bold mb-2"
+                          htmlFor="location"
+                        >
+                          Role
+                        </label>
+                        {user.role === "SUPER_ADMIN" ? (
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mdi mdi-chevron-down"
+                            aria-label=".form-select-sm"
+                            onChange={handleChange}
+                            name="role"
+                            value={selUser.role}
+                          >
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="SUPER_ADMIN">SUPER ADMIN</option>
+                            <option value="SYSTEM">SYSTEM</option>
+                          </select>
+                        ) : (
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mdi mdi-chevron-down"
+                            aria-label=".form-select-sm"
+                            onChange={handleChange}
+                            name="role"
+                            value={selUser.role}
+                          >
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="SYSTEM">SYSTEM</option>
+                          </select>
+                        )}
                       </div>
                     </div>
                     <div className="flex mb-4">
@@ -102,7 +142,7 @@ export default function UpdateAccount(props) {
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="last_name"
                         >
-                          Middle Initial
+                          Middle Name
                         </label>
                         <input
                           required
@@ -111,7 +151,7 @@ export default function UpdateAccount(props) {
                           value={selUser.middle_name ?? ""}
                           name="middle_name"
                           type="text"
-                          placeholder="Your middle initial"
+                          placeholder="Your middle name"
                         />
                       </div>
                     </div>
@@ -157,7 +197,7 @@ export default function UpdateAccount(props) {
                           className="block text-grey-darker text-sm font-bold mb-2"
                           htmlFor="email"
                         >
-                          Email Address (Readonly)
+                          Email Address (Read-only)
                         </label>
                         <input
                           readOnly
@@ -169,12 +209,21 @@ export default function UpdateAccount(props) {
                           placeholder="Your email address"
                         />
                       </div>
+                      {/* <div className="w-1/4 flex m-auto text-center">
+                        <Checkbox
+                          onChange={handleChange}
+                          checkbox
+                          name="isActive"
+                          value="1"
+                          label="Selected"
+                          defaultChecked
+                        />
+                      </div> */}
                     </div>
                     <div className="flex items-center justify-between m-auto w-80">
                       <button
                         type="submit"
-                        className="bg-blue-700 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
-                        type="submit"
+                        className="bg-pink-400 w-full hover:bg-gray-200 text-gray-800 font-bold  py-2 px-4 rounded-full"
                       >
                         Update Now
                       </button>

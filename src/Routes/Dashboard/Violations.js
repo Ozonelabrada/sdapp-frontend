@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   findAllViolation,
-  findOwnViolation,
   deleteViolation,
   storeViolation,
-  registerViolation,
 } from "../../api/endpoints/violation.js";
 import { UserContext } from "../../context/userContext.js";
 import toast from "react-hot-toast";
@@ -14,7 +12,6 @@ import UpdateViolation from "./modals/UpdateViolation.js";
 import moment from "moment";
 import {
   findAllViolationType,
-  findOwnViolationType,
 } from "../../api/endpoints/violType.js";
 import useForm from "../../hooks/useForm.js";
 
@@ -25,55 +22,37 @@ const Violations = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [openTab, setOpenTab] = React.useState(1);
   const [selectedViolation, setSelectedViolation] = React.useState(null);
-  const [violationValues, setViolationValues] = React.useState([]);
-
 
   React.useEffect(() => {
-    if (["SUPER_ADMIN", "ADMIN"].includes(user.role)) {
-      findAllViolation().then(setViolations);
-      findAllViolationType().then(setViolationsType);
-    } else if (user.role === "USER") {
-      findOwnViolation().then(setViolations);
-      findOwnViolationType().then(setViolationsType);
-    }
+    findAllViolation().then(setViolations);
+    findAllViolationType().then(setViolationsType);
   }, []);
-
-  const handleViolationValues = (e) => {
-    const { name, value } = e.target;
-    setViolationValues((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
-
-    // console.log(e);
+  
+  const handleShowModal = (violation) => {
+    setSelectedViolation(violation);
+    setShowModal(true);
   };
-  // create reister states
-  const [registerState, , setRegisterState] = useState({
-    isLoading: false,
-    isAuthenticated: false,
-    hasError: false,
-    message: "",
-  });
-  const handleSubmitViol= async () => {
-
-  const violation = await storeViolation(selectedViolation); 
-
-  //set isLoading to false then set hasError to true if there is an error
-  if (violation === (null || undefined)) {
-    // force return to false
-    toast.error("Registration Failed!");
-  }
-  toast.success("Successfully Registered!");
-  handleViolationValues({});
-  setViolations((violation) => {
-    if (violation.includes(violation) === false) violations.push(violation);
-    return violations;
+  // create form states
+  const [violationValues, setViolationValues, setViolation] = useForm({
+    type_id: null,
+    description: "",
+    location: "",
+    name: ""
   });
 
-toast.success("submit")
-  }
+  const handleSubmitViol = async (e) => {
+    e.preventDefault();
+    const viol = await storeViolation(violationValues);
+    if (!viol) return // force return to false
+    toast.success("Successfully Created!");
+    setViolation({});
+    setViolations((violations) => {
+      if (violations.includes(viol) === false) violations.push(viol);
+      return violations;
+    });
+  };
+
+  // delete violationtion
   const handleDeleteViolation = (id) => {
     deleteViolation(id).then((res) => {
       if (res) {
@@ -81,15 +60,18 @@ toast.success("submit")
           violations.filter((violation) => violation.id !== res.id)
         );
         toast.success("Successfully Removed!");
-      } else toast.error(" Deletion Failed Check Network Connection!");
+      }
     });
   };
   return (
     <>
       {showModal && selectedViolation !== null && (
-        <UpdateViolation show={{ showModal, setShowModal }} />
+        <UpdateViolation
+          show={{ showModal, setShowModal }}
+          data={{ selectedViolation, setSelectedViolation, setViolations }}
+        />
       )}
-      <div className="relative md:ml-64 bg-blueGray-100">
+      <div className="md:overflow-y-auto relative md:ml-64 bg-blueGray-100">
         <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
           <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
             {/* Brand */}
@@ -98,7 +80,7 @@ toast.success("submit")
               to="/violation"
               onClick={(e) => e.preventDefault()}
             >
-              Violation
+              Violations
             </Link>
             {/* User */}
             <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
@@ -107,7 +89,7 @@ toast.success("submit")
           </div>
         </nav>
         {/* Header */}
-        <div className="relative bg-bgAboutR pb-10 pt-24 h-screen">
+        <div className="relative bg-bgAboutR  pt-14 h-screen">
           <div className="px-4 md:px-10 mx-auto w-full">
             <div>
               <div className="flex flex-wrap">
@@ -155,103 +137,119 @@ toast.success("submit")
                       </a>
                     </li>
                   </ul>
-                  <div className=" h-3/4 overflow-y-scroll relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-                    <div className="px-4 py-5 flex-auto">
+                  <div className=" h-auto flex flex-col min-w-0 break-words w-full mb-6 rounded">
+                    <div className="flex-auto">
                       <div className="tab-content tab-space">
                         <div
                           className={openTab === 1 ? "block" : "hidden"}
                           id="link1"
                         >
-                          <div className="flex flex-wrap ">
-                            <table className="min-w-full border-black block md:table ">
-                              <thead className="block md:table-header-group">
-                                <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                                  <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                    Violation ID
-                                  </th>
-                                  <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                    Type
-                                  </th>
-                                  <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                    Description
-                                  </th>
-                                  <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                    Location
-                                  </th>
-                                  <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                    Date / Time
-                                  </th>
-                                  <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">
-                                    Actions
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody className="block md:table-row-group w-full">
-                                {violations.map((violation, index) => (
-                                  <tr
-                                    key={index}
-                                    className="bg-gray-300 border border-grey-500 md:border-none block md:table-row"
+                          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                            <div className="rounded-t mb-0 px-4 py-3 border-0">
+                              <div className="flex flex-wrap items-center">
+                                <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                                  <h3 className="font-semibold text-base text-blueGray-700">
+                                    List of Violations
+                                  </h3>
+                                </div>
+                                <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                                  <button
+                                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                    type="button"
+                                    style={{ transition: "all .15s ease" }}
                                   >
-                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                      <span className="inline-block w-1/3 md:hidden font-bold">
-                                        Violatpion ID
-                                      </span>
-                                      {violation.id}
+                                    See all
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              className="h-full m-auto flex w-full overflow-y-scroll"
+                              style={{ maxHeight: 500 }}
+                            >
+                              {/* Projects table */}
+                              <table className="items-center h-full w-full bg-transparent border-collapse shadow-lg">
+                                <thead>
+                                  <tr>
+                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      ID
                                     </td>
-                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                      <span className="inline-block w-1/3 md:hidden font-bold">
-                                        Type
-                                      </span>
-                                      {violation.type.type}
-                                    </td>
-                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                      <span className="inline-block w-1/3 md:hidden font-bold">
-                                        Description
-                                      </span>
-                                      {violation.description}
-                                    </td>
-                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                      <span className="inline-block w-1/3 md:hidden font-bold">
-                                        Location
-                                      </span>
-                                      {violation.location}
-                                    </td>
-                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                      <span className="inline-block w-1/3 md:hidden font-bold">
-                                        Date / Time
-                                      </span>
-                                      {moment(violation.created_at).format(
-                                        "lll"
-                                      )}
-                                    </td>
-                                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                      <span className="inline-block w-1/3 md:hidden font-bold">
-                                        Actions
-                                      </span>
-                                      <button
-                                        className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-eye "
-                                        title="View"
-                                        // onClick={() =>
-                                        //   handleShowModal(violation)
-                                        // }
-                                      ></button>
-                                      {(user.role === "SUPER_ADMIN" ||
-                                        user.id === violation.creator_id) && (
-                                        <button
-                                          className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded mdi mdi-delete-circle inline-flex"
-                                          title="Delete"
-                                          onClick={() =>
-                                            handleDeleteViolation(violation.id)
-                                          }
-                                        ></button>
-                                      )}{" "}
-                                    </td>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Name
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Type
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Description
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Location
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Date Created
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Date Updated
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Actions
+                                    </th>
                                   </tr>
-                                ))}
-                              </tbody>
-                              {/* } */}
-                            </table>
-                            {/* )} */}
+                                </thead>
+                                <tbody className="h-full">
+                                  {violations.map((violation) => (
+                                    <tr key={violation.id}>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.id}
+                                      </td>
+                                      <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.name}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.type.type}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.description}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {violation.location}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {moment(violation.created_at).format(
+                                          "lll"
+                                        )}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {moment(violation.updated_at).format(
+                                          "lll"
+                                        )}
+                                      </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          <button
+                                            className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violation.creator_id) ? "bg-blue-500 hover:bg-blue-700 border border-blue-500" : "bg-gray-400"} text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
+                                            title="Edit"
+                                            disabled={!(user.role === "SUPER_ADMIN" || user.id === violation.creator_id)}
+                                            onClick={() =>
+                                              handleShowModal(violation)
+                                            }
+                                          ></button>
+                                          <button
+                                            className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violation.creator_id) ? "bg-red-500 hover:bg-red-700  border border-red-500" : "bg-gray-400"}   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
+                                            title="Delete"
+                                            disabled={!(user.role === "SUPER_ADMIN" || user.id === violation.creator_id)}
+                                            onClick={() =>
+                                              handleDeleteViolation(
+                                                violation.id
+                                              )
+                                            }
+                                          ></button>
+                                        </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
                         <div
@@ -282,7 +280,8 @@ toast.success("submit")
                                           required
                                           type="text"
                                           name="name"
-                                          onChange={handleViolationValues}
+                                          value={violationValues.name || ""}
+                                          onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           placeholder="Violation Name Here..."
                                         />
@@ -297,16 +296,25 @@ toast.success("submit")
                                           Violation Type
                                         </label>
                                         <select
-                                          class="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                          className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                           aria-label=".form-select-sm"
                                           placeholder="Type here"
-                                          onChange={handleViolationValues}
-                                          
+                                          required
+                                          value={violationValues.type_id || ""}
+                                          onChange={(e) =>
+                                            setViolation((prevState) => ({
+                                              ...prevState,
+                                              [e.target.name]: parseInt(
+                                                e.target.value
+                                              ),
+                                            }))
+                                          }
+                                          name="type_id"
                                         >
+                                          <option value="" />
                                           {violationsType.map(
                                             (violationtype) => (
                                               <option
-                                              name="type_id"
                                                 key={violationtype.id}
                                                 value={violationtype.id}
                                               >
@@ -325,7 +333,8 @@ toast.success("submit")
                                         </label>
                                         <input
                                           required
-                                          onChange={handleViolationValues}
+                                          value={violationValues.location || ""}
+                                          onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="location"
                                           type="text"
@@ -342,12 +351,12 @@ toast.success("submit")
                                           Description
                                         </label>
                                         <textarea
-                                          required
-                                          onChange={handleViolationValues}
+                                          onChange={setViolationValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                                           name="description"
                                           type="text"
                                           rows={5}
+                                          value={violationValues.description || ""}
                                           placeholder="Description..."
                                         />
                                       </div>
