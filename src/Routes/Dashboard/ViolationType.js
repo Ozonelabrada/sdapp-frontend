@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
 import { Link, useLocation } from "react-router-dom";
-import { deleteViolation } from "../../api/endpoints/violation.js";
 import { UserContext } from "../../context/userContext.js";
 import toast from "react-hot-toast";
 import useForm from "../../hooks/useForm.js";
-import { registerUser } from "../../api/endpoints/auth.js";
 import {
   deleteViolationType,
   findAllViolationType,
-  findOwnViolationType,
   storeViolationType,
 } from "../../api/endpoints/violType.js";
 import moment from "moment";
 import UpdateViolationType from "./modals/UpdateViolationType.js";
-import { BlockUxContext } from "../../context/BlockUx/index.js";
 
 const ViolationType = () => {
   const [violationsType, setViolationsType] = useState([]);
   const { user, setUser } = React.useContext(UserContext);
-  const { setIsLoading } = React.useContext(BlockUxContext);
   const [openTab, setOpenTab] = React.useState(1);
   const [selectedViolationType, setSelectedViolationType] =
     React.useState(null);
@@ -38,62 +33,29 @@ const ViolationType = () => {
       creator_id: "",
     });
 
-  // create register states
-  const [registerState, , setRegisterState] = useForm({
-    isLoading: false,
-    isAuthenticated: false,
-    hasError: false,
-    message: "",
-  });
   // handle form submit
   const handleSubmitViol = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    //set isLoading to true
-    setRegisterState((registerState) => ({
-      ...registerState,
-      isLoading: true,
-      hasError: false,
-      isAuthenticated: false,
-      message: "",
-    }));
 
     const violType = await storeViolationType(violationTypeValues);
 
-    //set isLoading to false then set hasError to true if there is an error
-    if (violType === (null || undefined)) {
-      // force return to false
-      setIsLoading(false);
-      toast.error("Saving  Failed!");
+    if (!violType) return // force return to false
 
-      return setRegisterState((registerState) => ({
-        ...registerState,
-        isLoading: false,
-        hasError: true,
-      }));
-    }
-    setIsLoading(false);
     toast.success("Successfully Created!");
     setViolationType({});
+
     setViolationsType((violationsType) => {
       if (violationsType.includes(violType) === false)
         violationsType.push(violType);
       return violationsType;
     });
-    //set isLoading to false then set isAuthenticated to true if there is no error
-    setRegisterState((registerState) => ({
-      ...registerState,
-      isLoading: false,
-      hasError: false,
-      isAuthenticated: true,
-    }));
+
   };
   React.useEffect(() => {
     findAllViolationType().then(setViolationsType);
   }, []);
 
   const handleDeleteViolation = (id) => {
-    setIsLoading(true);
     deleteViolationType(id).then((res) => {
       if (res) {
         setViolationsType((violationType) =>
@@ -101,7 +63,7 @@ const ViolationType = () => {
         );
         toast.success("Deleted Successfully!");
       }
-    }).finally(() => setIsLoading(false));
+    })
   };
   return (
     <>

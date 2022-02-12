@@ -5,11 +5,9 @@ import { loginUser } from "../../api/endpoints/auth";
 import { UserContext } from "../../context/userContext";
 import toast from "react-hot-toast";
 import landing_image from "./landing.webp";
-import { BlockUxContext } from "../../context/BlockUx";
 
 export default function Login() {
   const { user, setUser } = React.useContext(UserContext);
-  const { setIsLoading } = React.useContext(BlockUxContext);
   const location = useLocation();
 
   // create form states
@@ -18,48 +16,14 @@ export default function Login() {
     password: "",
   });
 
-  // create login states
-  const [loginState, , setLoginState] = useForm({
-    isLoading: false,
-    isAuthenticated: false,
-    hasError: false,
-    message: "",
-  });
-
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    //set isLoading to true
-    setLoginState((loginState) => ({
-      ...loginState,
-      isLoading: true,
-      hasError: false,
-      isAuthenticated: false,
-      message: "",
-    }));
     const user = await loginUser(credentials);
-    //set isLoading to false then set hasError to true if there is an error
-    if (!user) {
-      setIsLoading(false);
-      // force return to false
-      return setLoginState((loginState) => ({
-        ...loginState,
-        isLoading: false,
-        hasError: true,
-      }));
-    } else setIsLoading(false);
+    if (!user) return // force return to false
     toast.success("Successfuly Logged in.");
-    //set isLoading to false then set isAuthenticated to true if there is no error
-    setLoginState((loginState) => ({
-      ...loginState,
-      isLoading: false,
-      hasError: false,
-      isAuthenticated: true,
-    }));
     //update user context after 1sec of delay
     setTimeout(() => setUser(user), 1000);
-
     //save token to local storage
     localStorage.setItem("token", user.token);
   };

@@ -3,14 +3,12 @@ import toast from "react-hot-toast";
 import { updateViolation } from "../../../api/endpoints/violation";
 import { findAllViolationType } from "../../../api/endpoints/violType";
 import _ from "lodash";
-import { BlockUxContext } from "../../../context/BlockUx";
 
 export default function UpdateViolation(props) {
   const { show, data } = props;
   const { setShowModal } = show;
   const { selectedViolation, setSelectedViolation, setViolations } = data;
   const [violationsType, setViolationsType] = useState([]);
-  const { setIsLoading } = React.useContext(BlockUxContext);
 
   React.useEffect(() => {
     findAllViolationType().then(setViolationsType);
@@ -26,7 +24,6 @@ export default function UpdateViolation(props) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
     delete selectedViolation.type //Temporary!!
     updateViolation(selectedViolation).then((res) => {
       if (res) {
@@ -37,12 +34,8 @@ export default function UpdateViolation(props) {
           }
           return prevState;
         });
-        setIsLoading(false);
         toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
-      } else {
-        setIsLoading(false);
-        toast.error("Update Failed!", { duration: 5000 });
       }
     });
   };

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { findAllUser, updateUser } from "../../../api/endpoints/user";
-import { BlockUxContext } from "../../../context/BlockUx";
 import { UserContext } from "../../../context/userContext";
 // import { Checkbox } from "tailwind-react-ui";
 
@@ -10,7 +9,6 @@ export default function UpdateAccount(props) {
   const { setShowModal } = show;
   const { selUser, setSelUser, setAccounts } = data;
   const [userRole, setUserRole] = useState([]);
-  const { setIsLoading } = React.useContext(BlockUxContext);
   const { user, setUser } = React.useContext(UserContext);
 
   React.useEffect(() => {
@@ -25,12 +23,10 @@ export default function UpdateAccount(props) {
         [name]: value,
       };
     });
-    // console.log(e);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
     updateUser(selUser).then((res) => {
       if (res) {
         setAccounts((prevState) => {
@@ -40,12 +36,8 @@ export default function UpdateAccount(props) {
           }
           return prevState;
         });
-        setIsLoading(false);
         toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
-      } else {
-        setIsLoading(false);
-        toast.error("Failure to Update!", { duration: 5000 });
       }
     });
   };

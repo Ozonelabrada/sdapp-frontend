@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Toaster } from "react-hot-toast";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { setHeaders } from "./api";
 import { getMe } from "./api/endpoints/user";
 import "./App.css";
@@ -22,15 +22,15 @@ import ViolationType from "./Routes/Dashboard/ViolationType";
 import Violators from "./Routes/Dashboard/Violators";
 import Gallery from "./Routes/Gallery";
 import Private from "./Routes/Private";
-import { findError } from "./utilities/errorCode";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 // import VideoStream from "./Routes/VideoStream";
 
 let token = null;
+
 function App() {
-  const location = useLocation();
   const { user, setUser } = React.useContext(UserContext);
+
   try {
     token = localStorage.getItem("token");
     setHeaders("Authorization", `Bearer ${token}`);
@@ -50,47 +50,47 @@ function App() {
       <TopNav />
       {/* <TransitionGroup>
         <CSSTransition key={location.key} classNames="slide" timeout={2000}> */}
-          <Routes>
-            <Route element={<Home />} path="/" />
-            <Route element={<Home />} path="/home" />
-            <Route element={<About />} path="/about" />
-            <Route
-              element={
-                <Login>
-                  <div className="overflow-hidden"></div>{" "}
-                </Login>
-              }
-              path="/login"
-            />
-            <Route path="/gallery" element={<Private component={Gallery} />} />
-            {/* <Route path="/stream" element={<Private component={VideoStream} />} /> */}
+      <Routes>
+        <Route element={<Home />} path="/" />
+        <Route element={<Home />} path="/home" />
+        <Route element={<About />} path="/about" />
+        <Route
+          element={
+            <Login>
+              <div className="overflow-hidden"></div>{" "}
+            </Login>
+          }
+          path="/login"
+        />
+        <Route path="/gallery" element={<Private component={Gallery} />} />
+        {/* <Route path="/stream" element={<Private component={VideoStream} />} /> */}
 
-            <Route path="/dashboard" element={<Private component={Layout} />}>
-              <Route index element={<Private component={Dashboard} />} />
-              <Route path="profile" element={<Private component={Profile} />} />
-              <Route
-                path="accounts"
-                element={<Private component={Accounts} />}
-              />
-              <Route path="events" element={<Private component={Events} />} />
-              <Route path="stream" element={<Private component={Stream} />} />
-              <Route
-                path="violators"
-                element={<Private component={Violators} />}
-              />
-              <Route
-                path="violation"
-                element={<Private component={Violations} />}
-              />
-              <Route
-                path="violation-type"
-                element={<Private component={ViolationType} />}
-              />
-              <Route path="event" element={<Private component={Event} />} />
-            </Route>
-            <Route path="*" element={<Notfound />} />
-          </Routes>
-        {/* </CSSTransition>
+        <Route path="/dashboard" element={<Private component={Layout} />}>
+          <Route index element={<Private component={Dashboard} />} />
+          <Route path="profile" element={<Private component={Profile} />} />
+          <Route
+            path="accounts"
+            element={<Private component={Accounts} />}
+          />
+          <Route path="events" element={<Private component={Events} />} />
+          <Route path="stream" element={<Private component={Stream} />} />
+          <Route
+            path="violators"
+            element={<Private component={Violators} />}
+          />
+          <Route
+            path="violation"
+            element={<Private component={Violations} />}
+          />
+          <Route
+            path="violation-type"
+            element={<Private component={ViolationType} />}
+          />
+          <Route path="event" element={<Private component={Event} />} />
+        </Route>
+        <Route path="*" element={<Notfound />} />
+      </Routes>
+      {/* </CSSTransition>
       </TransitionGroup> */}
     </BlockUx>
   );

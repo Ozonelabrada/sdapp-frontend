@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
-import { useLocation } from "react-router-dom";
 import { UserContext } from "../../context/userContext.js";
 import {
   deleteUser,
   findAllUser,
-  findUser,
   getMe,
 } from "../../api/endpoints/user.js";
 import useForm from "../../hooks/useForm.js";
@@ -13,7 +11,6 @@ import { registerUser } from "../../api/endpoints/auth.js";
 import UpdateAccount from "./modals/UpdateAccount.js";
 import moment from "moment";
 import toast from "react-hot-toast";
-import { BlockUxContext } from "../../context/BlockUx/index.js";
 
 export default function Accounts() {
   const [openTab, setOpenTab] = React.useState(1);
@@ -21,44 +18,36 @@ export default function Accounts() {
   const { user, setUser } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
   const [selUser, setSelUser] = React.useState(null);
-  const { setIsLoading } = React.useContext(BlockUxContext);
 
   React.useEffect(() => {
-    setIsLoading(true);
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
       findAllUser().then(setAccounts);
     else getMe().then(setAccounts);
-    setIsLoading(false);
   }, [user.id]);
 
   const handleDelete = (id) => {
-    setIsLoading(true);
-    if (user.role === "SUPER_ADMIN"){
-    deleteUser(id).then((res) => {
-      if (res) {
-        setAccounts((accounts) =>
-          accounts.filter((account) => account.id !== res.id)
-        );
-        setIsLoading(false);
-        toast.success("Successfully Deleted!");
-      } else setIsLoading(false);
-      toast.error("FAILED! Already Have Transaction or Lost of Internet Connection!");
-    });
-    }else{
-    deleteUser(id).then((res) => {
-      if (res) {
-        setAccounts((accounts) =>
-          accounts.filter((account) => account.id !== res.id)
-        );
-        setIsLoading(false);
-        toast.success("Successfully Deleted!");
-      } else setIsLoading(false);
-      toast.error("FAILED! Lost of Internet Connection!");
-    });
+
+    if (user.role === "SUPER_ADMIN") {
+      deleteUser(id).then((res) => {
+        if (res) {
+          setAccounts((accounts) =>
+            accounts.filter((account) => account.id !== res.id)
+          );
+          toast.success("Successfully Deleted!");
+        }
+      });
+    } else {
+      deleteUser(id).then((res) => {
+        if (res) {
+          setAccounts((accounts) =>
+            accounts.filter((account) => account.id !== res.id)
+          );
+          toast.success("Successfully Deleted!");
+        }
+      });
     }
   };
 
-  const location = useLocation();
   // create form states
   const [credentials, setCredentialsValues, setCredentials] = useForm({
     email: "",
@@ -71,54 +60,21 @@ export default function Accounts() {
     role: "USER",
   });
 
-  // create register states
-  const [registerState, , setRegisterState] = useForm({
-    isLoading: false,
-    isAuthenticated: false,
-    hasError: false,
-    message: "",
-  });
 
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    //set isLoading to true
-    setRegisterState((registerState) => ({
-      ...registerState,
-      isLoading: true,
-      hasError: false,
-      isAuthenticated: false,
-      message: "",
-    }));
 
     const user = await registerUser(credentials);
     //set isLoading to false then set hasError to true if there is an error
-    if (user === (null || undefined)) {
-      // force return to false
-      setIsLoading(false);
-      toast.error("Registration Failed!");
-
-      return setRegisterState((registerState) => ({
-        ...registerState,
-        isLoading: false,
-        hasError: true,
-      }));
-    }
-    setIsLoading(false);
+    if (!user) return // force return to false
+    toast.error("Registration Failed!");
     toast.success("Successfully Created!");
     setCredentials({});
     setAccounts((accounts) => {
       if (accounts.includes(user) === false) accounts.push(user);
       return accounts;
     });
-    //set isLoading to false then set isAuthenticated to true if there is no error
-    setRegisterState((registerState) => ({
-      ...registerState,
-      isLoading: false,
-      hasError: false,
-      isAuthenticated: true,
-    }));
   };
   const handleShowModal = (account) => {
     setSelUser(account);
@@ -285,7 +241,7 @@ export default function Accounts() {
                                         )}
                                       </td>
                                       {user.id === account.creator_id ||
-                                      user.role === "SUPER_ADMIN" ? (
+                                        user.role === "SUPER_ADMIN" ? (
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                           <button
                                             className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded mdi mdi-pencil-box"
