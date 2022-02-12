@@ -9,7 +9,7 @@ import { BlockUxContext } from "../../context/BlockUx";
 
 export default function Login() {
   const { user, setUser } = React.useContext(UserContext);
-  const {setIsLoading} = React.useContext(BlockUxContext);
+  const { setIsLoading } = React.useContext(BlockUxContext);
   const location = useLocation();
 
   // create form states
@@ -26,15 +26,6 @@ export default function Login() {
     message: "",
   });
 
-  //create a function to toggle hasError
-  const toggleHasError = () => {
-    setLoginState({
-      ...loginState,
-      hasError: !loginState.hasError,
-      message: "",
-    });
-  };
-
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,11 +38,9 @@ export default function Login() {
       isAuthenticated: false,
       message: "",
     }));
-
     const user = await loginUser(credentials);
     //set isLoading to false then set hasError to true if there is an error
-    if (user === (null || undefined)) {
-      toast.error("Login Failed!");
+    if (!user) {
       setIsLoading(false);
       // force return to false
       return setLoginState((loginState) => ({
@@ -59,10 +48,8 @@ export default function Login() {
         isLoading: false,
         hasError: true,
       }));
-      setCredentials({});
-    }
-    setIsLoading(false);
-    toast.success("Successfuly Logged in.")
+    } else setIsLoading(false);
+    toast.success("Successfuly Logged in.");
     //set isLoading to false then set isAuthenticated to true if there is no error
     setLoginState((loginState) => ({
       ...loginState,
@@ -70,7 +57,6 @@ export default function Login() {
       hasError: false,
       isAuthenticated: true,
     }));
-
     //update user context after 1sec of delay
     setTimeout(() => setUser(user), 1000);
 
@@ -91,7 +77,6 @@ export default function Login() {
   }
 
   return (
-
     <div className="overflow-y-hidden">
       <div className="h-screen w-full flex flex-wrap bg-bgLogin pt-2">
         <div className="w-full md:w-1/2 flex flex-col">
@@ -108,6 +93,7 @@ export default function Login() {
                 <input
                   name="email"
                   type="email"
+                  required
                   placeholder="your@email.com"
                   onChange={setCredentials}
                   className="shadow appearance-none border rounded w-full py-2 px-3 mt-1 leading-tight focus:outline-none focus:shadow-outline"
@@ -120,6 +106,7 @@ export default function Login() {
                 <input
                   name="password"
                   type="password"
+                  required
                   placeholder="Password"
                   onChange={setCredentials}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"

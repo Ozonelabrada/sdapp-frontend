@@ -22,12 +22,12 @@ import ViolationType from "./Routes/Dashboard/ViolationType";
 import Violators from "./Routes/Dashboard/Violators";
 import Gallery from "./Routes/Gallery";
 import Private from "./Routes/Private";
+import { findError } from "./utilities/errorCode";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 // import VideoStream from "./Routes/VideoStream";
 
 let token = null;
-
 function App() {
   const location = useLocation();
   const { user, setUser } = React.useContext(UserContext);

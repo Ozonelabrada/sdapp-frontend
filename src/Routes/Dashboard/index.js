@@ -17,6 +17,7 @@ export default function Dashboard() {
     findAllUser().then(setUsers);
     findAllViolator().then(setViolators);
   }, []);
+  // if(violators.created_at === )
   return (
     <div className="h-screen overflow-y-auto">
       <div className="relative md:ml-64 bg-blueGray-100">
@@ -200,11 +201,11 @@ export default function Dashboard() {
                           Date and Time
                         </th>
                         <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                          Violation Type
+                          Violatiors Involve
                         </th>
-                        <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        {/* <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                           Enforcer Lookout
-                        </th>
+                        </th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -222,10 +223,10 @@ export default function Dashboard() {
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {violator.involve_count}
                           </td>
-                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             <i className="fas fa-arrow-up text-emerald-500 mr-4"></i>
-                            {violator.creator_id.email}
-                          </td>
+                            {violator.user.email}
+                          </td> */}
                         </tr>
                       ))}
                     </tbody>
@@ -233,13 +234,12 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-         
           </div>
-          <footer className="flex py-2">
+          <footer className="flex ">
             <div className="container mx-auto px-4">
-              <hr className="mb-4 border-b-1 border-blueGray-200" />
+              <hr className="mb-4 " />
               <div className="flex flex-wrap items-center md:justify-between justify-center">
-                <div className="w-full md:w-4/12 px-4">
+                <div className="w-full md:w-5/12 px-4">
                   <div className="text-sm text-blueGray-500 font-semibold py-1">
                     Copyright © {new Date().getFullYear()}{" "}
                     <Link
@@ -250,7 +250,7 @@ export default function Dashboard() {
                     </Link>
                   </div>
                 </div>
-                <div className="w-full md:w-8/12 px-4">
+                <div className="w-full md:w-7/12 px-4">
                   <ul className="flex flex-wrap list-none md:justify-end  justify-center">
                     <li>
                       <Link

@@ -33,6 +33,7 @@ export default function Accounts() {
 
   const handleDelete = (id) => {
     setIsLoading(true);
+    if (user.role === "SUPER_ADMIN"){
     deleteUser(id).then((res) => {
       if (res) {
         setAccounts((accounts) =>
@@ -41,8 +42,20 @@ export default function Accounts() {
         setIsLoading(false);
         toast.success("Successfully Deleted!");
       } else setIsLoading(false);
-      toast.error("Delete Failed!");
+      toast.error("FAILED! Already Have Transaction or Lost of Internet Connection!");
     });
+    }else{
+    deleteUser(id).then((res) => {
+      if (res) {
+        setAccounts((accounts) =>
+          accounts.filter((account) => account.id !== res.id)
+        );
+        setIsLoading(false);
+        toast.success("Successfully Deleted!");
+      } else setIsLoading(false);
+      toast.error("FAILED! Lost of Internet Connection!");
+    });
+    }
   };
 
   const location = useLocation();
@@ -212,7 +225,7 @@ export default function Accounts() {
                               style={{ maxHeight: 500 }}
                             >
                               {/* Projects table */}
-                              <table className="items-center w-full bg-transparent border-collapse">
+                              <table className="items-center w-full bg-transparent border-collapse shadow-xl">
                                 <thead>
                                   <tr>
                                     <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">

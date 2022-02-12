@@ -16,6 +16,8 @@ import {
   findOwnViolationType,
 } from "../../api/endpoints/violType.js";
 import useForm from "../../hooks/useForm.js";
+import { BlockUxContext } from "../../context/BlockUx/index.js";
+import { findError } from "../../utilities/errorCode";
 
 const Violations = () => {
   const [violations, setViolations] = useState([]);
@@ -24,6 +26,7 @@ const Violations = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [openTab, setOpenTab] = React.useState(1);
   const [selectedViolation, setSelectedViolation] = React.useState(null);
+  const { setIsLoading } = React.useContext(BlockUxContext);
 
   React.useEffect(() => {
     findAllViolation().then(setViolations);
@@ -61,14 +64,20 @@ const Violations = () => {
 
   // delete violationtion
   const handleDeleteViolation = (id) => {
-    deleteViolation(id).then((res) => {
-      if (res) {
-        setViolations((violations) =>
-          violations.filter((violation) => violation.id !== res.id)
-        );
-        toast.success("Successfully Removed!");
-      } else toast.error(" Deletion Failed Check Network Connection!");
-    });
+    setIsLoading(true);
+      deleteViolation(id).then((res) => {
+        if (res) {
+          if (res.status > 199 && res.status < 300) return res.data;
+          if (res.data.code) toast.error(findError(res.data.code));
+          return null;
+          setViolations((violations) =>
+            violations.filter((violation) => violation.id !== res.id)
+          );
+          setIsLoading(false);
+          toast.success("Successfully Removed!");
+        } else setIsLoading(false);
+        toast.error("FAILED! Already Have Transactions!");
+      });
   };
   return (
     <>
@@ -175,7 +184,7 @@ const Violations = () => {
                               style={{ maxHeight: 500 }}
                             >
                               {/* Projects table */}
-                              <table className="items-center h-full w-full bg-transparent border-collapse">
+                              <table className="items-center h-full w-full bg-transparent border-collapse shadow-lg">
                                 <thead>
                                   <tr>
                                     <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
