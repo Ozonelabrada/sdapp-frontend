@@ -10,9 +10,9 @@ export default function Stream() {
   const [today, setDate] = React.useState(new Date());
   const [violators, setViolators] = React.useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     findAllViolator().then(setViolators);
-  })
+  }, [])
   const {
     // seconds,
     minutes,
@@ -112,15 +112,15 @@ export default function Stream() {
                       </thead>
                       <tbody>
                         {
-                          violators.map((violator)=>(
-                        <tr key={violator.id}>
-                          <td className="border border-gray-300 ...">
-                          {moment(violator.timestamp).format("LT")}
-                          </td>
-                          <td className="border border-gray-300 ...">
-                            {violator.involve_count}
-                          </td>
-                        </tr>
+                          violators.map((violator) => (
+                            <tr key={violator.id}>
+                              <td className="border border-gray-300 ...">
+                                {moment(violator.timestamp).format("LT")}
+                              </td>
+                              <td className="border border-gray-300 ...">
+                                {violator.involve_count}
+                              </td>
+                            </tr>
                           )
                           )}
                       </tbody>

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   findAllViolation,
-  findOwnViolation,
   deleteViolation,
   storeViolation,
 } from "../../api/endpoints/violation.js";
@@ -13,11 +12,8 @@ import UpdateViolation from "./modals/UpdateViolation.js";
 import moment from "moment";
 import {
   findAllViolationType,
-  findOwnViolationType,
 } from "../../api/endpoints/violType.js";
 import useForm from "../../hooks/useForm.js";
-import { BlockUxContext } from "../../context/BlockUx/index.js";
-import { findError } from "../../utilities/errorCode";
 
 const Violations = () => {
   const [violations, setViolations] = useState([]);
@@ -26,17 +22,16 @@ const Violations = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [openTab, setOpenTab] = React.useState(1);
   const [selectedViolation, setSelectedViolation] = React.useState(null);
-  const { setIsLoading } = React.useContext(BlockUxContext);
 
   React.useEffect(() => {
     findAllViolation().then(setViolations);
     findAllViolationType().then(setViolationsType);
   }, []);
+  
   const handleShowModal = (violation) => {
     setSelectedViolation(violation);
     setShowModal(true);
   };
-  const location = useLocation();
   // create form states
   const [violationValues, setViolationValues, setViolation] = useForm({
     type_id: null,
@@ -47,14 +42,8 @@ const Violations = () => {
 
   const handleSubmitViol = async (e) => {
     e.preventDefault();
-
     const viol = await storeViolation(violationValues);
-
-    //set isLoading to false then set hasError to true if there is an error
-    if (viol === (null || undefined)) {
-      // force return to false
-      toast.error("Saving Failed!");
-    }
+    if (!viol) return // force return to false
     toast.success("Successfully Created!");
     setViolation({});
     setViolations((violations) => {
@@ -65,7 +54,6 @@ const Violations = () => {
 
   // delete violationtion
   const handleDeleteViolation = (id) => {
-    setIsLoading(true);
     deleteViolation(id).then((res) => {
       if (res) {
         setViolations((violations) =>
@@ -73,7 +61,7 @@ const Violations = () => {
         );
         toast.success("Successfully Removed!");
       }
-    }).finally(() => setIsLoading(false));
+    });
   };
   return (
     <>

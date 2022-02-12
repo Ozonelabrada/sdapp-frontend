@@ -1,14 +1,12 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { updateUser } from "../../../api/endpoints/user";
-import { BlockUxContext } from "../../../context/BlockUx";
 import { UserContext } from "../../../context/userContext";
 
 export default function UpdateProfile(props) {
   const { show } = props;
   const { setShowModal } = show;
   const { user, setUser } = React.useContext(UserContext);
-  const { setIsLoading } = React.useContext(BlockUxContext);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser((prevState) => {
@@ -17,19 +15,13 @@ export default function UpdateProfile(props) {
         [name]: value,
       };
     });
-    // console.log(e);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
     updateUser(user).then((res) => {
       if (res) {
-        setIsLoading(false);
         toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
-      } else {
-        setIsLoading(false);
-        toast.error("Sorry Found Some Difficulty", { duration: 5000 });
       }
     });
   };
