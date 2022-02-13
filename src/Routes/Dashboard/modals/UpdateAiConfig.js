@@ -1,33 +1,28 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { updateAi } from "../../../api/endpoints/aiConfig";
 import { updateViolation } from "../../../api/endpoints/violation";
 import { findAllViolationType } from "../../../api/endpoints/violType";
 // import _ from "lodash";
 
-export default function UpdateViolation(props) {
+export default function UpdateAiConfig(props) {
   const { show, data } = props;
   const { setShowModal } = show;
-  const { selectedViolation, setSelectedViolation, setViolations } = data;
-  const [violationsType, setViolationsType] = useState([]);
-
-  React.useEffect(() => {
-    findAllViolationType().then(setViolationsType);
-  }, []);
+  const { selAiConfig, setSelAiConfig, setAiConfigs } = data;
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSelectedViolation((prevState) => {
+    setSelAiConfig((prevState) => {
       return {
         ...prevState,
         [name]: value,
       };
     });
   };
-  const handleSubmit = (e) => {
+  const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    delete selectedViolation.type //Temporary!!
-    updateViolation(selectedViolation).then((res) => {
+    updateAi(selAiConfig).then((res) => {
       if (res) {
-        setViolations((prevState) => {
+        setAiConfigs((prevState) => {
           const index = prevState.findIndex((element) => element.id === res.id);
           if (index > -1) {
             prevState[index] = res;
@@ -37,7 +32,7 @@ export default function UpdateViolation(props) {
         toast.success("Updated Successfuly", { duration: 5000 });
         setShowModal(false);
       }
-    })
+    });
   };
   return (
     <>
@@ -63,75 +58,96 @@ export default function UpdateViolation(props) {
               <div className="w-full bg-gray-200">
                 <div className="rounded-lg container mx-auto py-2">
                   <div className="py-4 px-8">
-                    <form onSubmit={handleSubmit}>
-                      <div className="flex">
-                        <div className="w-1/2">
+                    <form onSubmit={handleUpdateSubmit}>
+                      <div className="mb-4">
+                        <div className="mb-4"></div>
+                      </div>
+                      <div className="flex mb-4">
+                        <div className="w-1/2 mr-1">
                           <label
                             className="block text-grey-darker text-sm font-bold mb-2"
-                            htmlFor="location"
-                          >
-                            Type
-                          </label>
-                          <select
-                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mdi mdi-chevron-down"
-                            aria-label=".form-select-sm"
-                            onChange={(e) =>
-                              setSelectedViolation((prevState) => ({
-                                ...prevState,
-                                [e.target.name]: parseInt(e.target.value),
-                              }))
-                            }
-                            name="type_id"
-                            value={selectedViolation.type_id}
-                          >
-                            {violationsType.length ? (
-                              violationsType.map((type) => (
-                                <option key={type.id} value={type.id}>{type.type}</option>
-                              ))
-                            ) : (
-                              <option value=""> No Record Found!</option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="w-1/2 ml-2">
-                          <label
-                            className="block text-grey-darker text-sm font-bold mb-2"
-                            htmlFor="Name"
+                            htmlFor="name"
                           >
                             Name
                           </label>
                           <input
                             required
                             onChange={handleChange}
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            name="name"
-                            value={selectedViolation.name}
+                            value={selAiConfig.name || ""}
                             type="text"
-                            placeholder="Name Here..."
+                            name="name"
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            placeholder="Ai Config Name"
                           />
                         </div>
                       </div>
                       <div className="flex mb-4">
-                        <div className="w-full ml-2">
+                        <div className="w-1/2 mr-1">
                           <label
-                            className="block text-grey-darker text-sm font-bold mb-2"
-                            htmlFor="location"
+                            className="block   text-sm font-bold mb-2"
+                            htmlFor="classification"
                           >
-                            Location
+                            Classification
                           </label>
                           <input
                             required
+                            value={selAiConfig.classification_type || ""}
                             onChange={handleChange}
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            name="location"
-                            value={selectedViolation.location}
+                            name="classification_type"
                             type="text"
-                            placeholder="Location Here..."
+                            placeholder="Classification here"
+                          />
+                        </div>
+                        <div className="w-1/4 ml-1">
+                          <label
+                            disable="true"
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="last_name"
+                          >
+                            Maximum Detection{" "}
+                          </label>
+                          <input
+                            required
+                            onChange={(e) =>
+                                setAiConfigs((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value),
+                              }))
+                            }
+                            value={selAiConfig.max_detection_num || ""}
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            name="max_detection_num"
+                            type="text"
+                            placeholder="12345..."
+                          />
+                        </div>
+                        <div className="w-1/4 ml-1">
+                          <label
+                            disable="true"
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="last_name"
+                          >
+                            Minimum Detection{" "}
+                          </label>
+                          <input
+                            required
+                            onChange={(e) =>
+                                setAiConfigs((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value),
+                              }))
+                            }
+                            value={selAiConfig.min_detection_num || ""}
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            name="min_detection_num"
+                            type="text"
+                            placeholder="12345..."
                           />
                         </div>
                       </div>
                       <div className="flex mb-4">
-                        <div className="w-full">
+                        <div className="w-full ml-1">
                           <label
                             className="block text-grey-darker text-sm font-bold mb-2"
                             htmlFor="last_name"
@@ -139,21 +155,21 @@ export default function UpdateViolation(props) {
                             Description
                           </label>
                           <textarea
-                            required
                             onChange={handleChange}
+                            value={selAiConfig.description || ""}
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="description"
                             type="text"
-                            value={selectedViolation.description}
-                            rows={5}
-                            placeholder="Description..."
+                            placeholder="Description"
+                            rows={3}
                           />
                         </div>
                       </div>
                       <div className="flex items-center justify-between m-auto w-80">
                         <button
                           type="submit"
-                          className="bg-pink-400 w-full hover:bg-gray-200 text-gray-800 font-bold  py-2 px-4 rounded-full"
+                          className="bg-pink-400 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
+                          type="submit"
                         >
                           Update Now
                         </button>

@@ -184,13 +184,14 @@ export default function Dashboard() {
                         type="button"
                         style={{ transition: "all .15s ease" }}
                       >
-                        See all
+                        See all 
                       </button>
                     </div>
                   </div>
                 </div>
                 <div className="block w-full h-60 md:h-96 overflow-x-auto">
                   {/* Projects table */}
+                  {violators.length >= 1 ?(
                   <table className="items-center w-full bg-transparent border-collapse">
                     <thead>
                       <tr>
@@ -231,6 +232,11 @@ export default function Dashboard() {
                       ))}
                     </tbody>
                   </table>
+                  ):(
+                    <div class="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                    <p class="font-bold">Informational Message!</p>
+                    <p class="text-sm">No Violators to Display.</p>
+                  </div>)}
                 </div>
               </div>
             </div>

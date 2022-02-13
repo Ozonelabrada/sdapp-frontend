@@ -3,7 +3,7 @@ import api from "..";
 //create login  function
 export const getMyAi = async () => {
     try {
-        const res = await api.get(`/ai-config/me`);
+        const res = await api.get(`/ai-config/findOwn`);
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }

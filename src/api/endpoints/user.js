@@ -25,3 +25,9 @@ export const deleteUser = async (id) => {
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }
+export const activateUser = async (id) => {
+    try {
+        const res = await api.patch(`/user/set-active/${id}`);
+        return res.status === 200 ? res.data : null;
+    } catch (error) { console.error(error) }
+}

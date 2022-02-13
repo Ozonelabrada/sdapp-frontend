@@ -16,6 +16,11 @@ export default function SideNav() {
     [location.pathname]
   );
 
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.clear();
+  };
+
   return (
     <>
       <nav className="md:overflow-y-auto md:left-0 md:block md:fixed md:top-0 md:bottom-0  md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-bgstreamImage flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -133,7 +138,7 @@ export default function SideNav() {
                       Violation Type
                     </Link>
                   </li>
-                  {/* <li className="inline-flex">
+                  <li className="inline-flex">
                     <Link
                       className={`${isActive(
                         "ai-config"
@@ -143,7 +148,7 @@ export default function SideNav() {
                       <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
                       Ai Configuration
                     </Link>
-                  </li> */}
+                  </li>
                 </>
               )}
             </ul>
@@ -195,6 +200,19 @@ export default function SideNav() {
               )}
             </ul>
           </div>
+        {user && user.token ? (
+          <button
+            onClick={handleLogout}
+            className="bg-gray-500 border-1 m-0 rounded px-3 py-1 text-white hover:text-gray-900 hover:bg-gray-200"
+          >
+            <i className="mdi mdi-logout-variant mx-auto pr-1"></i>
+            Logout
+          </button>
+        ) : (
+          <Link to="/login" className="block md:inline-block m-auto p-5">
+            <span className="hover:underline hover:opacity-75">Login</span>
+          </Link>
+        )}
         </div>
       </nav>
     </>

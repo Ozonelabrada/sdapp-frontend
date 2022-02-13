@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
 import { UserContext } from "../../context/userContext.js";
 import {
+  activateUser,
   deleteUser,
   findAllUser,
   getMe,
@@ -11,6 +12,7 @@ import { registerUser } from "../../api/endpoints/auth.js";
 import UpdateAccount from "./modals/UpdateAccount.js";
 import moment from "moment";
 import toast from "react-hot-toast";
+import { Checkbox } from 'tailwind-react-ui'
 
 export default function Accounts() {
   const [openTab, setOpenTab] = React.useState(1);
@@ -18,6 +20,7 @@ export default function Accounts() {
   const { user, setUser } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
   const [selUser, setSelUser] = React.useState(null);
+  const [selectedbulk, setSelectedBulk] = React.useState([]);
 
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
@@ -69,6 +72,20 @@ export default function Accounts() {
     setSelUser(account);
     setShowModal(true);
   };
+  const handleActivation =(e)=>{
+    activateUser(e).then((res) => {
+      if (res) {
+        setAccounts((prevState) => {
+          const index = prevState.findIndex((element) => element.id === res.id);
+          if (index > -1) {
+            prevState[index] = res;
+          }
+          return prevState;
+        });
+        toast.success("Success Activation")
+      }
+    });
+  }
   return (
     <>
       {showModal && selUser !== null && (
@@ -160,7 +177,14 @@ export default function Accounts() {
                                     type="button"
                                     style={{ transition: "all .15s ease" }}
                                   >
-                                    See all
+                                    Delete Selected
+                                  </button>
+                                  <button
+                                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                    type="button"
+                                    style={{ transition: "all .15s ease" }}
+                                  >
+                                    Activate Selected
                                   </button>
                                 </div>
                               </div>
@@ -173,8 +197,8 @@ export default function Accounts() {
                               <table className="items-center w-full bg-transparent border-collapse shadow-xl">
                                 <thead>
                                   <tr>
-                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      ID
+                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border mdi mdi-check-all mdi-24px border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                     
                                     </td>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Username
@@ -203,7 +227,7 @@ export default function Accounts() {
                                   {accounts.map((account) => (
                                     <tr key={account.id}>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {/* <Checkbox {...label} defaultChecked /> */}
+                                        <Checkbox  defaultChecked />
                                       </td>
                                       <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         {account.username}{" "}
@@ -246,6 +270,15 @@ export default function Accounts() {
                                             handleDelete(account.id)
                                           }
                                         ></button>
+                                        <button
+                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === account.creator_id) ? "bg-blue-500 hover:bg-blue-700  border border-blue-500" : "bg-gray-400"}   text-white font-bold py-1 px-2 rounded mdi mdi-account-box inline-flex`}
+                                          title="SetActive"
+                                          value={account.isActive}
+                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === account.creator_id)}
+                                          onClick={() =>
+                                            handleActivation(account.id)
+                                          }
+                                        >{!account.isActive? "Activate" : "Deactivate"}</button>
                                       </td>
                                     </tr >
                                   ))

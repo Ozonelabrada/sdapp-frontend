@@ -7,7 +7,13 @@ import moment from "moment";
 import toast from "react-hot-toast";
 import { BlockUxContext } from "../../context/BlockUx/index.js";
 import { findError } from "../../utilities/errorCode";
-import { deleteAi, findAllAi, getMyAi, storeAi } from "../../api/endpoints/aiConfig.js";
+import {
+  deleteAi,
+  findAllAi,
+  getMyAi,
+  storeAi,
+} from "../../api/endpoints/aiConfig.js";
+import UpdateAiConfig from "./modals/UpdateAiConfig.js";
 // import { Checkbox, } from '@mui/material';
 
 export default function AiConfig() {
@@ -19,9 +25,8 @@ export default function AiConfig() {
   const { setIsLoading } = React.useContext(BlockUxContext);
 
   React.useEffect(() => {
-    setIsLoading(true);
     if (["SUPER_ADMIN"].includes(user.role)) findAllAi().then(setAiConfigs);
-    else getMyAi().then(setAiConfigs);
+    else if (["ADMIN"].includes(user.role)) getMyAi().then(setAiConfigs);
   }, [user.id]);
 
   const handleDelete = (id) => {
@@ -46,43 +51,40 @@ export default function AiConfig() {
     classification_type: "",
     max_detection_num: "",
     min_detection_num: "",
-    use_gpu: "",
+    use_gpu: true,
   });
-const handleSubmitAiConfig = async (e) => {
+  const handleSubmitAiConfig = async (e) => {
     e.preventDefault();
 
-const data = await storeAi(aiConfigValues);
-//set isLoading to false then set hasError to true if there is an error
-if (data === (null || undefined)) {
-  // force return to false
-  toast.error("Saving Failed!");
-}
-toast.success("Successfully Created!");
-setConfig({});
-setAiConfigs((aiConfigs) => {
-  if (aiConfigs.includes(data) === false) aiConfigs.push(data);
-  return aiConfigs;
-});
-}
+    const data = await storeAi(aiConfigValues);
+    //set isLoading to false then set hasError to true if there is an error
+    if (!data) return;
+    toast.success("Successfully Created!");
+    setConfig({});
+    setAiConfigs((aiConfigs) => {
+      if (aiConfigs.includes(data) === false) aiConfigs.push(data);
+      return aiConfigs;
+    });
+  };
 
-  const handleShowModal = (ai) => {
-    setSelAiConfig(ai);
+  const handleShowModal = (aIData) => {
+    setSelAiConfig(aIData);
     setShowModal(true);
   };
   return (
     <>
-      {/* {showModal && selUser !== null && (
-        <UpdateAccount
+      {showModal && selAiConfig !== null && (
+        <UpdateAiConfig
           show={{ showModal, setShowModal }}
-          data={{ selUser, setSelUser, setAccounts }}
+          data={{ selAiConfig, setSelAiConfig, setAiConfigs }}
         />
-      )} */}
+      )}
       <div className="md:overflow-y-auto relative md:ml-64 bg-blueGray-100">
         <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
           <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
             {/* Brand */}
             <div className="text-white text-sm uppercase hidden lg:inline-block font-semibold">
-              Accounts
+              AI Configuration
             </div>
             {/* User */}
             <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
@@ -116,7 +118,7 @@ setAiConfigs((aiConfigs) => {
                         href="#link1"
                         role="tablist"
                       >
-                        Accounts
+                        AI Listing
                       </a>
                     </li>
                     <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -135,7 +137,7 @@ setAiConfigs((aiConfigs) => {
                         href="#link2"
                         role="tablist"
                       >
-                        Add Accounts
+                        Create AI Config
                       </a>
                     </li>
                   </ul>
@@ -151,7 +153,7 @@ setAiConfigs((aiConfigs) => {
                               <div className="flex flex-wrap items-center">
                                 <div className="relative w-full px-4 max-w-full flex-grow flex-1">
                                   <h3 className="font-semibold text-base text-blueGray-700">
-                                    Accounts
+                                    AI Configuration
                                   </h3>
                                 </div>
                                 <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -170,6 +172,7 @@ setAiConfigs((aiConfigs) => {
                               style={{ maxHeight: 500 }}
                             >
                               {/* Projects table */}
+                              {aiConfigs.length >= 1 ? (
                               <table className="items-center w-full bg-transparent border-collapse shadow-xl">
                                 <thead>
                                   <tr>
@@ -198,89 +201,96 @@ setAiConfigs((aiConfigs) => {
                                       Date Created
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Date Updated{" "}
+                                      Date Updated
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Actions
                                     </th>
                                   </tr>
-                                  <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Actions
-                                  </th>
                                 </thead>
                                 <tbody>
-                                  {aiConfigs.map((aIData) => (
-                                    <tr key={aIData.id}>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {/* <Checkbox {...label} defaultChecked /> */}
-                                      </td>
-                                      <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {aIData.name}{" "}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {aIData.description}{" "}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {aIData.classification_type}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {aIData.max_detection_num}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {aIData.use_gpu}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {aIData.creator.creator.email}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {moment(aIData.created_at).format(
-                                          "lll"
-                                        )}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {moment(aIData.updated_at).format(
-                                          "lll"
-                                        )}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        <button
-                                          className={`ml-2 ${
-                                            user.role === "SUPER_ADMIN" ||
-                                            user.id === aIData.creator_id
-                                              ? "bg-blue-500 hover:bg-blue-700 border border-blue-500"
-                                              : "bg-gray-400"
-                                          } text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
-                                          title="Edit"
-                                          disabled={
-                                            !(
+                                  {
+                                    aiConfigs.map((aIData) => (
+                                      <tr key={aIData.id}>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {/* <Checkbox {...label} defaultChecked /> */}
+                                        </td>
+                                        <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {aIData.name}{" "}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {aIData.description}{" "}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {aIData.classification_type}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {aIData.max_detection_num}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {aIData.min_detection_num}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {aIData.creator_id}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {moment(aIData.created_at).format(
+                                            "lll"
+                                          )}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {moment(aIData.updated_at).format(
+                                            "lll"
+                                          )}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          <button
+                                            className={`ml-2 ${
                                               user.role === "SUPER_ADMIN" ||
                                               user.id === aIData.creator_id
-                                            )
-                                          }
-                                          onClick={() =>
-                                            handleShowModal(aIData)
-                                          }
-                                        ></button>
-                                        <button
-                                          className={`ml-2 ${
-                                            user.role === "SUPER_ADMIN" ||
-                                            user.id === aIData.creator_id
-                                              ? "bg-red-500 hover:bg-red-700  border border-red-500"
-                                              : "bg-gray-400"
-                                          }   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
-                                          title="Delete"
-                                          disabled={
-                                            !(
+                                                ? "bg-blue-500 hover:bg-blue-700 border border-blue-500"
+                                                : "bg-gray-400"
+                                            } text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
+                                            title="Edit"
+                                            disabled={
+                                              !(
+                                                user.role === "SUPER_ADMIN" ||
+                                                user.id === aIData.creator_id
+                                              )
+                                            }
+                                            onClick={() =>
+                                              handleShowModal(aIData)
+                                            }
+                                          ></button>
+                                          <button
+                                            className={`ml-2 ${
                                               user.role === "SUPER_ADMIN" ||
                                               user.id === aIData.creator_id
-                                            )
-                                          }
-                                          onClick={() =>
-                                            handleDelete(aIData.id)
-                                          }
-                                        ></button>
-                                      </td>
-                                    </tr>
-                                  ))}
+                                                ? "bg-red-500 hover:bg-red-700  border border-red-500"
+                                                : "bg-gray-400"
+                                            }   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
+                                            title="Delete"
+                                            disabled={
+                                              !(
+                                                user.role === "SUPER_ADMIN" ||
+                                                user.id === aIData.creator_id
+                                              )
+                                            }
+                                            onClick={() =>
+                                              handleDelete(aIData.id)
+                                            }
+                                          ></button>
+                                        </td>
+                                      </tr>
+                                    ))}
                                 </tbody>
                               </table>
+                                  ) : (
+                                    <div class="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                                    <p class="font-bold">Informational Message!</p>
+                                    <p class="text-sm">No Configuration to Display.</p>
+                                  </div>
+                                  )}
                             </div>
                           </div>
                         </div>
@@ -304,34 +314,18 @@ setAiConfigs((aiConfigs) => {
                                       <div className="w-1/2 mr-1">
                                         <label
                                           className="block text-grey-darker text-sm font-bold mb-2"
-                                          htmlFor="first_name"
+                                          htmlFor="name"
                                         >
-                                          First Name
+                                          Name
                                         </label>
                                         <input
                                           required
                                           onChange={setAiConfigValues}
-                                          value={setConfig.first_name || ""}
+                                          value={aiConfigValues.name || ""}
                                           type="text"
-                                          name="first_name"
+                                          name="name"
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          placeholder="Your first name"
-                                        />
-                                      </div>
-                                      <div className="w-1/2 ml-1">
-                                        <label
-                                          className="block text-grey-darker text-sm font-bold mb-2"
-                                          htmlFor="last_name"
-                                        >
-                                          Middle Name
-                                        </label>
-                                        <input
-                                          onChange={setAiConfigValues}
-                                          value={setConfig.middle_name || ""}
-                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          name="middle_name"
-                                          type="text"
-                                          placeholder="Your middle name"
+                                          placeholder="Ai Config Name"
                                         />
                                       </div>
                                     </div>
@@ -339,93 +333,100 @@ setAiConfigs((aiConfigs) => {
                                       <div className="w-1/2 mr-1">
                                         <label
                                           className="block   text-sm font-bold mb-2"
-                                          htmlFor="firstname"
+                                          htmlFor="classification"
                                         >
-                                          Last Name
+                                          Classification
                                         </label>
                                         <input
                                           required
-                                          value={setConfig.last_name || ""}
+                                          value={
+                                            aiConfigValues.classification_type ||
+                                            ""
+                                          }
                                           onChange={setAiConfigValues}
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          name="last_name"
+                                          name="classification_type"
                                           type="text"
-                                          placeholder="Your last name"
+                                          placeholder="Classification here"
                                         />
                                       </div>
-                                      <div className="w-1/2 ml-1">
+                                      <div className="w-1/4 ml-1">
                                         <label
                                           disable="true"
                                           className="block text-grey-darker text-sm font-bold mb-2"
                                           htmlFor="last_name"
                                         >
-                                          Suffix{" "}
+                                          Maximum Detection{" "}
                                         </label>
                                         <input
-                                          onChange={setAiConfigValues}
-                                          value={setConfig.suffix || ""}
+                                          required
+                                          onChange={(e) =>
+                                            setConfig((prevState) => ({
+                                              ...prevState,
+                                              [e.target.name]: parseInt(
+                                                e.target.value
+                                              ),
+                                            }))
+                                          }
+                                          value={
+                                            aiConfigValues.max_detection_num ||
+                                            ""
+                                          }
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          name="suffix"
+                                          name="max_detection_num"
                                           type="text"
-                                          placeholder="Your Suffix"
+                                          placeholder="12345..."
+                                        />
+                                      </div>
+                                      <div className="w-1/4 ml-1">
+                                        <label
+                                          disable="true"
+                                          className="block text-grey-darker text-sm font-bold mb-2"
+                                          htmlFor="last_name"
+                                        >
+                                          Minimum Detection{" "}
+                                        </label>
+                                        <input
+                                          required
+                                          onChange={(e) =>
+                                            setConfig((prevState) => ({
+                                              ...prevState,
+                                              [e.target.name]: parseInt(
+                                                e.target.value
+                                              ),
+                                            }))
+                                          }
+                                          value={
+                                            aiConfigValues.min_detection_num ||
+                                            ""
+                                          }
+                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                          name="min_detection_num"
+                                          type="text"
+                                          placeholder="12345..."
                                         />
                                       </div>
                                     </div>
                                     <div className="flex mb-4">
-                                      <div className="w-1/2 mr-1">
+                                      <div className="w-full ml-1">
                                         <label
                                           className="block text-grey-darker text-sm font-bold mb-2"
-                                          htmlFor="email"
+                                          htmlFor="last_name"
                                         >
-                                          Email Address
+                                          Description
                                         </label>
-                                        <input
-                                          required
-                                          value={setConfig.email || ""}
+                                        <textarea
                                           onChange={setAiConfigValues}
+                                          value={
+                                            aiConfigValues.description || ""
+                                          }
                                           className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          name="email"
-                                          type="email"
-                                          placeholder="Your email address"
-                                        />
-                                      </div>
-                                      <div className="w-1/2 ml-1">
-                                        <label
-                                          className="block text-grey-darker text-sm font-bold mb-2"
-                                          htmlFor="email"
-                                        >
-                                          Username
-                                        </label>
-                                        <input
-                                          required
-                                          value={setConfig.username || ""}
-                                          onChange={setAiConfigValues}
-                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          name="username"
+                                          name="description"
                                           type="text"
-                                          placeholder="Your username"
+                                          placeholder="Description"
+                                          rows={3}
                                         />
                                       </div>
-                                    </div>
-                                    <div className="mb-4">
-                                      <label
-                                        className="block text-grey-darker text-sm font-bold mb-2"
-                                        htmlFor="password"
-                                      >
-                                        Password
-                                      </label>
-                                      <input
-                                        required
-                                        value={setConfig.password || ""}
-                                        onChange={setAiConfigValues}
-                                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                        name="password"
-                                        type="password"
-                                        placeholder="Your secure password"
-                                      />
-                                      <p className="text-grey text-xs mt-1">
-                                        At least 6 characters
-                                      </p>
                                     </div>
                                     <div className="flex items-center justify-between m-auto w-80">
                                       <button

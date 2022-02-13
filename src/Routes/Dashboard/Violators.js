@@ -68,6 +68,7 @@ const Violators = () => {
                   style={{ maxHeight: 500 }}
                 >
                   {/* Projects table */}
+                  {violators.length >= 1 ? (
                   <table className="items-center w-full bg-transparent border-collapse">
                     <thead>
                       <tr>
@@ -114,6 +115,11 @@ const Violators = () => {
                       ))}
                     </tbody>
                   </table>
+                  ):(
+                    <div class="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                    <p class="font-bold">Informational Message!</p>
+                    <p class="text-sm">No Violators to Display.</p>
+                  </div>)}
                 </div>
               </div>
             </div>

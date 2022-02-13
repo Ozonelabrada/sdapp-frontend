@@ -42,6 +42,7 @@ const Violations = () => {
 
   const handleSubmitViol = async (e) => {
     e.preventDefault();
+
     const viol = await storeViolation(violationValues);
     if (!viol) return // force return to false
     toast.success("Successfully Created!");
@@ -62,7 +63,7 @@ const Violations = () => {
         toast.success("Successfully Removed!");
       }
     });
-  };
+  }
   return (
     <>
       {showModal && selectedViolation !== null && (
@@ -168,6 +169,7 @@ const Violations = () => {
                               style={{ maxHeight: 500 }}
                             >
                               {/* Projects table */}
+                              {violations.length >= 1?(
                               <table className="items-center h-full w-full bg-transparent border-collapse shadow-lg">
                                 <thead>
                                   <tr>
@@ -249,6 +251,11 @@ const Violations = () => {
                                   ))}
                                 </tbody>
                               </table>
+                              ):(
+                                <div class="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                                <p class="font-bold">Informational Message!</p>
+                                <p class="text-sm">No Violations to Display.</p>
+                              </div>)}
                             </div>
                           </div>
                         </div>
