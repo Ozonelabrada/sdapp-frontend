@@ -11,7 +11,7 @@ export default function Login() {
   const location = useLocation();
 
   // create form states
-  const [credentials, setCredentials, setCredentialsValues] = useForm({
+  const [credentials, setCredentials] = useForm({
     email: "",
     password: "",
   });
@@ -30,14 +30,12 @@ export default function Login() {
 
   //if token ang user context is not null, redirect to previous path
   if (user && user.token) {
-    {
       return (
         <Navigate
           to={location.state?.from.pathname || "/dashboard"}
           state={{ from: location }}
         />
       );
-    }
   }
 
   return (

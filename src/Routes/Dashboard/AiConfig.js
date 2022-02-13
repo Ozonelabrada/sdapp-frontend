@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import UserDropdown from "./components/UserDropdown.js";
-import { useLocation } from "react-router-dom";
 import { UserContext } from "../../context/userContext.js";
 import useForm from "../../hooks/useForm.js";
 import moment from "moment";
 import toast from "react-hot-toast";
 import { BlockUxContext } from "../../context/BlockUx/index.js";
-import { findError } from "../../utilities/errorCode";
 import {
   deleteAi,
   findAllAi,
@@ -19,7 +17,7 @@ import UpdateAiConfig from "./modals/UpdateAiConfig.js";
 export default function AiConfig() {
   const [openTab, setOpenTab] = React.useState(1);
   const [aiConfigs, setAiConfigs] = useState([]);
-  const { user, setUser } = React.useContext(UserContext);
+  const { user } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
   const [selAiConfig, setSelAiConfig] = React.useState(null);
   const { setIsLoading } = React.useContext(BlockUxContext);
@@ -43,7 +41,6 @@ export default function AiConfig() {
       .finally(() => setIsLoading(false));
   };
 
-  const location = useLocation();
   // create form states
   const [aiConfigValues, setAiConfigValues, setConfig] = useForm({
     name: "",
@@ -430,7 +427,6 @@ export default function AiConfig() {
                                     </div>
                                     <div className="flex items-center justify-between m-auto w-80">
                                       <button
-                                        type="submit"
                                         className="bg-pink-400 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
                                         type="submit"
                                       >

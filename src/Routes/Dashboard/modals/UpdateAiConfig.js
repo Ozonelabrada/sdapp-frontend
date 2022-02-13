@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+
 import toast from "react-hot-toast";
 import { updateAi } from "../../../api/endpoints/aiConfig";
-import { updateViolation } from "../../../api/endpoints/violation";
-import { findAllViolationType } from "../../../api/endpoints/violType";
 // import _ from "lodash";
 
 export default function UpdateAiConfig(props) {
@@ -167,7 +165,6 @@ export default function UpdateAiConfig(props) {
                       </div>
                       <div className="flex items-center justify-between m-auto w-80">
                         <button
-                          type="submit"
                           className="bg-pink-400 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
                           type="submit"
                         >

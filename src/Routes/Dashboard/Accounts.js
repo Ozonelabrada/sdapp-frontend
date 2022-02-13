@@ -12,15 +12,15 @@ import { registerUser } from "../../api/endpoints/auth.js";
 import UpdateAccount from "./modals/UpdateAccount.js";
 import moment from "moment";
 import toast from "react-hot-toast";
-import { Checkbox } from 'tailwind-react-ui'
+import { Checkbox } from "tailwind-react-ui";
 
 export default function Accounts() {
   const [openTab, setOpenTab] = React.useState(1);
   const [accounts, setAccounts] = useState([]);
-  const { user, setUser } = React.useContext(UserContext);
+  const { user } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
   const [selUser, setSelUser] = React.useState(null);
-  const [selectedbulk, setSelectedBulk] = React.useState([]);
+  // const [selectedbulk, setSelectedBulk] = React.useState([]);
 
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
@@ -29,7 +29,6 @@ export default function Accounts() {
   }, [user.id]);
 
   const handleDelete = (id) => {
-
     deleteUser(id).then((res) => {
       if (res) {
         setAccounts((accounts) =>
@@ -38,7 +37,25 @@ export default function Accounts() {
         toast.success("Successfully Deleted!");
       }
     });
-  }
+  };
+  const toggleActivation = (account) => {
+    const data = {
+      isActive: !account.isActive,
+      id: account.id,
+    };
+    activateUser(data).then((res) => {
+      if (res) {
+        setAccounts((prevState) => {
+          const index = prevState.findIndex((element) => element.id === res.id);
+          if (index > -1) {
+            prevState[index] = res;
+          }
+          return prevState;
+        });
+        toast.success("Toggle Activation")
+      }
+    });
+  };
 
   // create form states
   const [credentials, setCredentialsValues, setCredentials] = useForm({
@@ -52,14 +69,13 @@ export default function Accounts() {
     role: "USER",
   });
 
-
   // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const user = await registerUser(credentials);
     //set isLoading to false then set hasError to true if there is an error
-    if (!user) return // force return to false
+    if (!user) return; // force return to false
     toast.error("Registration Failed!");
     toast.success("Successfully Created!");
     setCredentials({});
@@ -72,20 +88,6 @@ export default function Accounts() {
     setSelUser(account);
     setShowModal(true);
   };
-  const handleActivation =(e)=>{
-    activateUser(e).then((res) => {
-      if (res) {
-        setAccounts((prevState) => {
-          const index = prevState.findIndex((element) => element.id === res.id);
-          if (index > -1) {
-            prevState[index] = res;
-          }
-          return prevState;
-        });
-        toast.success("Success Activation")
-      }
-    });
-  }
   return (
     <>
       {showModal && selUser !== null && (
@@ -197,9 +199,7 @@ export default function Accounts() {
                               <table className="items-center w-full bg-transparent border-collapse shadow-xl">
                                 <thead>
                                   <tr>
-                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border mdi mdi-check-all mdi-24px border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                     
-                                    </td>
+                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border mdi mdi-check-all mdi-24px border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"></td>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Username
                                     </th>
@@ -227,7 +227,7 @@ export default function Accounts() {
                                   {accounts.map((account) => (
                                     <tr key={account.id}>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        <Checkbox  defaultChecked />
+                                        <Checkbox Unchecked />
                                       </td>
                                       <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         {account.username}{" "}
@@ -255,39 +255,75 @@ export default function Accounts() {
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         <button
-                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === account.creator_id) ? "bg-blue-500 hover:bg-blue-700 border border-blue-500" : "bg-gray-400"} text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
+                                          className={`ml-2 ${
+                                            user.role === "SUPER_ADMIN" ||
+                                            user.id === account.creator_id
+                                              ? "bg-blue-500 hover:bg-blue-700 border border-blue-500"
+                                              : "bg-gray-400"
+                                          } text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
                                           title="Edit"
-                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === account.creator_id)}
+                                          disabled={
+                                            !(
+                                              user.role === "SUPER_ADMIN" ||
+                                              user.id === account.creator_id
+                                            )
+                                          }
                                           onClick={() =>
                                             handleShowModal(account)
                                           }
                                         ></button>
                                         <button
-                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === account.creator_id) ? "bg-red-500 hover:bg-red-700  border border-red-500" : "bg-gray-400"}   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
+                                          className={`ml-2 ${
+                                            user.role === "SUPER_ADMIN" ||
+                                            user.id === account.creator_id
+                                              ? "bg-red-500 hover:bg-red-700  border border-red-500"
+                                              : "bg-gray-400"
+                                          }   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
                                           title="Delete"
-                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === account.creator_id)}
+                                          disabled={
+                                            !(
+                                              user.role === "SUPER_ADMIN" ||
+                                              user.id === account.creator_id
+                                            )
+                                          }
                                           onClick={() =>
                                             handleDelete(account.id)
                                           }
                                         ></button>
                                         <button
-                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === account.creator_id) ? "bg-blue-500 hover:bg-blue-700  border border-blue-500" : "bg-gray-400"}   text-white font-bold py-1 px-2 rounded mdi mdi-account-box inline-flex`}
-                                          title="SetActive"
-                                          value={account.isActive}
-                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === account.creator_id)}
-                                          onClick={() =>
-                                            handleActivation(account.id)
+                                          className={`ml-2 ${
+                                            user.role === "SUPER_ADMIN" ||
+                                            user.id === account.creator_id
+                                              ? "bg-blue-500 hover:bg-blue-700  border border-blue-500"
+                                              : "bg-gray-400"
+                                          }   text-white font-bold py-1 px-2 rounded mdi mdi-account-box inline-flex`}
+                                          title={
+                                            account.isActive
+                                              ? "Deactivate"
+                                              : "Activate"
                                           }
-                                        >{!account.isActive? "Activate" : "Deactivate"}</button>
+                                          disabled={
+                                            !(
+                                              user.role === "SUPER_ADMIN" ||
+                                              user.id === account.creator_id
+                                            )
+                                          }
+                                          onClick={() =>
+                                            toggleActivation(account)
+                                          }
+                                        >
+                                          {account.isActive
+                                            ? "Activate"
+                                            : "Deactivate"}
+                                        </button>
                                       </td>
-                                    </tr >
-                                  ))
-                                  }
-                                </tbody >
-                              </table >
-                            </div >
-                          </div >
-                        </div >
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
                         <div
                           className={openTab === 2 ? "block" : "hidden"}
                           id="link2"
@@ -391,7 +427,6 @@ export default function Accounts() {
                                           name="email"
                                           type="email"
                                           placeholder="Your email address"
-                                          onChange={setCredentialsValues}
                                         />
                                       </div>
                                       <div className="w-1/2 ml-1">
@@ -434,7 +469,6 @@ export default function Accounts() {
                                     </div>
                                     <div className="flex items-center justify-between m-auto w-80">
                                       <button
-                                        type="submit"
                                         className="bg-pink-400 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
                                         type="submit"
                                       >
@@ -447,16 +481,16 @@ export default function Accounts() {
                             </div>
                           </div>
                         </div>
-                      </div >
-                    </div >
-                  </div >
-                </div >
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 {/* Card stats */}
-              </div >
-            </div >
-          </div >
-        </div >
-      </div >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }

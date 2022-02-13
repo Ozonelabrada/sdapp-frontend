@@ -14,11 +14,12 @@ import {
   findAllViolationType,
 } from "../../api/endpoints/violType.js";
 import useForm from "../../hooks/useForm.js";
+import { Checkbox } from "tailwind-react-ui";
 
 const Violations = () => {
   const [violations, setViolations] = useState([]);
   const [violationsType, setViolationsType] = useState([]);
-  const { user, setUser } = React.useContext(UserContext);
+  const { user } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
   const [openTab, setOpenTab] = React.useState(1);
   const [selectedViolation, setSelectedViolation] = React.useState(null);
@@ -165,7 +166,7 @@ const Violations = () => {
                               </div>
                             </div>
                             <div
-                              className="h-full m-auto flex w-full overflow-y-scroll"
+                              className="h-full m-auto flex w-full overflow-y-auto"
                               style={{ maxHeight: 500 }}
                             >
                               {/* Projects table */}
@@ -173,8 +174,8 @@ const Violations = () => {
                               <table className="items-center h-full w-full bg-transparent border-collapse shadow-lg">
                                 <thead>
                                   <tr>
-                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      ID
+                                    <td className="px-6 bg-blueGray-50 mdi mdi-check-all mdi-24px text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    
                                     </td>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Name
@@ -203,7 +204,7 @@ const Violations = () => {
                                   {violations.map((violation) => (
                                     <tr key={violation.id}>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {violation.id}
+                                        <Checkbox unchecked />
                                       </td>
                                       <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         {violation.name}
@@ -372,7 +373,6 @@ const Violations = () => {
                                       <button
                                         type="submit"
                                         className="bg-pink-400 w-full hover:bg-blue-dark text-white font-bold  py-2 px-4 rounded-full"
-                                        type="submit"
                                       >
                                         Create Now
                                       </button>

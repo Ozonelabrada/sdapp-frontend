@@ -1,19 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import UserDropdown from "./components/UserDropdown.js";
 import { Link, Outlet } from "react-router-dom";
 import { UserContext } from "../../context/userContext.js";
-import useForm from "../../hooks/useForm.js";
-import { findUser, getMe, updateUser } from "../../api/endpoints/user.js";
 import UpdateProfile from "./modals/UpdateProfile.js";
 
 export default function Profile() {
-  const { user, setUser } = React.useContext(UserContext);
+  const { user } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
-  const [accounts, setAccounts] = useState([]);
-
-  React.useEffect(() => {
-      getMe().then(setAccounts);
-  }, []);
 
   return (
     <>

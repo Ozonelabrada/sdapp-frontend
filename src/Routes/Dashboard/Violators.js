@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { deleteViolator} from "../../api/endpoints/violator.js";
 import { Link } from "react-router-dom";

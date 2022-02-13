@@ -160,7 +160,6 @@ export default function UpdateProfile(props) {
                     </div>
                     <div className="flex items-center justify-between m-auto w-80">
                       <button
-                        type="submit"
                         className="bg-pink-400 w-full hover:bg-gray-200 text-gray-700 font-bold  py-2 px-4 rounded-full"
                         type="submit"
                       >

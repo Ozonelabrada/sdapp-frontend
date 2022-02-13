@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import toast from "react-hot-toast";
-import { findAllUser, updateUser } from "../../../api/endpoints/user";
+import { updateUser } from "../../../api/endpoints/user";
 import { UserContext } from "../../../context/userContext";
 // import { Checkbox } from "tailwind-react-ui";
 
@@ -8,12 +8,7 @@ export default function UpdateAccount(props) {
   const { show, data } = props;
   const { setShowModal } = show;
   const { selUser, setSelUser, setAccounts } = data;
-  const [userRole, setUserRole] = useState([]);
-  const { user, setUser } = React.useContext(UserContext);
-
-  React.useEffect(() => {
-    findAllUser().then(setUserRole);
-  }, []);
+  const { user } = React.useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -1,34 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { UserContext } from "../../context/userContext.js";
+import React, {useState } from "react";
 import moment from "moment";
-import ShowEvents from "./modals/ShowEvents.js";
-import { findAllEvent, findOwnEvent } from "../../api/endpoints/event.js";
+import { findAllEvent } from "../../api/endpoints/event.js";
 import { Link } from "react-router-dom";
-import UserDropdown from "./components/UserDropdown.js";
 
-const Events = () => {
+export default function Events() {
   const [events, setEvents] = useState([]);
-  const { user, setUser } = React.useContext(UserContext);
-  const [showModal, setShowModal] = React.useState(false);
-  const [openTab, setOpenTab] = React.useState(1);
-  const [selectedEvent, setSelectedEvent] = React.useState(null);
 
   React.useEffect(() => {
     findAllEvent().then(setEvents);
   }, []);
-  const handleShowModal = (event) => {
-    setSelectedEvent(event);
-    setShowModal(true);
-  };
   return (
     <>
-      {showModal && selectedEvent !== null && (
-        <ShowEvents
-          show={{ showModal, setShowModal }}
-          data={{ selectedEvent, setSelectedEvent, setEvents }}
-        />
-      )}
-
       <div className="relative md:ml-64 bg-blueGray-100 ">
         <nav className="absolute left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
           <div className="w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
@@ -120,5 +102,3 @@ const Events = () => {
     </>
   );
 };
-
-export default Events;

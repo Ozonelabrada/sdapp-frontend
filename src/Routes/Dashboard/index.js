@@ -233,9 +233,9 @@ export default function Dashboard() {
                     </tbody>
                   </table>
                   ):(
-                    <div class="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
-                    <p class="font-bold">Informational Message!</p>
-                    <p class="text-sm">No Violators to Display.</p>
+                    <div className="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                    <p className="font-bold">Informational Message!</p>
+                    <p className="text-sm">No Violators to Display.</p>
                   </div>)}
                 </div>
               </div>
