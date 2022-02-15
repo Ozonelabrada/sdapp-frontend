@@ -25,6 +25,12 @@ export const deleteUser = async (id) => {
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }
+export const deleteBulkUser = async (id) => {
+    try {
+        const res = await api.delete(`/user/delete-bulk/${[id]}`);
+        return res.status === 200 ? res.data : null;
+    } catch (error) { console.error(error) }
+}
 export const activateUser = async (data) => {
     try {
         const res = await api.patch(`/user/set-active/${data.id}`,data);

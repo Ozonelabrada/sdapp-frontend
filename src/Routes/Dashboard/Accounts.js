@@ -3,6 +3,7 @@ import UserDropdown from "./components/UserDropdown.js";
 import { UserContext } from "../../context/userContext.js";
 import {
   activateUser,
+  deleteBulkUser,
   deleteUser,
   findAllUser,
   getMe,
@@ -20,7 +21,7 @@ export default function Accounts() {
   const { user } = React.useContext(UserContext);
   const [showModal, setShowModal] = React.useState(false);
   const [selUser, setSelUser] = React.useState(null);
-  // const [selectedbulk, setSelectedBulk] = React.useState([]);
+  const [showDeleteButton, setShowDeleteButton] = React.useState(false);
 
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
@@ -52,9 +53,9 @@ export default function Accounts() {
           }
           return prevState;
         });
-        toast.success("Toggle Activation")
       }
     });
+    window.location.reload(false);
   };
 
   // create form states
@@ -76,7 +77,6 @@ export default function Accounts() {
     const user = await registerUser(credentials);
     //set isLoading to false then set hasError to true if there is an error
     if (!user) return; // force return to false
-    toast.error("Registration Failed!");
     toast.success("Successfully Created!");
     setCredentials({});
     setAccounts((accounts) => {
@@ -87,6 +87,43 @@ export default function Accounts() {
   const handleShowModal = (account) => {
     setSelUser(account);
     setShowModal(true);
+  };
+
+  ////////////////////////////
+  const getAccounts = () => {
+   findAllUser().then(data => {
+        setAccounts(
+          accounts.map(d => {
+            return {
+              select: false,
+              id: d.id,
+              username: d.username,
+              email: d.email,
+              first_name: d.first_name,
+              last_name: d.last_name,
+              middle_name: d.middle_name,
+              suffix: d.suffix,
+              role: d.role,
+              isActive: d.isActive
+            };
+          })
+        );
+      })
+      .catch(err => alert(err));
+  };
+
+  const deleteAccountsByIds = () => {
+    let arrayids = [];
+    accounts.forEach((d) => {
+      if (d.select) {
+        arrayids.push(d.id);
+      }
+    });
+    deleteBulkUser(arrayids).then((data) => {
+        console.log(data);
+        getAccounts();
+      })
+      .catch((err) => alert(err));
   };
   return (
     <>
@@ -174,19 +211,25 @@ export default function Accounts() {
                                   </h3>
                                 </div>
                                 <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                                  {
+                                     
+                                  }
                                   <button
-                                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                    className={!showDeleteButton ?`hidden ` :`bg-red-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1`}
                                     type="button"
+                                    onClick={() => {
+                                      deleteAccountsByIds();
+                                    }}
                                     style={{ transition: "all .15s ease" }}
                                   >
                                     Delete Selected
                                   </button>
                                   <button
-                                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                    className={!showDeleteButton ?`hidden ` :`bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1`}
                                     type="button"
                                     style={{ transition: "all .15s ease" }}
                                   >
-                                    Activate Selected
+                                     Toggle Status
                                   </button>
                                 </div>
                               </div>
@@ -199,7 +242,21 @@ export default function Accounts() {
                               <table className="items-center w-full bg-transparent border-collapse shadow-xl">
                                 <thead>
                                   <tr>
-                                    <td className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border mdi mdi-check-all mdi-24px border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"></td>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      <input
+                                        type="checkbox"
+                                        onChange={(e) => {
+                                          let value = e.target.checked;
+                                          setAccounts(
+                                            accounts.map((d) => {
+                                              d.select = value;
+                                              return d;
+                                            })
+                                          );
+                                          !value ? setShowDeleteButton(false) : setShowDeleteButton(true)
+                                        }}
+                                      />
+                                    </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Username
                                     </th>
@@ -227,7 +284,21 @@ export default function Accounts() {
                                   {accounts.map((account) => (
                                     <tr key={account.id}>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        <Checkbox Unchecked />
+                                        <input
+                                          type="checkbox"
+                                          checked={account.select}
+                                          onChange={(e) => {
+                                            let value = e.target.checked;
+                                            setAccounts(accounts.map((sd) => {
+                                                if (sd.id === account.id) {
+                                                  sd.select = value;
+                                                }
+                                                return sd;
+                                              })
+                                            );
+                                            !value ? setShowDeleteButton(false) : setShowDeleteButton(true)
+                                          }}
+                                        />
                                       </td>
                                       <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         {account.username}{" "}
@@ -313,8 +384,8 @@ export default function Accounts() {
                                           }
                                         >
                                           {account.isActive
-                                            ? "Activate"
-                                            : "Deactivate"}
+                                            ? "Activated"
+                                            : "Deactivated"}
                                         </button>
                                       </td>
                                     </tr>

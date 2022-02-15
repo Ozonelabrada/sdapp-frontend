@@ -2,22 +2,24 @@ import moment from "moment";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { findAllUser } from "../../api/endpoints/user";
-import { findAllViolation } from "../../api/endpoints/violation";
+import { findAllViolation, findOwnViolation } from "../../api/endpoints/violation";
 import { findAllViolator } from "../../api/endpoints/violator";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import { totalUser } from "../../api/endpoints/dashboard";
 
 export default function Dashboard() {
   const [violations, setViolations] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [violators, setViolators] = React.useState([]);
+  
 
   useEffect(() => {
-    findAllViolation().then(setViolations);
-    findAllUser().then(setUsers);
+    // findAllViolation().then(setViolations);
+    // findAllUser().then(setUsers);
+    totalUser().the(setUsers);
     findAllViolator().then(setViolators);
   }, []);
-  // if(violators.created_at === )
   return (
     <div className="h-screen overflow-y-auto">
       <div className="relative md:ml-64 bg-blueGray-100">

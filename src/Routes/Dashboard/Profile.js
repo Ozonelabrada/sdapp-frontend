@@ -66,7 +66,7 @@ export default function Profile() {
                         {user.email}
                       </p>
                       <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start italic">
-                      <span class="mdi mdi-account-key h-4 fill-current text-green-700 pr-4"></span>
+                      <span class="mdi mdi-account-key mdi-18px h-4 fill-current text-green-700 pr-4"></span>
                         {user.role}
                       </p>
                       <p className="pt-8 text-sm">
