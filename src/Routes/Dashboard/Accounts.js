@@ -13,7 +13,6 @@ import { registerUser } from "../../api/endpoints/auth.js";
 import UpdateAccount from "./modals/UpdateAccount.js";
 import moment from "moment";
 import toast from "react-hot-toast";
-import { Checkbox } from "tailwind-react-ui";
 
 export default function Accounts() {
   const [openTab, setOpenTab] = React.useState(1);
@@ -119,11 +118,14 @@ export default function Accounts() {
         arrayids.push(d.id);
       }
     });
-    deleteBulkUser(arrayids).then((data) => {
-        console.log(data);
-        getAccounts();
-      })
-      .catch((err) => alert(err));
+    deleteBulkUser(arrayids).then((res) => {
+      if (res) {
+        setAccounts((accounts) =>
+          accounts.filter((account) => account.id !== res.id)
+        );
+        toast.success("Successfully Deleted!");
+      } 
+    });
   };
   return (
     <>

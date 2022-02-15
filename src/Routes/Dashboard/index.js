@@ -17,7 +17,7 @@ export default function Dashboard() {
   useEffect(() => {
     // findAllViolation().then(setViolations);
     // findAllUser().then(setUsers);
-    totalUser().the(setUsers);
+    // totalUser().the(setUsers);
     findAllViolator().then(setViolators);
   }, []);
   return (

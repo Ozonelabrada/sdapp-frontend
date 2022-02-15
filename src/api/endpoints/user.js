@@ -27,7 +27,7 @@ export const deleteUser = async (id) => {
 }
 export const deleteBulkUser = async (id) => {
     try {
-        const res = await api.delete(`/user/delete-bulk/${[id]}`);
+        const res = await api.delete(`/user/delete-bulk/[${id}]`);
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }
