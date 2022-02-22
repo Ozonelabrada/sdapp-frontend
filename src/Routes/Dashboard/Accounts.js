@@ -112,13 +112,13 @@ export default function Accounts() {
   };
 
   const deleteAccountsByIds = () => {
-    let arrayids = [];
+    let ids = [];
     accounts.forEach((d) => {
       if (d.select) {
-        arrayids.push(d.id);
+        ids.push(d.id);
       }
     });
-    deleteBulkUser(arrayids).then((res) => {
+    deleteBulkUser({ids}).then((res) => {
       if (res) {
         setAccounts((accounts) =>
           accounts.filter((account) => account.id !== res.id)
@@ -369,7 +369,7 @@ export default function Accounts() {
                                             user.id === account.creator_id
                                               ? "bg-blue-500 hover:bg-blue-700  border border-blue-500"
                                               : "bg-gray-400"
-                                          }   text-white font-bold py-1 px-2 rounded mdi mdi-account-box inline-flex`}
+                                          }   text-white font-bold py-1 px-2 rounded mdi mdi-account inline-flex`}
                                           title={
                                             account.isActive
                                               ? "Deactivate"
@@ -384,10 +384,10 @@ export default function Accounts() {
                                           onClick={() =>
                                             toggleActivation(account)
                                           }
-                                        >
+                                        > &nbsp;
                                           {account.isActive
-                                            ? "Activated"
-                                            : "Deactivated"}
+                                            ? "Deactivate"
+                                            : "Activate"}
                                         </button>
                                       </td>
                                     </tr>

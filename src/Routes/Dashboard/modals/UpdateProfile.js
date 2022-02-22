@@ -20,7 +20,7 @@ export default function UpdateProfile(props) {
     e.preventDefault();
     updateUser(user).then((res) => {
       if (res) {
-        toast.success("Updated Successfuly", { duration: 5000 });
+        toast.success("Updated Successfully", { duration: 5000 });
         setShowModal(false);
       }
     });

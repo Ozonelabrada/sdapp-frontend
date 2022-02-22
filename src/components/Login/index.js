@@ -21,7 +21,7 @@ export default function Login() {
     e.preventDefault();
     const user = await loginUser(credentials);
     if (!user) return // force return to false
-    toast.success("Successfuly Logged in.");
+    toast.success("Successfully logged in.");
     //update user context after 1sec of delay
     setTimeout(() => setUser(user), 1000);
     //save token to local storage
