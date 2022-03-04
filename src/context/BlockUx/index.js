@@ -16,7 +16,9 @@ export default function BlockUx(props) {
 
   return (
     <BlockUxContext.Provider value={{ setIsLoading }}>
-      <BlockUi tag="div" blocking={isLoading}>
+      <BlockUi tag="div" blocking={isLoading} message="Loading, Please Wait..."
+      
+      >
         {children}
       </BlockUi>
     </BlockUxContext.Provider>

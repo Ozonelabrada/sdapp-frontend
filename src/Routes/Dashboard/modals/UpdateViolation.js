@@ -84,13 +84,10 @@ export default function UpdateViolation(props) {
                             name="type_id"
                             value={selectedViolation.type_id}
                           >
-                            {violationsType.length ? (
-                              violationsType.map((type) => (
-                                <option key={type.id} value={type.id}>{type.type}</option>
-                              ))
-                            ) : (
-                              <option value=""> No Record Found!</option>
-                            )}
+                            {violationsType.length
+                              ? violationsType.map(type => <option key={type.id} value={type.id}>{type.type}</option>)
+                              : <option value="" disabled> No option</option>
+                            }
                           </select>
                         </div>
                         <div className="w-1/2 ml-2">

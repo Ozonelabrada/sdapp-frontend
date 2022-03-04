@@ -23,12 +23,13 @@ const Violations = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [openTab, setOpenTab] = React.useState(1);
   const [selectedViolation, setSelectedViolation] = React.useState(null);
+  const [enableDeleteBulk, setEnableDeleteBulk] = React.useState(false);
 
   React.useEffect(() => {
     findAllViolation().then(setViolations);
     findAllViolationType().then(setViolationsType);
   }, []);
-  
+
   const handleShowModal = (violation) => {
     setSelectedViolation(violation);
     setShowModal(true);
@@ -40,6 +41,10 @@ const Violations = () => {
     location: "",
     name: ""
   });
+
+  const handleDeleteBulk = () => {
+  };
+
 
   const handleSubmitViol = async (e) => {
     e.preventDefault();
@@ -156,11 +161,12 @@ const Violations = () => {
                                 </div>
                                 <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                                   <button
-                                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                    className={!enableDeleteBulk ? `hidden ` : `bg-red-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1`}
                                     type="button"
+                                    onClick={() => handleDeleteBulk()}
                                     style={{ transition: "all .15s ease" }}
                                   >
-                                    See all
+                                    Delete Selected
                                   </button>
                                 </div>
                               </div>
@@ -170,64 +176,87 @@ const Violations = () => {
                               style={{ maxHeight: 500 }}
                             >
                               {/* Projects table */}
-                              {violations.length >= 1?(
-                              <table className="items-center h-full w-full bg-transparent border-collapse shadow-lg">
-                                <thead>
-                                  <tr>
-                                    <td className="px-6 bg-blueGray-50 mdi mdi-check-all mdi-24px text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    
-                                    </td>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Name
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Type
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Description
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Location
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Date Created
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Date Updated
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Actions
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody className="h-full">
-                                  {violations.map((violation) => (
-                                    <tr key={violation.id}>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        <Checkbox unchecked />
-                                      </td>
-                                      <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {violation.name}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {violation.type.type}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {violation.description}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {violation.location}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {moment(violation.created_at).format(
-                                          "lll"
-                                        )}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {moment(violation.updated_at).format(
-                                          "lll"
-                                        )}
-                                      </td>
+                              {violations.length >= 1 ? (
+                                <table className="items-center h-full w-full bg-transparent border-collapse shadow-lg">
+                                  <thead>
+                                    <tr>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        <input
+                                          type="checkbox"
+                                          onChange={(e) => {
+                                            let value = e.target.checked;
+                                            setEnableDeleteBulk(value);
+                                            setViolation(
+                                              violations.map((d) => {
+                                                d.select = value;
+                                                return d;
+                                              })
+                                            );
+                                          }}
+                                        />
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Name
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Type
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Description
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Location
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Date Created
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Date Updated
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Actions
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody className="h-full">
+                                    {violations.map((violation) => (
+                                      <tr key={violation.id}>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          <input
+                                            type="checkbox"
+                                            checked={violation.select || false}
+                                            onChange={(e) => {
+                                              let value = e.target.checked;
+                                              setEnableDeleteBulk(value);
+                                              setViolation(violations.map((sd) => {
+                                                if (sd.id === violation.id) { sd.select = value; }
+                                                return sd;
+                                              }));
+                                            }}
+                                          />
+                                        </td>
+                                        <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {violation.name}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {violation.type.type}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {violation.description}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {violation.location}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {moment(violation.created_at).format(
+                                            "lll"
+                                          )}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {moment(violation.updated_at).format(
+                                            "lll"
+                                          )}
+                                        </td>
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                           <button
                                             className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violation.creator_id) ? "bg-blue-500 hover:bg-blue-700 border border-blue-500" : "bg-gray-400"} text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
@@ -248,15 +277,15 @@ const Violations = () => {
                                             }
                                           ></button>
                                         </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                              ):(
-                                <div class="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
-                                <p class="font-bold">Informational Message!</p>
-                                <p class="text-sm">No Violations to Display.</p>
-                              </div>)}
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              ) : (
+                                <div className="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                                  <p className="font-bold">Informational Message!</p>
+                                  <p className="text-sm">No Violations to Display.</p>
+                                </div>)}
                             </div>
                           </div>
                         </div>
@@ -319,17 +348,12 @@ const Violations = () => {
                                           }
                                           name="type_id"
                                         >
-                                          <option value="" />
-                                          {violationsType.map(
-                                            (violationtype) => (
-                                              <option
-                                                key={violationtype.id}
-                                                value={violationtype.id}
-                                              >
-                                                {violationtype.type}
-                                              </option>
-                                            )
-                                          )}
+                                          <option value="">Select Violation Type</option>
+                                          {
+                                            violationsType.length
+                                              ? violationsType.map(violationtype => <option key={violationtype.id} value={violationtype.id} > {violationtype.type} </option>)
+                                              : <option value="" disabled>No option</option>
+                                          }
                                         </select>
                                       </div>
                                       <div className="w-1/2 ml-2">

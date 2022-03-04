@@ -7,6 +7,7 @@ export default function UpdateAiConfig(props) {
   const { show, data } = props;
   const { setShowModal } = show;
   const { selAiConfig, setSelAiConfig, setAiConfigs } = data;
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSelAiConfig((prevState) => {
@@ -18,6 +19,7 @@ export default function UpdateAiConfig(props) {
   };
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
+    delete selAiConfig.creator;
     updateAi(selAiConfig).then((res) => {
       if (res) {
         setAiConfigs((prevState) => {
@@ -57,9 +59,6 @@ export default function UpdateAiConfig(props) {
                 <div className="rounded-lg container mx-auto py-2">
                   <div className="py-4 px-8">
                     <form onSubmit={handleUpdateSubmit}>
-                      <div className="mb-4">
-                        <div className="mb-4"></div>
-                      </div>
                       <div className="flex mb-4">
                         <div className="w-1/2 mr-1">
                           <label
@@ -75,11 +74,9 @@ export default function UpdateAiConfig(props) {
                             type="text"
                             name="name"
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            placeholder="Ai Config Name"
+                            placeholder="Name"
                           />
                         </div>
-                      </div>
-                      <div className="flex mb-4">
                         <div className="w-1/2 mr-1">
                           <label
                             className="block   text-sm font-bold mb-2"
@@ -94,21 +91,68 @@ export default function UpdateAiConfig(props) {
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="classification_type"
                             type="text"
-                            placeholder="Classification here"
+                            placeholder="Person"
                           />
                         </div>
-                        <div className="w-1/4 ml-1">
+                      </div>
+                      <div className="flex mb-4">
+                        <div className="w-1/6 mr-1">
+                          <label
+                            className="block   text-sm font-bold mb-2"
+                            htmlFor="max_distance"
+                          >
+                            Max Distance
+                          </label>
+                          <input
+                            required
+                            value={selAiConfig.max_distance || ""}
+                            onChange={(e) =>
+                              setSelAiConfig((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value),
+                              }))
+                            }
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            name="max_distance"
+                            type="number"
+                            placeholder="100"
+                          />
+                        </div>
+                        <div className="w-1/6 ml-1">
                           <label
                             disable="true"
                             className="block text-grey-darker text-sm font-bold mb-2"
-                            htmlFor="last_name"
+                            htmlFor="min_distance"
                           >
-                            Maximum Detection{" "}
+                            Min Distance
                           </label>
                           <input
                             required
                             onChange={(e) =>
-                                setAiConfigs((prevState) => ({
+                              setSelAiConfig((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value),
+                              }))
+                            }
+                            value={selAiConfig.min_distance || ""}
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            name="min_distance"
+                            type="number"
+                            placeholder="80"
+                          />
+                        </div>
+                        <div className="w-1/6 ml-1">
+                          <label
+                            disable="true"
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="max_detection_num"
+                          >
+                            Max Detection
+                          </label>
+                          <input
+                            required
+                            onChange={(e) =>
+                              setSelAiConfig((prevState) => ({
                                 ...prevState,
                                 [e.target.name]: parseInt(e.target.value),
                               }))
@@ -116,39 +160,189 @@ export default function UpdateAiConfig(props) {
                             value={selAiConfig.max_detection_num || ""}
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="max_detection_num"
-                            type="text"
-                            placeholder="12345..."
+                            type="number"
+                            placeholder="15"
                           />
                         </div>
-                        <div className="w-1/4 ml-1">
+                        <div className="w-1/6 ml-1">
                           <label
                             disable="true"
                             className="block text-grey-darker text-sm font-bold mb-2"
-                            htmlFor="last_name"
+                            htmlFor="min_detection_num"
                           >
-                            Minimum Detection{" "}
+                            Min Detection
                           </label>
                           <input
                             required
                             onChange={(e) =>
-                                setAiConfigs((prevState) => ({
+                              setSelAiConfig((prevState) => ({
                                 ...prevState,
-                                [e.target.name]: parseInt(e.target.value),
+                                [e.target.name]: parseInt(
+                                  e.target.value
+                                ),
                               }))
                             }
                             value={selAiConfig.min_detection_num || ""}
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="min_detection_num"
-                            type="text"
-                            placeholder="12345..."
+                            type="number"
+                            placeholder="2"
                           />
+                        </div>
+                        <div className="w-1/6 ml-1">
+                          <label
+                            disable="true"
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="min_confidence"
+                          >
+                            Min Confidence
+                          </label>
+                          <input
+                            required
+                            onChange={(e) =>
+                              setSelAiConfig((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value),
+                              }))
+                            }
+                            value={selAiConfig.min_confidence || ""}
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            name="min_confidence"
+                            type="number"
+                            placeholder="50"
+                          />
+                        </div>
+                        <div className="w-1/6 ml-1">
+                          <label
+                            disable="true"
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="mns_threshold"
+                          >
+                            MNS Threshold
+                          </label>
+                          <input
+                            required
+                            onChange={(e) =>
+                              setSelAiConfig((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(
+                                  e.target.value
+                                ),
+                              }))
+                            }
+                            value={selAiConfig.mns_threshold || ""}
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            name="mns_threshold"
+                            type="number"
+                            placeholder="50"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex mb-4">
+                        <div className="w-1/4">
+                          <label
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="model"
+                          >
+                            Model
+                          </label>
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            aria-label=".form-select-sm"
+                            required
+                            value={selAiConfig.model || ""}
+                            id="model"
+                            onChange={handleChange}
+                            name="model"
+                          >
+                            <option value="">Select Model</option>
+                            <option value="yoloV3">yoloV3</option>
+                            <option value="yoloV3-tiny">yoloV3-tiny</option>
+                            <option value="yoloV4">yoloV4</option>
+                            <option value="yoloV4-tiny">yoloV4-tiny</option>
+                          </select>
+                        </div>
+                        <div className="w-1/4">
+                          <label
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="people_counter"
+                          >
+                            People Counter
+                          </label>
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            aria-label=".form-select-sm"
+                            required
+                            value={selAiConfig.people_counter ? 1 : 0}
+                            id="people_counter"
+                            onChange={(e) =>
+                              setSelAiConfig((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value) ? true : false,
+                              }))
+                            }
+                            name="people_counter"
+                          >
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                          </select>
+                        </div>
+                        <div className="w-1/4">
+                          <label
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="use_gpu"
+                          >
+                            Use GPU
+                          </label>
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            aria-label=".form-select-sm"
+                            required
+                            value={selAiConfig.use_gpu ? 1 : 0}
+                            id="use_gpu"
+                            onChange={(e) =>
+                              setSelAiConfig((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value) ? true : false,
+                              }))
+                            }
+                            name="use_gpu"
+                          >
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                          </select>
+                        </div>
+                        <div className="w-1/4">
+                          <label
+                            className="block text-grey-darker text-sm font-bold mb-2"
+                            htmlFor="use_threading"
+                          >
+                            Use Threading
+                          </label>
+                          <select
+                            className="form-select form-select-sm mb-3 appearance-none block w-full px-3 py-2 font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300  rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            aria-label=".form-select-sm"
+                            required
+                            value={selAiConfig.use_threading ? 1 : 0}
+                            id="use_threading"
+                            onChange={(e) =>
+                              setSelAiConfig((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: parseInt(e.target.value) ? true : false,
+                              }))
+                            }
+                            name="use_threading"
+                          >
+                            <option value={1}>Yes</option>
+                            <option value={0}>No</option>
+                          </select>
                         </div>
                       </div>
                       <div className="flex mb-4">
                         <div className="w-full ml-1">
                           <label
                             className="block text-grey-darker text-sm font-bold mb-2"
-                            htmlFor="last_name"
+                            htmlFor="description"
                           >
                             Description
                           </label>
@@ -158,7 +352,7 @@ export default function UpdateAiConfig(props) {
                             className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
                             name="description"
                             type="text"
-                            placeholder="Description"
+                            placeholder="Description..."
                             rows={3}
                           />
                         </div>

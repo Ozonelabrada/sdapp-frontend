@@ -21,12 +21,13 @@ export default function Accounts() {
   const [showModal, setShowModal] = React.useState(false);
   const [selUser, setSelUser] = React.useState(null);
   const [showDeleteButton, setShowDeleteButton] = React.useState(false);
+  const [needUpdate, setNeedUpdate] = React.useState(0);
 
   React.useEffect(() => {
     if (["SUPER_ADMIN", "ADMIN"].includes(user.role))
       findAllUser().then(setAccounts);
     else getMe().then(setAccounts);
-  }, [user.id]);
+  }, [user.id, needUpdate]);
 
   const handleDelete = (id) => {
     deleteUser(id).then((res) => {
@@ -38,23 +39,19 @@ export default function Accounts() {
       }
     });
   };
+
+  React.useEffect(() => {
+    console.log(accounts);
+  }, [accounts]);
+
   const toggleActivation = (account) => {
     const data = {
       isActive: !account.isActive,
       id: account.id,
     };
     activateUser(data).then((res) => {
-      if (res) {
-        setAccounts((prevState) => {
-          const index = prevState.findIndex((element) => element.id === res.id);
-          if (index > -1) {
-            prevState[index] = res;
-          }
-          return prevState;
-        });
-      }
+      if (res) setNeedUpdate(needUpdate => needUpdate + 1);
     });
-    window.location.reload(false);
   };
 
   // create form states
@@ -88,28 +85,6 @@ export default function Accounts() {
     setShowModal(true);
   };
 
-  ////////////////////////////
-  const getAccounts = () => {
-   findAllUser().then(data => {
-        setAccounts(
-          accounts.map(d => {
-            return {
-              select: false,
-              id: d.id,
-              username: d.username,
-              email: d.email,
-              first_name: d.first_name,
-              last_name: d.last_name,
-              middle_name: d.middle_name,
-              suffix: d.suffix,
-              role: d.role,
-              isActive: d.isActive
-            };
-          })
-        );
-      })
-      .catch(err => alert(err));
-  };
 
   const deleteAccountsByIds = () => {
     let ids = [];
@@ -118,13 +93,13 @@ export default function Accounts() {
         ids.push(d.id);
       }
     });
-    deleteBulkUser({ids}).then((res) => {
+    deleteBulkUser({ ids }).then((res) => {
       if (res) {
         setAccounts((accounts) =>
           accounts.filter((account) => account.id !== res.id)
         );
         toast.success("Successfully Deleted!");
-      } 
+      }
     });
   };
   return (
@@ -213,11 +188,9 @@ export default function Accounts() {
                                   </h3>
                                 </div>
                                 <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                                  {
-                                     
-                                  }
+                                  
                                   <button
-                                    className={!showDeleteButton ?`hidden ` :`bg-red-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1`}
+                                    className={!showDeleteButton ? `hidden ` : `bg-red-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1`}
                                     type="button"
                                     onClick={() => {
                                       deleteAccountsByIds();
@@ -227,11 +200,11 @@ export default function Accounts() {
                                     Delete Selected
                                   </button>
                                   <button
-                                    className={!showDeleteButton ?`hidden ` :`bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1`}
+                                    className={!showDeleteButton ? `hidden ` : `bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1`}
                                     type="button"
                                     style={{ transition: "all .15s ease" }}
                                   >
-                                     Toggle Status
+                                    Toggle Status
                                   </button>
                                 </div>
                               </div>
@@ -272,6 +245,9 @@ export default function Accounts() {
                                       Role
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                      Status
+                                    </th>
+                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                       Date Created
                                     </th>
                                     <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -288,16 +264,13 @@ export default function Accounts() {
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         <input
                                           type="checkbox"
-                                          checked={account.select}
+                                          checked={account.select || false}
                                           onChange={(e) => {
                                             let value = e.target.checked;
                                             setAccounts(accounts.map((sd) => {
-                                                if (sd.id === account.id) {
-                                                  sd.select = value;
-                                                }
-                                                return sd;
-                                              })
-                                            );
+                                              if (sd.id === account.id) { sd.select = value; }
+                                              return sd;
+                                            }));
                                             !value ? setShowDeleteButton(false) : setShowDeleteButton(true)
                                           }}
                                         />
@@ -317,6 +290,11 @@ export default function Accounts() {
                                         {account.role}
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                        {account.isActive
+                                          ? <span className="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-green-100 bg-green-600 rounded-full">Active</span>
+                                          : <span className="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">Inactive</span>}
+                                      </td>
+                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         {moment(account.created_at).format(
                                           "lll"
                                         )}
@@ -328,66 +306,50 @@ export default function Accounts() {
                                       </td>
                                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                         <button
-                                          className={`ml-2 ${
-                                            user.role === "SUPER_ADMIN" ||
+                                          className={`ml-2 ${user.role === "SUPER_ADMIN" ||
                                             user.id === account.creator_id
-                                              ? "bg-blue-500 hover:bg-blue-700 border border-blue-500"
-                                              : "bg-gray-400"
-                                          } text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
+                                            ? "bg-blue-500 hover:bg-blue-700 border border-blue-500"
+                                            : "bg-gray-400"
+                                            } text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
                                           title="Edit"
                                           disabled={
-                                            !(
-                                              user.role === "SUPER_ADMIN" ||
-                                              user.id === account.creator_id
-                                            )
+                                            !(user.role === "SUPER_ADMIN" || user.id === account.creator_id)
                                           }
                                           onClick={() =>
                                             handleShowModal(account)
                                           }
                                         ></button>
                                         <button
-                                          className={`ml-2 ${
-                                            user.role === "SUPER_ADMIN" ||
+                                          className={`ml-2 ${user.role === "SUPER_ADMIN" ||
                                             user.id === account.creator_id
-                                              ? "bg-red-500 hover:bg-red-700  border border-red-500"
-                                              : "bg-gray-400"
-                                          }   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
+                                            ? "bg-red-500 hover:bg-red-700  border border-red-500"
+                                            : "bg-gray-400"
+                                            }   text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
                                           title="Delete"
                                           disabled={
-                                            !(
-                                              user.role === "SUPER_ADMIN" ||
-                                              user.id === account.creator_id
-                                            )
+                                            !(user.role === "SUPER_ADMIN" || user.id === account.creator_id)
                                           }
                                           onClick={() =>
                                             handleDelete(account.id)
                                           }
                                         ></button>
                                         <button
-                                          className={`ml-2 ${
-                                            user.role === "SUPER_ADMIN" ||
+                                          className={`ml-2 ${user.role === "SUPER_ADMIN" ||
                                             user.id === account.creator_id
-                                              ? "bg-blue-500 hover:bg-blue-700  border border-blue-500"
-                                              : "bg-gray-400"
-                                          }   text-white font-bold py-1 px-2 rounded mdi mdi-account inline-flex`}
+                                            ? "bg-yellow-600 hover:bg-yellow-700  border border-yellow-500"
+                                            : "bg-gray-400"
+                                            }   text-white font-bold py-1 px-2 rounded mdi mdi-account inline-flex`}
                                           title={
-                                            account.isActive
-                                              ? "Deactivate"
-                                              : "Activate"
+                                            account.isActive ? "Deactivate" : "Activate"
                                           }
                                           disabled={
-                                            !(
-                                              user.role === "SUPER_ADMIN" ||
-                                              user.id === account.creator_id
-                                            )
+                                            !(user.role === "SUPER_ADMIN" || user.id === account.creator_id)
                                           }
                                           onClick={() =>
                                             toggleActivation(account)
                                           }
                                         > &nbsp;
-                                          {account.isActive
-                                            ? "Deactivate"
-                                            : "Activate"}
+                                          {account.isActive ? "Deactivate" : "Activate"}
                                         </button>
                                       </td>
                                     </tr>

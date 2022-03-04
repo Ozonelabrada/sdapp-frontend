@@ -17,9 +17,12 @@ const ViolationType = () => {
   const [violationsType, setViolationsType] = useState([]);
   const { user } = React.useContext(UserContext);
   const [openTab, setOpenTab] = React.useState(1);
-  const [selectedViolationType, setSelectedViolationType] =
-    React.useState(null);
+  const [selectedViolationType, setSelectedViolationType] = React.useState(null);
+  const [enableDeleteBulk, setEnableDeleteBulk] = React.useState(false);
   const [showModal, setShowModal] = React.useState(false);
+
+  const handleDeleteBulk = () => {
+  }
 
   const handleShowModal = (violationType) => {
     setSelectedViolationType(violationType);
@@ -160,11 +163,12 @@ const ViolationType = () => {
                                 </div>
                                 <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                                   <button
-                                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                                    className={!enableDeleteBulk ? `hidden ` : `bg-red-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1`}
                                     type="button"
+                                    onClick={() => handleDeleteBulk()}
                                     style={{ transition: "all .15s ease" }}
                                   >
-                                    See all
+                                    Delete Selected
                                   </button>
                                 </div>
                               </div>
@@ -174,82 +178,105 @@ const ViolationType = () => {
                               style={{ maxHeight: 500 }}
                             >
                               {/* Projects table */}
-                              {violationsType.length >= 1?(
-                              <table className="items-center w-full bg-transparent border-collapse">
-                                <thead>
-                                  <tr>
-                                    <td className="px-6 bg-blueGray-50 text-blueGray-500  mdi mdi-check-all mdi-24px  align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      
-                                    </td>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Type
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Description
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Date Created
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Date Updated
-                                    </th>
-                                    <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                      Actions
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {violationsType.map((violationType) => (
-                                    <tr key={violationType.id}>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        <Checkbox unchecked/>
-                                      </td>
-                                      <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {violationType.type}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {violationType.description}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {moment(
-                                          violationType.created_at
-                                        ).format("lll")}
-                                      </td>
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        {moment(
-                                          violationType.updated_at
-                                        ).format("lll")}
-                                      </td>
-
-                                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        <button
-                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id) ? "bg-blue-500 hover:bg-blue-700 border border-blue-500" : "bg-gray-400"} text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
-                                          title="View"
-                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id)}
-                                          onClick={() =>
-                                            handleShowModal(violationType)
-                                          }
-                                        ></button>
-                                        <button
-                                          className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id) ? "bg-red-500 hover:bg-red-700  border border-red-500" : "bg-gray-400"}  text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
-                                          title="Remove"
-                                          disabled={!(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id)}
-                                          onClick={() =>
-                                            handleDeleteViolation(
-                                              violationType.id
-                                            )
-                                          }
-                                        ></button>
-                                      </td>
+                              {violationsType.length >= 1 ? (
+                                <table className="items-center w-full bg-transparent border-collapse">
+                                  <thead>
+                                    <tr>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        <input
+                                          type="checkbox"
+                                          onChange={(e) => {
+                                            let value = e.target.checked;
+                                            setEnableDeleteBulk(value);
+                                            setViolationType(
+                                              violationsType.map((d) => {
+                                                d.select = value;
+                                                return d;
+                                              })
+                                            );
+                                          }}
+                                        />
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Type
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Description
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Date Created
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Date Updated
+                                      </th>
+                                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Actions
+                                      </th>
                                     </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                              ):(
+                                  </thead>
+                                  <tbody>
+                                    {violationsType.map((violationType) => (
+                                      <tr key={violationType.id}>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          <input
+                                            type="checkbox"
+                                            checked={violationType.select || false}
+                                            onChange={(e) => {
+                                              let value = e.target.checked;
+                                              setEnableDeleteBulk(value);
+                                              setViolationType(violationsType.map((sd) => {
+                                                if (sd.id === violationType.id) { sd.select = value; }
+                                                return sd;
+                                              }));
+                                            }}
+                                          />
+                                        </td>
+                                        <td className="font-bold border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {violationType.type}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {violationType.description}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {moment(
+                                            violationType.created_at
+                                          ).format("lll")}
+                                        </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          {moment(
+                                            violationType.updated_at
+                                          ).format("lll")}
+                                        </td>
+
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                          <button
+                                            className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id) ? "bg-blue-500 hover:bg-blue-700 border border-blue-500" : "bg-gray-400"} text-white font-bold py-1 px-2  rounded mdi mdi-pencil-box`}
+                                            title="View"
+                                            disabled={!(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id)}
+                                            onClick={() =>
+                                              handleShowModal(violationType)
+                                            }
+                                          ></button>
+                                          <button
+                                            className={`ml-2 ${(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id) ? "bg-red-500 hover:bg-red-700  border border-red-500" : "bg-gray-400"}  text-white font-bold py-1 px-2 rounded mdi mdi-delete-circle inline-flex`}
+                                            title="Remove"
+                                            disabled={!(user.role === "SUPER_ADMIN" || user.id === violationType.creator_id)}
+                                            onClick={() =>
+                                              handleDeleteViolation(
+                                                violationType.id
+                                              )
+                                            }
+                                          ></button>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              ) : (
                                 <div class="bg-blue-100 w-full border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
-                                <p class="font-bold">Informational Message!</p>
-                                <p class="text-sm">No Violation Type to Display.</p>
-                              </div>)}
+                                  <p class="font-bold">Informational Message!</p>
+                                  <p class="text-sm">No Violation Type to Display.</p>
+                                </div>)}
                             </div>
                           </div>
                         </div>
