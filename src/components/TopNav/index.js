@@ -17,7 +17,7 @@ const TopNav = () => {
     }
     return (
         <div className="container text-gray-600 md:fixed md:bg-transparent md:w-screen">
-            <nav className="flex border-b-2 items-center justify-between flex-wrap text-xl w-screen">
+            <nav className="flex border-b-2 items-center justify-between flex-wrap text-xl">
                 <div className="flex md:items-center flex-shrink-0 md:ml-10 ml-2">
                     {
                         user?.token
@@ -39,7 +39,6 @@ const TopNav = () => {
                         {(user && user.token) && (<Link to="/dashboard" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Dashboard</span></Link>)}
                         <Link to="/home" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Home</span></Link>
                         <Link to="/about" className="block md:inline-block "><span className="hover:underline hover:opacity-75 m-auto px-5">About</span></Link>
-                        <Link to="/gallery" className="block md:inline-block"><span className="hover:underline hover:opacity-75 m-auto px-5">Gallery</span></Link>
                     </div>
                     <div className='pr-10'>
                         {/* <a href="#" className="inline-block text-sm px-4 py-2 leading-none border rounded   hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Download</a> */}

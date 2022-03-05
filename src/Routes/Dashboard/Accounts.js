@@ -3,13 +3,13 @@ import UserDropdown from "./components/UserDropdown.js";
 import { UserContext } from "../../context/userContext.js";
 import {
   activateUser,
+  createUser,
   deleteBulkUser,
   deleteUser,
   findAllUser,
   getMe,
 } from "../../api/endpoints/user.js";
 import useForm from "../../hooks/useForm.js";
-import { registerUser } from "../../api/endpoints/auth.js";
 import UpdateAccount from "./modals/UpdateAccount.js";
 import moment from "moment";
 import toast from "react-hot-toast";
@@ -40,10 +40,6 @@ export default function Accounts() {
     });
   };
 
-  React.useEffect(() => {
-    console.log(accounts);
-  }, [accounts]);
-
   const toggleActivation = (account) => {
     const data = {
       isActive: !account.isActive,
@@ -70,7 +66,7 @@ export default function Accounts() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const user = await registerUser(credentials);
+    const user = await createUser(credentials);
     //set isLoading to false then set hasError to true if there is an error
     if (!user) return; // force return to false
     toast.success("Successfully Created!");
@@ -95,10 +91,8 @@ export default function Accounts() {
     });
     deleteBulkUser({ ids }).then((res) => {
       if (res) {
-        setAccounts((accounts) =>
-          accounts.filter((account) => account.id !== res.id)
-        );
-        toast.success("Successfully Deleted!");
+        setNeedUpdate(needUpdate => needUpdate + 1);
+        toast.success(`${res.count} Account was deleted!`);
       }
     });
   };
@@ -222,13 +216,13 @@ export default function Accounts() {
                                         type="checkbox"
                                         onChange={(e) => {
                                           let value = e.target.checked;
+                                          setShowDeleteButton(value)
                                           setAccounts(
                                             accounts.map((d) => {
                                               d.select = value;
                                               return d;
                                             })
                                           );
-                                          !value ? setShowDeleteButton(false) : setShowDeleteButton(true)
                                         }}
                                       />
                                     </th>
@@ -267,11 +261,11 @@ export default function Accounts() {
                                           checked={account.select || false}
                                           onChange={(e) => {
                                             let value = e.target.checked;
+                                            setShowDeleteButton(value)
                                             setAccounts(accounts.map((sd) => {
                                               if (sd.id === account.id) { sd.select = value; }
                                               return sd;
                                             }));
-                                            !value ? setShowDeleteButton(false) : setShowDeleteButton(true)
                                           }}
                                         />
                                       </td>

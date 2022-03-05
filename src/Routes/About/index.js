@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const About = props => {
-    console.log(props.name);
     return (
         <div className="h-screen w-screen signIn-page justify row-span-full grid grid-flow-col">
             <div className="bg-bgAboutL w-3/3 sm:w-1/1 col-span-1 ">
@@ -17,8 +16,7 @@ const About = props => {
                         SYSTEM</h1>
                 </div>
             </div>
-            <div className="col-span-3 text-2xl bg-bgAboutR mr-5  sm:w-1/1  sm:p-5 row-span-full grid grid-flow-col w-full
-            "
+            <div className="col-span-3 text-2xl bg-bgAboutR mr-5  sm:w-1/1  sm:p-5 row-span-full grid grid-flow-col w-full"
                 style={{ fontFamily: "dm sans" }}>
                 <div>
                     <p className="pt-40 pl-20">

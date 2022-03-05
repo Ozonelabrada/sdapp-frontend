@@ -564,6 +564,7 @@ export default function AiConfig() {
                                           <option value="yoloV3-tiny">yoloV3-tiny</option>
                                           <option value="yoloV4">yoloV4</option>
                                           <option value="yoloV4-tiny">yoloV4-tiny</option>
+                                          <option value="mobilenetv2-ssd">mobilenetv2-ssd</option>
                                         </select>
                                       </div>
                                       <div className="w-1/4">

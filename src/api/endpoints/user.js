@@ -13,6 +13,13 @@ export const findAllUser = async () => {
         return res.status === 200 ? res.data : null;
     } catch (error) { console.error(error) }
 }
+
+export const createUser = async (data) => {
+    try {
+        const res = await api.post(`/user/store`, data);
+        return res.status === 200 ? res.data : null;
+    } catch (error) { console.error(error) }
+}
 export const updateUser = async (data) => {
     try {
         const res = await api.patch(`/user/update/${data.id}`,data);

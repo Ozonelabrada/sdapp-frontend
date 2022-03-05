@@ -20,7 +20,6 @@ import Stream from "./Routes/Dashboard/Stream";
 import Violations from "./Routes/Dashboard/Violations";
 import ViolationType from "./Routes/Dashboard/ViolationType";
 import Violators from "./Routes/Dashboard/Violators";
-import Gallery from "./Routes/Gallery";
 import Private from "./Routes/Private";
 import AiConfig from "./Routes/Dashboard/AiConfig";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
@@ -63,7 +62,6 @@ function App() {
           }
           path="/login"
         />
-        <Route path="/gallery" element={<Private component={Gallery} />} />
         {/* <Route path="/stream" element={<Private component={VideoStream} />} /> */}
 
             <Route path="/dashboard" element={<Private component={Layout} />}>
@@ -91,7 +89,6 @@ function App() {
                 path="violation-type"
                 element={<Private component={ViolationType} />}
               />
-              <Route path="event" element={<Private component={Event} />} />
             </Route>
             <Route path="*" element={<Notfound />} />
           </Routes>

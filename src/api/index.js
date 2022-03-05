@@ -41,8 +41,14 @@ api.interceptors.response.use(
     error => {
         // Do something with response error
         window.setLoading(false)
-        let code = error.response.data.code;
-        toast.error(code ? findError(code) : error.response.data.message)
+        console.log(error.response)
+        if (error?.response?.data?.code || error?.response?.status) {
+            let code = error.response.data.code;
+            toast.error(code ? findError(code) : error.response.data.message)
+        }
+        else {
+            toast.error(error.message)
+        }
         return Promise.reject(error);
     }
 );
