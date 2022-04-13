@@ -41,7 +41,7 @@ export default function Login() {
   return (
     <div className="overflow-y-hidden">
       <div className="h-screen w-full flex flex-wrap bg-bgLogin pt-2">
-        <div className="w-full md:w-1/2 flex flex-col">
+        <div className="w-full md:w-4/12 flex flex-col">
           <div className="rounded px-5 2xl:px-16 flex flex-col justify-center md:justify-start my-auto md:pt-0 bg-gray-300 mx-5">
             <p className="text-left font-semibold pt-5 text-3xl">Login</p>
             <form
@@ -56,7 +56,7 @@ export default function Login() {
                   name="email"
                   type="email"
                   required
-                  placeholder="your@email.com"
+                  placeholder="sample@pd.com"
                   onChange={setCredentials}
                   className="shadow appearance-none border rounded w-full py-2 px-3 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 />
@@ -69,7 +69,7 @@ export default function Login() {
                   name="password"
                   type="password"
                   required
-                  placeholder="Password"
+                  placeholder="s****t"
                   onChange={setCredentials}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 />
@@ -86,9 +86,9 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="md:w-1/2 md:block m-auto md:pt-16 hidden">
+        <div className="md:w-8/12 md:block m-auto md:pt-16 hidden">
           <img
-            className="object-cover rounded-2xl h-screen inactive"
+            className="object-cover rounded-2xl inactive "
             alt=""
             src={landing_image}
           />

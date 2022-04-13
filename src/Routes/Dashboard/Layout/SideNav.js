@@ -160,7 +160,7 @@ export default function SideNav() {
             </h6>
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
-              <li className="inline-flex">
+              {/* <li className="inline-flex">
                 <Link
                   className={`${isActive(
                     "stream"
@@ -170,7 +170,7 @@ export default function SideNav() {
                   <i className="fas fa-paint-brush mr-2 text-blueGray-400 text-base"></i>{" "}
                   Stream
                 </Link>
-              </li>
+              </li> */}
 
               {(user.role === "SUPER_ADMIN" || user.role === "ADMIN") && (
                 <>
