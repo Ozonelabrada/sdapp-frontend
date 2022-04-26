@@ -21,7 +21,7 @@ const TopNav = () => {
                 <div className="flex md:items-center flex-shrink-0 md:ml-10 ml-2">
                     {
                         user?.token
-                            ? <Link to="dashboard/stream" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-36px"></i><span className="m-5">KITA</span></Link>
+                            ? <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-36px"></i><span className="m-5">KITA</span></Link>
                             : <Link to="/home" className="flex flex-none items-center font-semibold text-xl tracking-tight"><i className="mdi mdi-eye-circle-outline mdi-36px"></i><span className="m-5">KITA</span></Link>
                     }
 

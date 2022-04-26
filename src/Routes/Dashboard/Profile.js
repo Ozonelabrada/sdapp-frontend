@@ -70,7 +70,7 @@ export default function Profile() {
                         {user.role}
                       </p>
                       <p className="pt-8 text-sm">
-                        It is not our differences that divide us. It is our inability to recodnize, accept, and celebrate those differences. -Audre Lorde
+                        It is not our differences that divide us. It is our inability to recognize, accept, and celebrate those differences. -Audre Lorde
                       </p>
 
                       <div className="pt-12 pb-8">
